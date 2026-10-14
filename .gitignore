@@ -10,3 +10,6 @@ Thumbs.db
 # Editor directories
 .vscode/
 .idea/
+
+# Firebase cache
+.firebase/

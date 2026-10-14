@@ -2,7 +2,8 @@
 
 > 義式濃縮與手沖咖啡參數動態模擬與金杯萃取實驗室 (Espresso & Pour-Over Dialing-in Lab)
 
-[![GitHub Pages](https://img.shields.io/badge/Demo-GitHub%20Pages-orange?style=flat-square&logo=github)](https://giraffek.github.io/DualCoffeeLabs/)
+[![Firebase Hosting](https://img.shields.io/badge/Demo-Firebase%20Hosting-orange?style=flat-square&logo=firebase)](https://dualcoffeelabs.web.app)
+[![GitHub Pages](https://img.shields.io/badge/Demo-GitHub%20Pages-blue?style=flat-square&logo=github)](https://giraffek.github.io/DualCoffeeLabs/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
 **DualCoffeeLabs** 是一款專為咖啡師與咖啡愛好者打造的互動式萃取物理模擬器，結合流體力學模型、溶解動力學與 SCA 金杯準則（Golden Cup Standard），提供直覺、即時的參數調校與風味預測。
@@ -40,8 +41,8 @@
 ## 🚀 快速開始
 
 ### 線上體驗
-直接造訪 GitHub Pages 部署頁面：
-👉 [https://giraffek.github.io/DualCoffeeLabs/](https://giraffek.github.io/DualCoffeeLabs/)
+- **Firebase Hosting**：👉 [https://dualcoffeelabs.web.app/](https://dualcoffeelabs.web.app/)
+- **GitHub Pages**：👉 [https://giraffek.github.io/DualCoffeeLabs/](https://giraffek.github.io/DualCoffeeLabs/)
 
 ### 本地執行
 1. 複製本儲存庫：
