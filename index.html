@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>互動式義式濃縮咖啡調整實驗室 | Espresso Dialing-in Lab</title>
+    <title>互動式手沖咖啡與義式濃縮調整實驗室 | Dual Coffee Dialing-in Lab</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -337,29 +337,29 @@
             <div class="flex flex-wrap items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                     <div id="labBrandIcon" class="w-10 h-10 rounded-xl bg-gradient-to-br from-crema-light to-crema-dark flex items-center justify-center shadow-lg shadow-crema/20 text-espresso-950 font-bold text-xl">
-                        ☕
+                        🫖
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <h1 id="labMainTitle" class="text-lg md:text-xl font-bold tracking-tight text-cream">義式濃縮與手沖萃取雙棲實驗室</h1>
+                            <h1 id="labMainTitle" class="text-lg md:text-xl font-bold tracking-tight text-cream">手沖萃取與義式濃縮雙棲實驗室</h1>
                             <span id="labVersionTag" class="hidden sm:inline-block text-[11px] font-mono uppercase px-2 py-0.5 rounded bg-crema/15 text-crema-light border border-crema/30">
                                 Dual Coffee Physics Lab v3.0
                             </span>
                         </div>
-                        <p id="labSubTitle" class="text-xs text-cream/60">即時模擬義式高壓與手沖滴濾流體力學、分段變溫注水、SCA 金杯落點與感官風味平衡</p>
+                        <p id="labSubTitle" class="text-xs text-cream/60">即時模擬手沖滴濾與義式高壓流體力學、分段變溫注水、SCA 金杯落點與感官風味平衡</p>
                     </div>
                 </div>
 
                 <!-- Mode Switcher Tabs + Sound Toggle -->
                 <div class="flex items-center gap-2">
                     <div class="inline-flex rounded-xl bg-espresso-900 p-1 border border-crema/25 shadow-inner">
-                        <button id="tabBtnEspresso" onclick="switchLabMode('espresso')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-gradient-to-r from-crema-dark to-crema text-espresso-950 shadow">
-                            <span>☕</span>
-                            <span>義式濃縮實驗室 (Espresso)</span>
-                        </button>
-                        <button id="tabBtnPourover" onclick="switchLabMode('pourover')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 text-cream/75 hover:text-crema-light">
+                        <button id="tabBtnPourover" onclick="switchLabMode('pourover')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-gradient-to-r from-crema-dark to-crema text-espresso-950 shadow">
                             <span>🫖</span>
                             <span>手沖咖啡實驗室 (Pour-Over)</span>
+                        </button>
+                        <button id="tabBtnEspresso" onclick="switchLabMode('espresso')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 text-cream/75 hover:text-crema-light">
+                            <span>☕</span>
+                            <span>義式濃縮實驗室 (Espresso)</span>
                         </button>
                     </div>
 
