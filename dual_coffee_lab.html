@@ -298,10 +298,32 @@
             -webkit-backdrop-filter: blur(16px);
             border-top: 1px solid rgba(212, 154, 89, 0.4);
             padding: 8px 14px;
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
             align-items: center;
             justify-content: space-between;
             gap: 10px;
             box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.75);
+            transition: transform 0.25s ease;
+        }
+        .mobile-live-dock.dock-hidden {
+            transform: translateY(150%);
+            pointer-events: none;
+        }
+        .dock-restore-btn {
+            display: none;
+            position: fixed;
+            bottom: max(12px, env(safe-area-inset-bottom));
+            right: 12px;
+            z-index: 998;
+            padding: 6px 12px;
+            background: rgba(24, 18, 15, 0.95);
+            border: 1px solid rgba(212, 154, 89, 0.5);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #ecc38e;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
         }
         @media (max-width: 1023px) {
             .mobile-live-dock {
@@ -331,39 +353,39 @@
         </div>
     </noscript>
 
-    <header class="sticky top-0 z-30 bg-espresso-950/90 backdrop-blur-md border-b border-crema/15 px-4 lg:px-8 py-3">
-        <div class="max-w-[1600px] mx-auto flex flex-col gap-3">
+    <header class="relative lg:sticky lg:top-0 z-30 bg-espresso-950/90 backdrop-blur-md border-b border-crema/15 px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3">
+        <div class="max-w-[1600px] mx-auto flex flex-col gap-2.5 sm:gap-3">
             <!-- Top Row: Brand, Lab Mode Switcher & Audio Button -->
-            <div class="flex flex-wrap items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <div id="labBrandIcon" class="w-10 h-10 rounded-xl bg-gradient-to-br from-crema-light to-crema-dark flex items-center justify-center shadow-lg shadow-crema/20 text-espresso-950 font-bold text-xl">
+            <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+                <div class="flex items-center gap-2.5 sm:gap-3">
+                    <div id="labBrandIcon" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-crema-light to-crema-dark flex items-center justify-center shadow-lg shadow-crema/20 text-espresso-950 font-bold text-lg sm:text-xl shrink-0">
                         🫖
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <h1 id="labMainTitle" class="text-lg md:text-xl font-bold tracking-tight text-cream">手沖萃取與義式濃縮雙棲實驗室</h1>
+                            <h1 id="labMainTitle" class="text-base sm:text-lg md:text-xl font-bold tracking-tight text-cream">手沖萃取與義式濃縮雙棲實驗室</h1>
                             <span id="labVersionTag" class="hidden sm:inline-block text-[11px] font-mono uppercase px-2 py-0.5 rounded bg-crema/15 text-crema-light border border-crema/30">
                                 Dual Coffee Physics Lab v3.0
                             </span>
                         </div>
-                        <p id="labSubTitle" class="text-xs text-cream/60">即時模擬手沖滴濾與義式高壓流體力學、分段變溫注水、SCA 金杯落點與感官風味平衡</p>
+                        <p id="labSubTitle" class="text-[11px] sm:text-xs text-cream/60 hidden sm:block">即時模擬手沖滴濾與義式高壓流體力學、分段變溫注水、SCA 金杯落點與感官風味平衡</p>
                     </div>
                 </div>
 
                 <!-- Mode Switcher Tabs + Sound Toggle -->
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 shrink-0">
                     <div class="inline-flex rounded-xl bg-espresso-900 p-1 border border-crema/25 shadow-inner">
-                        <button id="tabBtnPourover" onclick="switchLabMode('pourover')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-gradient-to-r from-crema-dark to-crema text-espresso-950 shadow">
+                        <button id="tabBtnPourover" onclick="switchLabMode('pourover')" class="px-3 py-1.5 sm:px-3.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-gradient-to-r from-crema-dark to-crema text-espresso-950 shadow">
                             <span>🫖</span>
                             <span>手沖咖啡實驗室 (Pour-Over)</span>
                         </button>
-                        <button id="tabBtnEspresso" onclick="switchLabMode('espresso')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 text-cream/75 hover:text-crema-light">
+                        <button id="tabBtnEspresso" onclick="switchLabMode('espresso')" class="px-3 py-1.5 sm:px-3.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 text-cream/75 hover:text-crema-light">
                             <span>☕</span>
                             <span>義式濃縮實驗室 (Espresso)</span>
                         </button>
                     </div>
 
-                    <button id="soundToggleBtn" onclick="toggleAudio()" class="px-3 py-2 rounded-xl bg-espresso-800 border border-crema/20 text-xs flex items-center gap-1.5 text-cream/80 hover:text-crema-light transition" title="切換沖煮環境音效">
+                    <button id="soundToggleBtn" onclick="toggleAudio()" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-espresso-800 border border-crema/20 text-xs flex items-center gap-1.5 text-cream/80 hover:text-crema-light transition" title="切換沖煮環境音效">
                         <span id="soundIconMobile">🔇</span>
                         <span id="soundTextMobile" class="hidden sm:inline">環境音效</span>
                     </button>
@@ -371,50 +393,50 @@
             </div>
 
             <!-- Espresso Quick Presets Bar -->
-            <div id="espressoPresetsBar" class="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-1 border-t border-crema/10">
-                <span class="text-xs font-mono text-cream/50 mr-1 flex items-center gap-1">
+            <div id="espressoPresetsBar" class="flex items-center gap-1.5 sm:gap-2 pt-1 border-t border-crema/10 overflow-x-auto mobile-scroll-x py-1 lg:flex-wrap">
+                <span class="text-xs font-mono text-cream/50 mr-1 flex items-center gap-1 shrink-0">
                     <svg class="w-3.5 h-3.5 text-crema" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     義式食譜預設：
                 </span>
-                <button onclick="applyPreset('golden')" id="preset-golden" class="preset-btn active text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPreset('golden')" id="preset-golden" class="preset-btn active text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     ✨ 標準平衡黃金萃取
                 </button>
-                <button onclick="applyPreset('choking')" id="preset-choking" class="preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPreset('choking')" id="preset-choking" class="preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     ⚡ 研磨過細 / 通道效應
                 </button>
-                <button onclick="applyPreset('gusher')" id="preset-gusher" class="preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPreset('gusher')" id="preset-gusher" class="preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     🌊 研磨過粗 / 萃取不足
                 </button>
-                <button onclick="applyPreset('hightemp')" id="preset-hightemp" class="preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPreset('hightemp')" id="preset-hightemp" class="preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     🔥 高溫高壓苦澀
                 </button>
-                <button onclick="applyPreset('lowtemp')" id="preset-lowtemp" class="preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPreset('lowtemp')" id="preset-lowtemp" class="preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     ❄️ 低溫明亮偏酸
                 </button>
             </div>
 
             <!-- Pour-Over Quick Presets Bar (Integrated with Notebook Beans) -->
-            <div id="pouroverPresetsBar" class="hidden flex-wrap items-center gap-1.5 sm:gap-2 pt-1 border-t border-crema/10">
-                <span class="text-xs font-mono text-cream/50 mr-1 flex items-center gap-1">
+            <div id="pouroverPresetsBar" class="hidden items-center gap-1.5 sm:gap-2 pt-1 border-t border-crema/10 overflow-x-auto mobile-scroll-x py-1 lg:flex-wrap">
+                <span class="text-xs font-mono text-cream/50 mr-1 flex items-center gap-1 shrink-0">
                     <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
                     資料庫莊園豆與手沖名家預設：
                 </span>
-                <button onclick="applyPouroverPreset('peru_geisha')" id="po-preset-peru_geisha" class="po-preset-btn preset-btn active text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPouroverPreset('peru_geisha')" id="po-preset-peru_geisha" class="po-preset-btn preset-btn active text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     🍑 祕魯桑托斯 藝伎黑蜜 (V60 蜜桃紅茶)
                 </button>
-                <button onclick="applyPouroverPreset('sidamo_winnie')" id="po-preset-sidamo_winnie" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPouroverPreset('sidamo_winnie')" id="po-preset-sidamo_winnie" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     🍓 西達摩 溫妮公主日曬 (18g/93°C 三段中心注水)
                 </button>
-                <button onclick="applyPouroverPreset('kenya_geisha')" id="po-preset-kenya_geisha" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPouroverPreset('kenya_geisha')" id="po-preset-kenya_geisha" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     🍍 肯亞麒麟雅佳 日曬藝伎 (Origami 熱帶水果)
                 </button>
-                <button onclick="applyPouroverPreset('salvador_bourbon')" id="po-preset-salvador_bourbon" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPouroverPreset('salvador_bourbon')" id="po-preset-salvador_bourbon" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     🍯 薩爾瓦多 聖依蓮娜波旁蜜 (Kalita 甜潤厚實)
                 </button>
-                <button onclick="applyPouroverPreset('kasuya_46')" id="po-preset-kasuya_46" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPouroverPreset('kasuya_46')" id="po-preset-kasuya_46" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     🏆 粕谷哲 4:6 法五段變溫沖煮
                 </button>
-                <button onclick="applyPouroverPreset('dark_nutty')" id="po-preset-dark_nutty" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium">
+                <button onclick="applyPouroverPreset('dark_nutty')" id="po-preset-dark_nutty" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     🍫 經典深焙曼巴 堅果黑巧 (Kono 低溫濃厚)
                 </button>
             </div>
@@ -1508,7 +1530,7 @@
 
     <!-- Mobile Floating Live Telemetry Bar (Visible on phones/tablets while scrolling controls) -->
     <div id="mobileLiveDock" class="mobile-live-dock">
-        <div class="flex items-center gap-3 min-w-0">
+        <div class="flex items-center gap-2.5 min-w-0">
             <div>
                 <div class="text-[10px] text-cream/50 font-mono" id="dockModeLabel">手沖 EY / TDS</div>
                 <div class="font-mono text-sm font-bold text-crema-light flex items-center gap-1.5">
@@ -1517,20 +1539,26 @@
                     <span id="dockTDS" class="text-sky-300">1.34%</span>
                 </div>
             </div>
-            <div class="border-l border-crema/20 pl-2.5 min-w-0">
+            <div class="border-l border-crema/20 pl-2 min-w-0">
                 <div class="text-[10px] text-cream/50 font-mono">沖煮時間 / 診斷</div>
                 <div class="text-xs font-bold truncate" id="dockStatusText">02:18 · 金杯平衡</div>
             </div>
         </div>
         <div class="flex items-center gap-1.5 shrink-0">
-            <button type="button" onclick="triggerActiveLabSim()" id="dockSimBtn" class="px-2.5 py-2 rounded-xl bg-espresso-800 border border-crema/30 text-xs font-bold text-crema-light">
+            <button type="button" onclick="triggerActiveLabSim()" id="dockSimBtn" class="px-2.5 py-1.5 rounded-xl bg-espresso-800 border border-crema/30 text-xs font-bold text-crema-light">
                 ▶️ 模擬
             </button>
-            <button type="button" onclick="toggleMobileQuickJump()" id="dockJumpBtn" class="px-3 py-2 rounded-xl bg-gradient-to-r from-crema-dark to-crema text-espresso-950 font-bold text-xs shadow">
+            <button type="button" onclick="toggleMobileQuickJump()" id="dockJumpBtn" class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-crema-dark to-crema text-espresso-950 font-bold text-xs shadow">
                 📊 看圖表
+            </button>
+            <button type="button" onclick="toggleMobileDock(false)" class="w-6 h-6 flex items-center justify-center rounded-full bg-espresso-850 hover:bg-espresso-700 text-cream/40 hover:text-cream text-xs ml-0.5" title="收合底欄">
+                ✕
             </button>
         </div>
     </div>
+    <button type="button" id="dockRestoreBtn" onclick="toggleMobileDock(true)" class="dock-restore-btn">
+        📊 顯示數據底欄
+    </button>
 
     <script>
         /**
@@ -2988,6 +3016,19 @@
             } else {
                 setMobileSectionView('charts');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function toggleMobileDock(show) {
+            const dock = document.getElementById('mobileLiveDock');
+            const restoreBtn = document.getElementById('dockRestoreBtn');
+            if (!dock) return;
+            if (show) {
+                dock.classList.remove('dock-hidden');
+                if (restoreBtn) restoreBtn.style.display = 'none';
+            } else {
+                dock.classList.add('dock-hidden');
+                if (restoreBtn) restoreBtn.style.display = 'block';
             }
         }
 
