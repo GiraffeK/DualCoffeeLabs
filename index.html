@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>互動式手沖咖啡與義式濃縮調整實驗室 | Dual Coffee Dialing-in Lab</title>
+    <title>CoffeeLabs 咖啡全維度實驗室 (烘豆・手沖・義式) | CoffeeLabs</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -363,12 +363,12 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <h1 id="labMainTitle" class="text-base sm:text-lg md:text-xl font-bold tracking-tight text-cream">手沖萃取與義式濃縮雙棲實驗室</h1>
+                            <h1 id="labMainTitle" class="text-base sm:text-lg md:text-xl font-bold tracking-tight text-cream">CoffeeLabs 咖啡全維度實驗室</h1>
                             <span id="labVersionTag" class="hidden sm:inline-block text-[11px] font-mono uppercase px-2 py-0.5 rounded bg-crema/15 text-crema-light border border-crema/30">
                                 Dual Coffee Physics Lab v3.0
                             </span>
                         </div>
-                        <p id="labSubTitle" class="text-[11px] sm:text-xs text-cream/60 hidden sm:block">即時模擬手沖滴濾與義式高壓流體力學、分段變溫注水、SCA 金杯落點與感官風味平衡</p>
+                        <p id="labSubTitle" class="text-[11px] sm:text-xs text-cream/60 hidden sm:block">即時模擬烘豆熱力動力學、手沖滴濾與義式高壓流體力學、SCA 金杯落點與風味平衡</p>
                     </div>
                 </div>
 
@@ -382,6 +382,10 @@
                         <button id="tabBtnEspresso" onclick="switchLabMode('espresso')" class="px-3 py-1.5 sm:px-3.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 text-cream/75 hover:text-crema-light">
                             <span>☕</span>
                             <span>義式濃縮實驗室 (Espresso)</span>
+                        </button>
+                        <button id="tabBtnRoast" onclick="switchLabMode('roast')" class="px-3 py-1.5 sm:px-3.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 text-cream/75 hover:text-crema-light">
+                            <span>🔥</span>
+                            <span>烘豆實驗室 (Kaleido M10)</span>
                         </button>
                     </div>
 
@@ -439,7 +443,34 @@
                 <button onclick="applyPouroverPreset('dark_nutty')" id="po-preset-dark_nutty" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
                     🍫 經典深焙曼巴 堅果黑巧 (Kono 低溫濃厚)
                 </button>
+            
+
+            <!-- Roasting Quick Presets Bar (Kaleido M10 & Notebook Beans) -->
+            <div id="roastPresetsBar" class="hidden items-center gap-1.5 sm:gap-2 pt-1.5 border-t border-crema/10 overflow-x-auto mobile-scroll-x py-0.5 lg:flex-wrap">
+                <span class="text-xs font-mono text-amber-300 mr-1 flex items-center gap-1 shrink-0">
+                    <span>🔥</span>
+                    Kaleido M10 與筆記本實戰曲線：
+                </span>
+                <button onclick="applyRoastPreset('m10_peru_geisha')" id="ro-preset-m10_peru_geisha" class="ro-preset-btn preset-btn active text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
+                    🍑 祕魯桑托斯 藝伎黑蜜 (M10 1kg 180°C入豆/階梯降火)
+                </button>
+                <button onclick="applyRoastPreset('m10_kenya_geisha')" id="ro-preset-m10_kenya_geisha" class="ro-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
+                    🍍 肯亞辛巴 日曬藝伎 (M10 201°C高溫入豆/拉長梅納)
+                </button>
+                <button onclick="applyRoastPreset('m10_sidamo_winnie')" id="ro-preset-m10_sidamo_winnie" class="ro-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
+                    🍓 西達摩 溫妮公主日曬 (7:30 小風門快烘/短發展30s)
+                </button>
+                <button onclick="applyRoastPreset('m10_kaffa_geisha')" id="ro-preset-m10_kaffa_geisha" class="ro-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
+                    🌸 卡法森林金寶村 日曬藝伎 (RoR 11°C/Agtron 86花香)
+                </button>
+                <button onclick="applyRoastPreset('m10_salvador_honey')" id="ro-preset-m10_salvador_honey" class="ro-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
+                    🍯 薩爾瓦多 聖依蓮娜波旁蜜 (M10 官方標準階梯中焙)
+                </button>
+                <button onclick="applyRoastPreset('m10_dark_espresso')" id="ro-preset-m10_dark_espresso" class="ro-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
+                    🍫 義式配方中深焙 (175°C溫和入豆/慢燉防灼傷)
+                </button>
             </div>
+</div>
 
             <!-- Mobile Quick Section Switcher & Reference Lock Bar -->
             <div class="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-crema/10">
@@ -1525,7 +1556,632 @@
 
             </div>
         </div>
+    
+
+    <main id="roastLabMain" class="hidden max-w-[1600px] mx-auto px-4 lg:px-8 pt-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- LEFT COLUMN: ROASTER MACHINE SELECTOR, GREEN BEAN & 5-STAGE HEAT/AIR/DRUM MATRIX (5 Columns) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+
+                <!-- Card 1: Popular Roaster Selector & Green Bean Physical Properties -->
+                <section class="lab-card rounded-2xl p-5">
+                    <div class="lab-card-header pb-3 mb-4 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-5 rounded-full bg-orange-500"></span>
+                            <h2 class="font-bold text-base tracking-wide text-cream">烘豆機機型選擇與生豆物理參數</h2>
+                        </div>
+                        <button onclick="applyRoastPreset('m10_peru_geisha')" class="text-xs text-crema-light hover:underline font-mono">重置 M10 預設</button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Popular Roaster Machine Grid -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1.5">
+                                <label class="text-xs sm:text-sm font-medium text-cream">🔥 選擇熱門烘豆機型 (熱源結構與傳熱物理差異)</label>
+                                <span id="roMachineHeatRatioBadge" class="text-[11px] font-mono px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 border border-orange-400/30">
+                                    紅外線45%・對流35%・傳導20%
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                <button type="button" onclick="selectRoasterMachine('kaleido_m10')" id="roaster-kaleido_m10" class="roaster-btn active p-2.5 rounded-xl bg-espresso-850 border border-crema text-left transition shadow-md shadow-crema/10">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-bold text-crema-light">🎯 Kaleido M10</span>
+                                        <span class="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/30 text-amber-200 font-mono">您的主力機</span>
+                                    </div>
+                                    <div class="text-[10px] text-cream/65 mt-0.5">300-1200g・2500W碳纖維紅外線+304網孔滾筒</div>
+                                </button>
+                                <button type="button" onclick="selectRoasterMachine('aillio_bullet')" id="roaster-aillio_bullet" class="roaster-btn p-2.5 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition">
+                                    <div class="text-xs font-bold text-cream">⚡ Aillio Bullet R1</div>
+                                    <div class="text-[10px] text-cream/60 mt-0.5">1kg・IH電磁感應直接加熱碳鋼鍋・傳導強勁</div>
+                                </button>
+                                <button type="button" onclick="selectRoasterMachine('huky_500t')" id="roaster-huky_500t" class="roaster-btn p-2.5 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition">
+                                    <div class="text-xs font-bold text-cream">🔥 Huky 500T</div>
+                                    <div class="text-[10px] text-cream/60 mt-0.5">500g・台灣經典瓦斯半熱風實心鍋・反應靈敏</div>
+                                </button>
+                                <button type="button" onclick="selectRoasterMachine('fuji_royal')" id="roaster-fuji_royal" class="roaster-btn p-2.5 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition">
+                                    <div class="text-xs font-bold text-cream">🏛️ 富士皇家 / 楊家1kg</div>
+                                    <div class="text-[10px] text-cream/60 mt-0.5">1kg・厚鑄鐵鍋高蓄熱・梅納與醇厚度扎實</div>
+                                </button>
+                                <button type="button" onclick="selectRoasterMachine('loring_s7')" id="roaster-loring_s7" class="roaster-btn p-2.5 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition">
+                                    <div class="text-xs font-bold text-cream">🌪️ Loring S7 熱風機</div>
+                                    <div class="text-[10px] text-cream/60 mt-0.5">1-7kg・旋風全熱風循環・高乾淨度零灼傷</div>
+                                </button>
+                                <button type="button" onclick="selectRoasterMachine('ikawa_pro')" id="roaster-ikawa_pro" class="roaster-btn p-2.5 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition">
+                                    <div class="text-xs font-bold text-cream">🧪 IKAWA Pro 樣品機</div>
+                                    <div class="text-[10px] text-cream/60 mt-0.5">100g・100%純熱風懸浮流體床・極速杯測</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Green Bean Processing Method -->
+                        <div class="pt-2 border-t border-crema/10">
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="text-xs font-medium text-cream">🍒 生豆處理法與果膠糖分特性 (Process Method)</span>
+                                <span id="roProcessRiskHint" class="text-[10px] font-mono text-amber-300">黑蜜果膠糖分高・注意前段勿猛火防表面焦化</span>
+                            </div>
+                            <div class="grid grid-cols-4 gap-1.5">
+                                <button type="button" onclick="selectRoastProcess('washed')" id="roProc-washed" class="ro-proc-btn px-2 py-1.5 rounded-lg text-xs bg-espresso-850 border border-espresso-700 text-cream/80 transition text-center">
+                                    💧 水洗 Washed
+                                </button>
+                                <button type="button" onclick="selectRoastProcess('honey')" id="roProc-honey" class="ro-proc-btn active px-2 py-1.5 rounded-lg text-xs bg-crema/25 border border-crema text-crema-light font-bold transition text-center">
+                                    🍯 黑蜜/蜜處理
+                                </button>
+                                <button type="button" onclick="selectRoastProcess('natural')" id="roProc-natural" class="ro-proc-btn px-2 py-1.5 rounded-lg text-xs bg-espresso-850 border border-espresso-700 text-cream/80 transition text-center">
+                                    ☀️ 日曬 Natural
+                                </button>
+                                <button type="button" onclick="selectRoastProcess('anaerobic')" id="roProc-anaerobic" class="ro-proc-btn px-2 py-1.5 rounded-lg text-xs bg-espresso-850 border border-espresso-700 text-cream/80 transition text-center">
+                                    🧪 厭氧發酵
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Batch Weight, Green Moisture %, Bean Density -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-crema/10">
+                            <div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <label for="roBatchSlider" class="text-[11px] text-cream/85">⚖️ 投豆量 Batch</label>
+                                    <span id="roBatchVal" class="font-mono text-xs font-bold text-crema-light">1000g (83%)</span>
+                                </div>
+                                <input id="roBatchSlider" type="range" min="200" max="1200" step="50" value="1000" class="w-full" oninput="onRoastParamChange()">
+                                <div class="flex justify-between text-[9px] text-cream/40 font-mono">
+                                    <span>200g</span>
+                                    <span id="roBatchCapHint">M10 建議 300-1000g</span>
+                                    <span>1200g</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <label for="roMoistureSlider" class="text-[11px] text-cream/85">💧 含水率 Moisture</label>
+                                    <span id="roMoistureVal" class="font-mono text-xs font-bold text-sky-300">10.4%</span>
+                                </div>
+                                <input id="roMoistureSlider" type="range" min="8.0" max="13.0" step="0.2" value="10.4" class="w-full" oninput="onRoastParamChange()">
+                                <div class="flex justify-between text-[9px] text-cream/40 font-mono">
+                                    <span>8% 偏乾</span>
+                                    <span>10-11% 標準</span>
+                                    <span>13% 新豆</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <label for="roDensitySlider" class="text-[11px] text-cream/85">🪨 生豆密度 Density</label>
+                                    <span id="roDensityVal" class="font-mono text-xs font-bold text-emerald-300">845 g/L</span>
+                                </div>
+                                <input id="roDensitySlider" type="range" min="750" max="900" step="5" value="845" class="w-full" oninput="onRoastParamChange()">
+                                <div class="flex justify-between text-[9px] text-cream/40 font-mono">
+                                    <span>750 軟豆</span>
+                                    <span>840+ 極硬豆</span>
+                                    <span>900</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charge Temp, Drum Speed, Development Time & Target Drop Temp -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-crema/10">
+                            <div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <label for="roChargeTempSlider" class="text-xs font-medium text-cream">🌡️ 入豆溫度 (Charge BT)</label>
+                                    <span id="roChargeTempVal" class="font-mono text-xs font-bold text-amber-300">180 °C (ET 202°C)</span>
+                                </div>
+                                <input id="roChargeTempSlider" type="range" min="165" max="220" step="1" value="180" class="w-full" oninput="onRoastParamChange()">
+                                <div class="flex justify-between text-[10px] text-cream/45 font-mono">
+                                    <span>165°C 溫和防灼傷</span>
+                                    <span>215°C 淺焙高衝力</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <label for="roDrumSpeedSlider" class="text-xs font-medium text-cream">⚙️ 滾筒轉速 (Drum Speed)</label>
+                                    <span id="roDrumSpeedVal" class="font-mono text-xs font-bold text-crema-light">85% (52 RPM)</span>
+                                </div>
+                                <input id="roDrumSpeedSlider" type="range" min="45" max="100" step="5" value="85" class="w-full" oninput="onRoastParamChange()">
+                                <div class="flex justify-between text-[10px] text-cream/45 font-mono">
+                                    <span>45% 慢轉(傳導強)</span>
+                                    <span>M10 建議 60-90%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                            <div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <label for="roDevTimeSlider" class="text-xs font-medium text-cream">⏱️ 一爆後發展時間 (Dev Time)</label>
+                                    <span id="roDevTimeVal" class="font-mono text-xs font-bold text-emerald-300">65 秒 (1:05)</span>
+                                </div>
+                                <input id="roDevTimeSlider" type="range" min="25" max="165" step="5" value="65" class="w-full" oninput="onRoastParamChange()">
+                                <div class="flex justify-between text-[10px] text-cream/45 font-mono">
+                                    <span>30s 極短爆香</span>
+                                    <span>60-90s 黃金甜區</span>
+                                    <span>150s+ 深焙</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <label for="roDropTempSlider" class="text-xs font-medium text-cream">🎯 目標下豆溫度 (Drop BT)</label>
+                                    <span id="roDropTempVal" class="font-mono text-xs font-bold text-rose-300">202.5 °C</span>
+                                </div>
+                                <input id="roDropTempSlider" type="range" min="198.0" max="222.0" step="0.5" value="202.5" class="w-full" oninput="onRoastParamChange()">
+                                <div class="flex justify-between text-[10px] text-cream/45 font-mono">
+                                    <span>199°C 極淺焙</span>
+                                    <span>205°C 中焙</span>
+                                    <span>215°C+ 二爆深焙</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Card 2: 5-Stage Burner Heat (%) & Airflow (%) Matrix (Kaleido / Artisan Style) -->
+                <section class="lab-card rounded-2xl p-5">
+                    <div class="lab-card-header pb-3 mb-3 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <h3 class="font-bold text-sm sm:text-base text-cream flex items-center gap-2">
+                                <span class="w-2 h-5 rounded-full bg-rose-400"></span>
+                                五階段火力 (Heat %) 與風門 (Air %) 曲線排程表
+                            </h3>
+                            <p class="text-[11px] text-cream/55">對應 Kaleido 觸控屏與 Artisan 階段控制：前段蓄熱推進 ➔ 梅納階梯降火升風 ➔ 一爆收火排煙</p>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <button type="button" onclick="applyKaleidoStepDownRule()" class="text-[11px] px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-400/30 font-mono transition" title="依 Kaleido 官方指南：過轉黃點每升 5°C 降火、升風">
+                                📉 套用官方階梯降火升風法則
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="roastStagesContainer" class="space-y-2.5 max-h-[295px] overflow-y-auto pr-1"></div>
+
+                    <!-- Stage Summary Strip -->
+                    <div class="mt-3 pt-2.5 border-t border-crema/15 flex flex-wrap items-center justify-between text-xs font-mono gap-2">
+                        <div>
+                            <span class="text-cream/60">平均火力輸出：</span>
+                            <span id="roAvgHeatDisplay" class="font-bold text-rose-300">56% (1400W)</span>
+                            <span class="text-cream/40 mx-1">|</span>
+                            <span class="text-cream/60">平均排煙風量：</span>
+                            <span id="roAvgAirDisplay" class="font-bold text-sky-300">52%</span>
+                        </div>
+                        <span id="roRorTrendBadge" class="text-[11px] text-emerald-300">✨ RoR 單調緩降・無暴衝與失速</span>
+                    </div>
+                </section>
+
+                <!-- Card 3: Interactive Kaleido M10 Drum, Infrared Heaters & Trier Simulator -->
+                <section class="lab-card rounded-2xl p-5">
+                    <div class="lab-card-header pb-3 mb-3 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-5 rounded-full bg-amber-400"></span>
+                            <h2 class="font-bold text-base tracking-wide text-cream">Kaleido M10 紅外線滾筒與取樣棒實體模擬器</h2>
+                        </div>
+                        <span id="roSimStatusBadge" class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-espresso-800 text-crema-light border border-crema/20">
+                            完成預覽模式
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-12 gap-3 items-center">
+                        <!-- Left Live Telemetry Readouts -->
+                        <div class="col-span-5 flex flex-col gap-2">
+                            <div class="bg-espresso-950/90 border border-crema/15 rounded-xl p-2">
+                                <div class="text-[10px] text-cream/50">當前烘焙階段與聲音</div>
+                                <div id="roLivePhaseText" class="text-xs font-bold text-amber-300 truncate mt-0.5">出豆冷卻完成 (Drop)</div>
+                            </div>
+                            <div class="bg-espresso-950/90 border border-crema/15 rounded-xl p-2 flex justify-between items-center">
+                                <span class="text-[11px] text-cream/60">烘焙時間</span>
+                                <span id="roLiveTimer" class="font-mono text-sm font-bold text-cream">09:35</span>
+                            </div>
+                            <div class="bg-espresso-950/90 border border-crema/15 rounded-xl p-2 flex justify-between items-center">
+                                <span class="text-[11px] text-cream/60">豆溫 BT / 爐溫 ET</span>
+                                <span id="roLiveBtEt" class="font-mono text-xs font-bold text-rose-300">202.5 / 228°C</span>
+                            </div>
+                            <div class="bg-espresso-950/90 border border-crema/15 rounded-xl p-2 flex justify-between items-center">
+                                <span class="text-[11px] text-cream/60">升溫率 RoR</span>
+                                <span id="roLiveRor" class="font-mono text-sm font-bold text-emerald-300">5.2 °C/m</span>
+                            </div>
+                            <div class="bg-espresso-950/90 border border-crema/15 rounded-xl p-2 flex justify-between items-center">
+                                <span class="text-[11px] text-cream/60">火力 / 風門</span>
+                                <span id="roLiveHeatAir" class="font-mono text-xs font-bold text-sky-300">🔥30% · 💨80%</span>
+                            </div>
+                        </div>
+
+                        <!-- Right SVG Kaleido Sniper M10 Cutaway Drum + Quartz Window + Trier -->
+                        <div class="col-span-7 flex flex-col items-center justify-center bg-espresso-950/70 rounded-xl border border-crema/10 p-2 relative min-h-[250px]">
+                            <svg id="roasterApparatusSvg" viewBox="0 0 240 235" class="w-full max-w-[225px] h-auto select-none">
+                                <!-- Top Charge Hopper -->
+                                <polygon points="95,6 145,6 132,26 108,26" fill="#3f3128" stroke="#d49a59" stroke-width="1.5" />
+                                <rect x="104" y="26" width="32" height="6" rx="2" fill="#9e9088" />
+
+                                <!-- Kaleido M10 Outer Body Casing -->
+                                <rect x="26" y="32" width="188" height="148" rx="16" fill="#1b1411" stroke="#d49a59" stroke-width="2" />
+                                <!-- Exhaust Fan & Smoke Pipe (Top Left) -->
+                                <circle cx="48" cy="54" r="13" fill="#2c221c" stroke="#38bdf8" stroke-width="1.5" />
+                                <g id="roExhaustFanBlades" transform="translate(48,54)">
+                                    <line x1="-9" y1="0" x2="9" y2="0" stroke="#7dd3fc" stroke-width="2" />
+                                    <line x1="0" y1="-9" x2="0" y2="9" stroke="#7dd3fc" stroke-width="2" />
+                                </g>
+                                <!-- Smoke Plume at Exhaust -->
+                                <g id="roSmokePlume" opacity="0.45">
+                                    <circle cx="34" cy="22" r="6" fill="rgba(220,220,230,0.35)" />
+                                    <circle cx="46" cy="14" r="8" fill="rgba(220,220,230,0.25)" />
+                                </g>
+
+                                <!-- 304 Stainless Steel Mesh Drum Cutaway (Center) -->
+                                <circle cx="120" cy="104" r="54" fill="#120d0a" stroke="#ecc38e" stroke-width="2.5" stroke-dasharray="6 3" />
+                                <circle cx="120" cy="104" r="46" fill="none" stroke="rgba(236,195,142,0.22)" stroke-width="1" />
+
+                                <!-- Carbon Fiber Infrared Heating Elements (Glowing Bars around bottom/sides of drum) -->
+                                <g id="roInfraredTubes">
+                                    <circle id="irTube1" cx="72" cy="138" r="5" fill="#ef4444" stroke="#fca5a5" stroke-width="1.5" />
+                                    <circle id="irTube2" cx="94" cy="156" r="5" fill="#ef4444" stroke="#fca5a5" stroke-width="1.5" />
+                                    <circle id="irTube3" cx="146" cy="156" r="5" fill="#ef4444" stroke="#fca5a5" stroke-width="1.5" />
+                                    <circle id="irTube4" cx="168" cy="138" r="5" fill="#ef4444" stroke="#fca5a5" stroke-width="1.5" />
+                                </g>
+
+                                <!-- Tumbling Coffee Beans Inside Drum -->
+                                <g id="roDrumBeansGroup">
+                                    <ellipse class="ro-bean-svg" cx="102" cy="122" rx="6.5" ry="4.5" transform="rotate(-25 102 122)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="118" cy="128" rx="6.5" ry="4.5" transform="rotate(15 118 128)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="136" cy="120" rx="6.5" ry="4.5" transform="rotate(-40 136 120)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="94" cy="108" rx="6.5" ry="4.5" transform="rotate(35 94 108)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="112" cy="112" rx="6.5" ry="4.5" transform="rotate(-10 112 112)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="128" cy="110" rx="6.5" ry="4.5" transform="rotate(50 128 110)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="144" cy="105" rx="6.5" ry="4.5" transform="rotate(-15 144 105)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="105" cy="95" rx="6.5" ry="4.5" transform="rotate(20 105 95)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="124" cy="96" rx="6.5" ry="4.5" transform="rotate(-30 124 96)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="116" cy="140" rx="6.5" ry="4.5" transform="rotate(5 116 140)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="132" cy="136" rx="6.5" ry="4.5" transform="rotate(-20 132 136)" fill="#784421" />
+                                    <ellipse class="ro-bean-svg" cx="100" cy="135" rx="6.5" ry="4.5" transform="rotate(40 100 135)" fill="#784421" />
+                                </g>
+
+                                <!-- First Crack / Second Crack Pop Visual Sparks -->
+                                <g id="roCrackSparks" opacity="0">
+                                    <text x="86" y="76" fill="#fde047" font-size="10" font-weight="bold" font-family="monospace">💥啪!</text>
+                                    <text x="132" y="82" fill="#f59e0b" font-size="10" font-weight="bold" font-family="monospace">⚡啪啪!</text>
+                                </g>
+
+                                <!-- Center Drum Shaft & Mixing Paddles -->
+                                <circle cx="120" cy="104" r="6" fill="#d49a59" />
+
+                                <!-- Bottom Chaff Collector & Rapid Cooling Tray -->
+                                <rect x="38" y="186" width="164" height="36" rx="8" fill="#231b16" stroke="#594539" stroke-width="1.5" />
+                                <text x="120" y="201" fill="#ecc38e" font-size="9" text-anchor="middle" font-family="monospace" id="roTrayLabel">取樣棒豆色預覽 · Agtron 74 (淺中焙)</text>
+                                <!-- Color Swatch Strip on Cooling Tray -->
+                                <rect id="roBeanColorSwatch" x="64" y="207" width="112" height="9" rx="4" fill="#7c4722" stroke="rgba(255,255,255,0.25)" stroke-width="1" />
+                            </svg>
+                            <div id="roSurfaceCoreTag" class="mt-1 text-[11px] font-mono text-crema-light bg-espresso-900/90 px-2.5 py-0.5 rounded border border-crema/20">
+                                豆表/豆芯溫差：僅 1.8°C (內外均勻熟透)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Simulation & Cross-Lab Handoff Buttons -->
+                    <div class="mt-3 flex flex-wrap gap-2">
+                        <button id="roStartSimBtn" onclick="toggleRoastSimulation()" class="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-orange-600 via-amber-500 to-crema-light text-espresso-950 font-bold text-sm shadow-lg shadow-orange-500/20 hover:brightness-110 transition flex items-center justify-center gap-2">
+                            <span id="roSimBtnIcon">▶️</span>
+                            <span id="roSimBtnText">開始動態烘豆模擬 (Start Roast)</span>
+                        </button>
+                        <button onclick="stopRoastSimulation(true)" class="px-3 py-2.5 rounded-xl bg-espresso-800 hover:bg-espresso-700 text-cream/80 border border-crema/20 text-xs font-mono transition">
+                            ⏭️ 略過動畫
+                        </button>
+                    </div>
+
+                    <!-- One-Click Send Roasted Beans to Pour-Over or Espresso Lab! -->
+                    <div class="mt-2.5 pt-2.5 border-t border-crema/15 grid grid-cols-2 gap-2">
+                        <button type="button" onclick="sendRoastedBeanToLab('pourover')" class="py-2 px-3 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-amber-200 text-xs font-semibold transition flex items-center justify-center gap-1.5">
+                            <span>🫖</span>
+                            <span>將此熟豆送入手沖沖煮</span>
+                        </button>
+                        <button type="button" onclick="sendRoastedBeanToLab('espresso')" class="py-2 px-3 rounded-xl bg-crema/15 hover:bg-crema/25 border border-crema/40 text-crema-light text-xs font-semibold transition flex items-center justify-center gap-1.5">
+                            <span>☕</span>
+                            <span>將此熟豆送入義式萃取</span>
+                        </button>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- RIGHT COLUMN: ARTISAN ROAST CURVE, PHASE BREAKDOWN, SENSORY RADAR & ROASTMASTER AI COACH (7 Columns) -->
+            <div class="lg:col-span-7 flex flex-col gap-6">
+
+                <!-- Top KPI Summary Row (4 Cards) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+                    <!-- KPI 1: Total Roast Time & First Crack -->
+                    <div class="lab-card rounded-2xl p-3.5 border-l-4 border-l-orange-400">
+                        <div class="text-xs text-cream/60 flex justify-between">
+                            <span>總烘焙時間 / 一爆點</span>
+                        </div>
+                        <div class="mt-1 flex items-baseline gap-1.5">
+                            <span id="roKpiTotalTime" class="font-mono text-2xl font-bold text-cream">09:35</span>
+                            <span id="roKpiFcTime" class="text-xs font-mono text-amber-300">一爆 08:30</span>
+                        </div>
+                        <div id="roKpiTpSub" class="mt-1 text-[11px] text-cream/60 font-mono">回溫點 TP 01:32 (102°C)</div>
+                    </div>
+
+                    <!-- KPI 2: Development Time Ratio (DTR %) -->
+                    <div class="lab-card rounded-2xl p-3.5 border-l-4 border-l-emerald-400">
+                        <div class="text-xs text-cream/60 flex justify-between">
+                            <span>發展時間率 (DTR %)</span>
+                            <span class="font-mono text-[10px] text-emerald-300">黃金 11-18%</span>
+                        </div>
+                        <div class="mt-1 flex items-baseline gap-1.5">
+                            <span id="roKpiDtr" class="font-mono text-2xl font-bold text-emerald-300">11.3%</span>
+                            <span id="roKpiDtrTag" class="text-[11px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">花果甜感區</span>
+                        </div>
+                        <div id="roKpiDevSub" class="mt-1 text-[11px] text-cream/60">一爆後升溫 +5.5°C</div>
+                    </div>
+
+                    <!-- KPI 3: Agtron Color & Roast Degree -->
+                    <div class="lab-card rounded-2xl p-3.5 border-l-4 border-l-amber-400">
+                        <div class="text-xs text-cream/60 flex justify-between">
+                            <span>Agtron 烘焙色度 (豆/粉)</span>
+                            <span class="font-mono text-[10px] text-crema-light">SCAA Scale</span>
+                        </div>
+                        <div class="mt-1 flex items-baseline gap-1.5">
+                            <span id="roKpiAgtron" class="font-mono text-2xl font-bold text-crema-light">74 / 82</span>
+                            <span id="roKpiRoastLevelTag" class="text-[11px] text-amber-300 font-mono">淺中焙 City</span>
+                        </div>
+                        <div id="roKpiSpreadSub" class="mt-1 text-[11px] text-emerald-400">內外色差小・均勻透徹</div>
+                    </div>
+
+                    <!-- KPI 4: Weight Loss % & Yield Weight -->
+                    <div class="lab-card rounded-2xl p-3.5 border-l-4 border-l-sky-400">
+                        <div class="text-xs text-cream/60 flex justify-between">
+                            <span>烘焙失重率 / 熟豆產出</span>
+                            <span class="font-mono text-[10px] text-sky-300">Weight Loss</span>
+                        </div>
+                        <div class="mt-1 flex items-baseline gap-1.5">
+                            <span id="roKpiWeightLoss" class="font-mono text-2xl font-bold text-sky-300">13.4%</span>
+                            <span id="roKpiOutWeight" class="text-xs font-mono text-cream/70">產出 866g</span>
+                        </div>
+                        <div id="roKpiDefectBadge" class="mt-1 text-[11px] font-semibold text-emerald-400">✨ 零烘焙瑕疵 (Clean)</div>
+                    </div>
+                </div>
+
+                <!-- Chart 1: Artisan Style BT, ET, RoR & Heat/Air Profile Curve -->
+                <section class="lab-card rounded-2xl p-5">
+                    <div class="lab-card-header pb-3 mb-3 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <h3 class="font-bold text-base text-cream flex items-center gap-2">
+                                <span class="w-2 h-5 rounded-full bg-orange-400"></span>
+                                Artisan 烘焙曲線圖：豆溫 (BT)、環境溫 (ET)、升溫率 (RoR) 與火力風門
+                            </h3>
+                            <p class="text-xs text-cream/60 mt-0.5">標示回溫點 (TP)、脫水轉黃點 (DE 150°C)、一爆開始 (FCs ~197°C) 與下豆點 (Drop)</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
+                            <span class="flex items-center gap-1 text-rose-400"><span class="w-3 h-1 rounded bg-rose-400 inline-block"></span>豆溫 BT (°C)</span>
+                            <span class="flex items-center gap-1 text-amber-300/80"><span class="w-3 h-1 rounded bg-amber-300 inline-block"></span>爐溫 ET (°C)</span>
+                            <span class="flex items-center gap-1 text-sky-300"><span class="w-3 h-1 rounded bg-sky-400 inline-block"></span>升溫率 RoR (°C/m)</span>
+                            <span class="flex items-center gap-1 text-emerald-300"><span class="w-3 h-1 rounded bg-emerald-400 inline-block"></span>火力/風門 (%)</span>
+                        </div>
+                    </div>
+
+                    <div class="w-full h-[255px] relative">
+                        <canvas id="roArtisanCanvas" class="w-full h-full block"></canvas>
+                    </div>
+
+                    <!-- Three Roasting Phases Progress Bar (Drying / Maillard / Development) -->
+                    <div class="mt-3 pt-2.5 border-t border-crema/15">
+                        <div class="flex justify-between text-[11px] font-mono text-cream/80 mb-1">
+                            <span id="roPhaseDryLabel" class="text-emerald-300">🌱 脫水乾燥期：42.5% (04:05)</span>
+                            <span id="roPhaseMaillardLabel" class="text-amber-300">🍯 梅納焦糖期：46.2% (04:25)</span>
+                            <span id="roPhaseDevLabel" class="text-rose-300">🔥 一爆發展期 (DTR)：11.3% (01:05)</span>
+                        </div>
+                        <div class="w-full h-3 rounded-full bg-espresso-900 overflow-hidden flex border border-crema/20">
+                            <div id="roPhaseDryBar" class="bg-emerald-500/80 h-full transition-all duration-300" style="width: 42.5%"></div>
+                            <div id="roPhaseMaillardBar" class="bg-amber-500/85 h-full transition-all duration-300" style="width: 46.2%"></div>
+                            <div id="roPhaseDevBar" class="bg-rose-500/85 h-full transition-all duration-300" style="width: 11.3%"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Middle Two-Column Charts: Chemical & Defect Risk Chart + Roasted Bean Sensory Radar -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Left: Chemical Compounds Evolution & Defect Risk Monitor -->
+                    <section class="lab-card rounded-2xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="lab-card-header pb-3 mb-3 flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-bold text-base text-cream flex items-center gap-2">
+                                        <span class="w-2 h-5 rounded-full bg-amber-400"></span>
+                                        焦糖化與芳香物發展 vs. 烘焙瑕疵監控
+                                    </h3>
+                                    <p class="text-xs text-cream/60 mt-0.5">追蹤綠原酸降解、蔗糖焦糖化與五大烘焙缺陷風險</p>
+                                </div>
+                                <span id="roChemStatusBadge" class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                                    梅納甜感充足
+                                </span>
+                            </div>
+
+                            <div class="w-full h-[175px] relative mb-3">
+                                <canvas id="roChemistryCanvas" class="w-full h-full block"></canvas>
+                            </div>
+
+                            <!-- 4 Roast Defect Risk Bars (Scorching, Baked, Flick, Underdeveloped) -->
+                            <div class="space-y-2 pt-2 border-t border-crema/10 text-xs">
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-cream/75 w-36 truncate">🔥 豆表灼傷 (Scorch/Tip)</span>
+                                    <div class="flex-1 bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                        <div id="roRiskScorchBar" class="bg-emerald-400 h-full" style="width: 12%"></div>
+                                    </div>
+                                    <span id="roRiskScorchVal" class="font-mono text-[11px] text-emerald-300 w-10 text-right">12%</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-cream/75 w-36 truncate">📦 悶焙紙板味 (Baked)</span>
+                                    <div class="flex-1 bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                        <div id="roRiskBakedBar" class="bg-emerald-400 h-full" style="width: 15%"></div>
+                                    </div>
+                                    <span id="roRiskBakedVal" class="font-mono text-[11px] text-emerald-300 w-10 text-right">15%</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-cream/75 w-36 truncate">⚡ 尾段暴衝/失速 (Flick/Crash)</span>
+                                    <div class="flex-1 bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                        <div id="roRiskFlickBar" class="bg-emerald-400 h-full" style="width: 10%"></div>
+                                    </div>
+                                    <span id="roRiskFlickVal" class="font-mono text-[11px] text-emerald-300 w-10 text-right">10%</span>
+                                </div>
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-cream/75 w-36 truncate">🌱 夾生草青澀感 (Under-dev)</span>
+                                    <div class="flex-1 bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                        <div id="roRiskUnderBar" class="bg-emerald-400 h-full" style="width: 14%"></div>
+                                    </div>
+                                    <span id="roRiskUnderVal" class="font-mono text-[11px] text-emerald-300 w-10 text-right">14%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Right: Roasted Bean Cupping Sensory Radar & Bars -->
+                    <section class="lab-card rounded-2xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="lab-card-header pb-3 mb-3 flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-bold text-base text-cream flex items-center gap-2">
+                                        <span class="w-2 h-5 rounded-full bg-pink-400"></span>
+                                        熟豆杯測風味、酸苦甜與醇厚平衡圖
+                                    </h3>
+                                    <p class="text-xs text-cream/60 mt-0.5">預測養豆 5-8 天後之杯測六維度表現</p>
+                                </div>
+                                <span id="roCuppingStyleBadge" class="text-xs font-mono px-2 py-0.5 rounded bg-pink-500/20 text-pink-300">
+                                    🍑 蜜桃伯爵茶型
+                                </span>
+                            </div>
+
+                            <div class="grid grid-cols-12 gap-2 items-center">
+                                <div class="col-span-7 h-[220px] relative">
+                                    <canvas id="roRadarCanvas" class="w-full h-full block"></canvas>
+                                </div>
+                                <div class="col-span-5 space-y-2 pr-1">
+                                    <div>
+                                        <div class="flex justify-between text-[11px] mb-0.5">
+                                            <span class="text-pink-300">🌸 花果揚香</span>
+                                            <span id="roValFloral" class="font-mono text-cream">92%</span>
+                                        </div>
+                                        <div class="w-full bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                            <div id="roBarFloral" class="bg-pink-400 h-full" style="width:92%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[11px] mb-0.5">
+                                            <span class="text-amber-300">🍋 明亮果酸</span>
+                                            <span id="roValAcidity" class="font-mono text-cream">84%</span>
+                                        </div>
+                                        <div class="w-full bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                            <div id="roBarAcidity" class="bg-amber-400 h-full" style="width:84%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[11px] mb-0.5">
+                                            <span class="text-emerald-300">🍯 梅納蜜甜</span>
+                                            <span id="roValSweet" class="font-mono text-cream">90%</span>
+                                        </div>
+                                        <div class="w-full bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                            <div id="roBarSweet" class="bg-emerald-400 h-full" style="width:90%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[11px] mb-0.5">
+                                            <span class="text-crema-light">🥛 醇厚黏稠度</span>
+                                            <span id="roValBody" class="font-mono text-cream">76%</span>
+                                        </div>
+                                        <div class="w-full bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                            <div id="roBarBody" class="bg-crema h-full" style="width:76%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[11px] mb-0.5">
+                                            <span class="text-rose-300">🍫 苦甜烘焙韻</span>
+                                            <span id="roValBitter" class="font-mono text-cream">24%</span>
+                                        </div>
+                                        <div class="w-full bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                            <div id="roBarBitter" class="bg-rose-400 h-full" style="width:24%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-[11px] mb-0.5">
+                                            <span class="text-sky-300">✨ 乾淨透明感</span>
+                                            <span id="roValClean" class="font-mono text-cream">91%</span>
+                                        </div>
+                                        <div class="w-full bg-espresso-800 h-1.5 rounded-full overflow-hidden">
+                                            <div id="roBarClean" class="bg-sky-400 h-full" style="width:91%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resting & Agtron Advice Footer -->
+                        <div class="mt-2 pt-2 border-t border-crema/10 flex justify-between items-center text-[11px] font-mono text-cream/70">
+                            <span id="roRestingAdvice">⏳ 建議養豆期：5～8 天 (花香甦醒高峰)</span>
+                            <span id="roCrackAnchorHint" class="text-amber-300">🎯 一爆定錨：196-198°C 爆米花連續爆</span>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Card 4: AI Roastmaster & Kaleido M10 Coach -->
+                <section class="lab-card rounded-2xl p-5 border border-crema/30">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 mb-4 border-b border-crema/15">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-orange-500/15 border border-orange-400/40 flex items-center justify-center text-xl">
+                                🔥
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-bold text-base text-cream">Kaleido M10 首席烘焙師 AI 曲線診斷與調校建議</h3>
+                                    <span id="roCoachBadge" class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                                        曲線完美流暢
+                                    </span>
+                                </div>
+                                <p id="roCoachHeadline" class="text-xs text-crema-light mt-0.5">
+                                    目前入豆溫與五段階梯降火升風配置，完美發揮 M10 碳纖維紅外線穿透力，RoR 平穩緩降！
+                                </p>
+                            </div>
+                        </div>
+                        <button onclick="autoOptimizeRoastProfile()" class="self-start md:self-auto px-3.5 py-2 rounded-xl bg-crema/20 hover:bg-crema/30 text-crema-light border border-crema/40 text-xs font-semibold transition flex items-center gap-1.5 shrink-0">
+                            <span>🪄 智慧最佳化烘焙曲線</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-espresso-950/75 rounded-xl p-3.5 border border-crema/10">
+                            <div class="text-xs font-mono text-pink-300 mb-1.5">👅 預期乾濕香與杯測風味 (Cupping Notes)</div>
+                            <p id="roCoachTasting" class="text-xs text-cream/85 leading-relaxed"></p>
+                        </div>
+                        <div class="bg-espresso-950/75 rounded-xl p-3.5 border border-crema/10">
+                            <div class="text-xs font-mono text-sky-300 mb-1.5">🔬 熱力學、RoR 與探針數據解析</div>
+                            <p id="roCoachPhysics" class="text-xs text-cream/85 leading-relaxed"></p>
+                        </div>
+                        <div class="bg-espresso-950/75 rounded-xl p-3.5 border border-crema/20">
+                            <div class="text-xs font-mono text-emerald-300 mb-1.5">🛠️ 實操修正處方與鍋次建議</div>
+                            <ul id="roCoachActions" class="text-xs text-cream/90 space-y-1.5 list-disc list-inside"></ul>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
     </main>
+
+</main>
 
 
     <!-- Mobile Floating Live Telemetry Bar (Visible on phones/tablets while scrolling controls) -->
@@ -2927,7 +3583,18 @@
             const dockSimBtn = document.getElementById('dockSimBtn');
             if (!dockEY || !dockTDS || !dockStatus) return;
 
-            if (activeLabMode === 'pourover') {
+            if (activeLabMode === 'roast') {
+                if (!roComputed) calculateRoastingPhysics();
+                if (modeLabel) modeLabel.textContent = '烘豆 DTR / 色值';
+                dockEY.textContent = `DTR ${roComputed.dtrPct}%`;
+                dockTDS.textContent = `Agtron ${roComputed.wholeAgtron}`;
+                const stText = roComputed.overallStatus === 'ideal' ? '✨ 曲線完美'
+                    : (roComputed.overallStatus === 'scorch' ? '🔥 豆表灼傷風險'
+                    : (roComputed.overallStatus === 'under' ? '🌱 發展不足' : '⚠️ 悶焙/暴衝'));
+                dockStatus.textContent = `${formatMinSec(roComputed.totalTimeSec)} · ${stText}`;
+                dockStatus.className = `text-xs font-bold truncate ${roComputed.overallStatus === 'ideal' ? 'text-emerald-400' : 'text-amber-300'}`;
+                if (dockSimBtn) dockSimBtn.textContent = roState.isSimulating ? '⏹️ 停止' : '▶️ 模擬';
+            } else if (activeLabMode === 'pourover') {
                 if (modeLabel) modeLabel.textContent = '手沖 EY / TDS';
                 dockEY.textContent = `${poComputed.ey.toFixed(1)}%`;
                 dockTDS.textContent = `${poComputed.tds.toFixed(2)}%`;
@@ -2950,7 +3617,9 @@
         }
 
         function triggerActiveLabSim() {
-            if (activeLabMode === 'pourover') {
+            if (activeLabMode === 'roast') {
+                toggleRoastSimulation();
+            } else if (activeLabMode === 'pourover') {
                 togglePouroverSimulation();
             } else {
                 toggleShotSimulation();
@@ -2966,9 +3635,11 @@
             });
 
             const isMobile = window.innerWidth < 1024;
-            const mainEl = activeLabMode === 'pourover'
-                ? document.getElementById('pouroverLabMain')
-                : document.getElementById('espressoLabMain');
+            const mainEl = activeLabMode === 'roast'
+                ? document.getElementById('roastLabMain')
+                : (activeLabMode === 'pourover'
+                    ? document.getElementById('pouroverLabMain')
+                    : document.getElementById('espressoLabMain'));
             if (!mainEl) return;
 
             const gridCols = mainEl.querySelector('.grid > div:first-child');
@@ -3034,6 +3705,1240 @@
 
         let activeLabMode = 'espresso'; // 'espresso' | 'pourover'
 
+        // =========================================================================
+        // MODULE 3: INTERACTIVE COFFEE ROASTING LAB (KALEIDO SNIPER M10 & POPULAR ROASTERS)
+        // =========================================================================
+        const ROASTER_MACHINES = {
+            kaleido_m10: {
+                name: 'Kaleido Sniper M10 (1.2kg 碳纖維紅外線)',
+                minBatch: 300, optBatch: 850, maxBatch: 1200,
+                wattage: 2500,
+                radRatio: 0.45, convRatio: 0.35, condRatio: 0.20,
+                thermalMass: 0.72,      // Fast infrared response, low lag
+                etOffset: 22,           // ET typically 20-25°C above BT at charge
+                scorchSensitivity: 0.85,
+                badgeText: '紅外線45%・對流35%・傳導20%'
+            },
+            aillio_bullet: {
+                name: 'Aillio Bullet R1 V2 (1kg IH電磁感應)',
+                minBatch: 250, optBatch: 750, maxBatch: 1000,
+                wattage: 1550,
+                radRatio: 0.18, convRatio: 0.32, condRatio: 0.50,
+                thermalMass: 0.88,
+                etOffset: 16,
+                scorchSensitivity: 1.12, // High direct drum induction conduction
+                badgeText: 'IH傳導50%・對流32%・輻射18%'
+            },
+            huky_500t: {
+                name: 'Huky 500T (500g 台灣瓦斯半熱風銅/鋼鍋)',
+                minBatch: 150, optBatch: 400, maxBatch: 550,
+                wattage: 2800,
+                radRatio: 0.20, convRatio: 0.45, condRatio: 0.35,
+                thermalMass: 0.62,      // Very nimble gas response, ideal for 7:30 fast roasts
+                etOffset: 24,
+                scorchSensitivity: 0.95,
+                badgeText: '對流45%・傳導35%・輻射20%'
+            },
+            fuji_royal: {
+                name: '富士皇家 Fuji Royal / 楊家 1kg (厚鑄鐵半熱風)',
+                minBatch: 300, optBatch: 800, maxBatch: 1100,
+                wattage: 3200,
+                radRatio: 0.25, convRatio: 0.30, condRatio: 0.45,
+                thermalMass: 1.28,      // Heavy cast iron drum retains deep heat
+                etOffset: 18,
+                scorchSensitivity: 1.05,
+                badgeText: '厚鍋傳導45%・對流30%・輻射25%'
+            },
+            loring_s7: {
+                name: 'Loring S7 Nighthawk (全熱風循環烘豆機)',
+                minBatch: 500, optBatch: 1000, maxBatch: 1200,
+                wattage: 3500,
+                radRatio: 0.12, convRatio: 0.78, condRatio: 0.10,
+                thermalMass: 0.80,
+                etOffset: 28,
+                scorchSensitivity: 0.45, // Convection-dominant -> minimal scorching
+                badgeText: '純淨熱風對流78%・輻射12%・傳導10%'
+            },
+            ikawa_pro: {
+                name: 'IKAWA Pro 100 (微型流體床熱風樣品機)',
+                minBatch: 50, optBatch: 100, maxBatch: 120,
+                wattage: 1200,
+                radRatio: 0.05, convRatio: 0.90, condRatio: 0.05,
+                thermalMass: 0.45,
+                etOffset: 30,
+                scorchSensitivity: 0.35,
+                badgeText: '流體床熱風90%・極速樣品曲線'
+            }
+        };
+
+        const roState = {
+            machine: 'kaleido_m10',
+            process: 'honey',       // 'washed' | 'honey' | 'natural' | 'anaerobic'
+            batchG: 1000,           // 200g - 1200g
+            moisture: 10.4,         // 8.0% - 13.0%
+            density: 845,           // 750 - 900 g/L
+            chargeTemp: 180,        // 165 - 220°C
+            drumSpeed: 85,          // 45% - 100%
+            devTimeSec: 65,         // 25s - 165s
+            dropTemp: 202.5,        // 198 - 222°C
+            activePreset: 'm10_peru_geisha',
+            stages: [
+                { name: '入豆〜回溫點 (0:00-1:35)', heat: 75, air: 35 },
+                { name: '脫水轉黃期 (1:35-4:00)',   heat: 70, air: 40 },
+                { name: '梅納反應前段 (140-165°C)', heat: 60, air: 50 },
+                { name: '梅納後段催香 (165-196°C)', heat: 48, air: 65 },
+                { name: '一爆發展期 (196°C-出豆)',  heat: 30, air: 80 }
+            ],
+            isSimulating: false,
+            simElapsed: 0,
+            simFrameId: null,
+            lastFrameTime: 0
+        };
+
+        let roComputed = null;
+        let lockedRoastRef = null;
+
+        const ROAST_PRESETS = {
+            m10_peru_geisha: {
+                title: '祕魯 亞馬遜 桑托斯莊園 藝伎黑蜜 (Kaleido M10 實戰曲線)',
+                machine: 'kaleido_m10', process: 'honey',
+                batchG: 1000, moisture: 10.2, density: 840,
+                chargeTemp: 180, drumSpeed: 85, devTimeSec: 65, dropTemp: 202.5,
+                stages: [
+                    { name: '入豆〜回溫點 (避免黑蜜表皮焦化)', heat: 75, air: 35 },
+                    { name: '脫水轉黃期 (均勻吸熱推進)',       heat: 70, air: 40 },
+                    { name: '梅納前段 (140°C 蜂蜜淡花香)',    heat: 65, air: 45 },
+                    { name: '梅納中後段 (160-175°C 水蜜桃茶感)', heat: 50, air: 60 },
+                    { name: '一爆發展期 (197°C 收火開大風門)', heat: 30, air: 80 }
+                ]
+            },
+            m10_kenya_geisha: {
+                title: '肯亞 麒麟雅佳 辛巴處理站 日曬藝伎 (高溫入豆延長梅納)',
+                machine: 'kaleido_m10', process: 'natural',
+                batchG: 800, moisture: 10.4, density: 844,
+                chargeTemp: 201, drumSpeed: 85, devTimeSec: 75, dropTemp: 203.0,
+                stages: [
+                    { name: '入豆〜回溫點 (201°C 高動能防軟掉)', heat: 78, air: 30 },
+                    { name: '乾燥期 (0:00-4:30 乾淨排濕)',       heat: 72, air: 45 },
+                    { name: '梅納前段 (拉長轉化甜橙蜂蜜)',       heat: 60, air: 55 },
+                    { name: '梅納後段 (175°C 穩定預備一爆)',     heat: 48, air: 65 },
+                    { name: '一爆發展 (197°C 防RoR暴衝)',        heat: 32, air: 80 }
+                ]
+            },
+            m10_sidamo_winnie: {
+                title: '衣索比亞 西達摩 斑莎 溫妮公主日曬 (7:30 小風門快節奏)',
+                machine: 'huky_500t', process: 'natural',
+                batchG: 450, moisture: 10.0, density: 850,
+                chargeTemp: 198, drumSpeed: 80, devTimeSec: 30, dropTemp: 204.0,
+                stages: [
+                    { name: '入豆〜回溫點 (快節奏高熱能)',   heat: 85, air: 20 },
+                    { name: '高速脫水期 (小小小風門蓄熱)',   heat: 82, air: 25 },
+                    { name: '梅納衝刺期 (香氣濃縮爆發)',     heat: 72, air: 30 },
+                    { name: '一爆前夕 (維持高推進力)',       heat: 62, air: 40 },
+                    { name: '極短發展 30s (溫升 7.5°C 下豆)', heat: 48, air: 60 }
+                ]
+            },
+            m10_kaffa_geisha: {
+                title: '衣索比亞 卡法森林 金寶村 碧塔日曬藝伎 (RoR 11°C 花香)',
+                machine: 'kaleido_m10', process: 'natural',
+                batchG: 750, moisture: 9.7, density: 849,
+                chargeTemp: 192, drumSpeed: 85, devTimeSec: 60, dropTemp: 201.5,
+                stages: [
+                    { name: '入豆〜回溫點 (黃金 750g 批量)',  heat: 76, air: 30 },
+                    { name: '脫水轉黃期 (穩定 RoR 11-12°C)', heat: 72, air: 40 },
+                    { name: '梅納前段 (柑橘與葡萄果肉展開)',  heat: 62, air: 50 },
+                    { name: '梅納後段 (野莓與細緻花香)',     heat: 50, air: 65 },
+                    { name: '一爆發展 (粉值 Agtron 86 目標)', heat: 30, air: 78 }
+                ]
+            },
+            m10_salvador_honey: {
+                title: '薩爾瓦多 聖安娜火山 聖依蓮娜波旁蜜處理 (M10 標準階梯中焙)',
+                machine: 'kaleido_m10', process: 'honey',
+                batchG: 750, moisture: 10.6, density: 830,
+                chargeTemp: 185, drumSpeed: 90, devTimeSec: 95, dropTemp: 206.5,
+                stages: [
+                    { name: '入豆〜回溫點 (官方標準 185°C)', heat: 80, air: 30 },
+                    { name: '脫水期至 155°C (80%火力推進)', heat: 78, air: 35 },
+                    { name: '梅納階梯降火 1 (每升5°C降5%火)', heat: 65, air: 45 },
+                    { name: '梅納階梯降火 2 (龍眼葡萄乾甜感)', heat: 52, air: 60 },
+                    { name: '一爆發展 1:35 (厚實黏稠度中焙)',  heat: 35, air: 75 }
+                ]
+            },
+            m10_dark_espresso: {
+                title: '經典義式濃縮 / 曼巴中深焙 (低溫入豆慢燉防豆表灼傷)',
+                machine: 'kaleido_m10', process: 'washed',
+                batchG: 900, moisture: 11.0, density: 815,
+                chargeTemp: 175, drumSpeed: 75, devTimeSec: 135, dropTemp: 213.5,
+                stages: [
+                    { name: '溫和入豆〜回溫點 (175°C 防表面焦黑)', heat: 68, air: 30 },
+                    { name: '慢速脫水期 (熱能均勻滲透豆芯)',       heat: 66, air: 38 },
+                    { name: '延長梅納期 (發展焦糖與核果油脂)',     heat: 58, air: 50 },
+                    { name: '一爆前夕 (平緩銜接一爆)',             heat: 48, air: 65 },
+                    { name: '深層發展至二爆前緣 (213.5°C 濃郁黑巧)', heat: 34, air: 85 }
+                ]
+            }
+        };
+
+        function renderRoastStagesUI() {
+            const container = document.getElementById('roastStagesContainer');
+            if (!container) return;
+
+            container.innerHTML = roState.stages.map((st, idx) => `
+                <div class="bg-espresso-950/80 border border-crema/15 rounded-xl p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 min-w-[165px]">
+                        <span class="w-5 h-5 rounded-full bg-orange-500/20 text-orange-300 font-mono text-xs flex items-center justify-center font-bold">${idx + 1}</span>
+                        <span class="text-xs font-medium text-cream truncate">${st.name}</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 flex-1 justify-end">
+                        <div class="flex items-center gap-1 flex-1 max-w-[195px]">
+                            <span class="text-[10px] font-mono text-rose-300 shrink-0">🔥火</span>
+                            <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepRoastStage(${idx}, 'heat', -5)">−</button>
+                            <input type="range" min="15" max="100" step="5" value="${st.heat}" class="w-full" oninput="updateRoastStage(${idx}, 'heat', this.value)" onchange="updateRoastStage(${idx}, 'heat', this.value)">
+                            <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepRoastStage(${idx}, 'heat', 5)">+</button>
+                            <span id="roStageHeatVal-${idx}" class="font-mono text-xs font-bold text-rose-300 w-9 text-right">${st.heat}%</span>
+                        </div>
+                        <div class="flex items-center gap-1 flex-1 max-w-[195px]">
+                            <span class="text-[10px] font-mono text-sky-300 shrink-0">💨風</span>
+                            <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepRoastStage(${idx}, 'air', -5)">−</button>
+                            <input type="range" min="15" max="100" step="5" value="${st.air}" class="w-full" oninput="updateRoastStage(${idx}, 'air', this.value)" onchange="updateRoastStage(${idx}, 'air', this.value)">
+                            <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepRoastStage(${idx}, 'air', 5)">+</button>
+                            <span id="roStageAirVal-${idx}" class="font-mono text-xs font-bold text-sky-300 w-9 text-right">${st.air}%</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function stepRoastStage(idx, field, delta) {
+            if (!roState.stages[idx]) return;
+            const nextVal = Math.max(15, Math.min(100, roState.stages[idx][field] + delta));
+            updateRoastStage(idx, field, nextVal);
+            renderRoastStagesUI();
+        }
+
+        function updateRoastStage(idx, field, val) {
+            if (!roState.stages[idx]) return;
+            roState.stages[idx][field] = parseFloat(val);
+            const el = document.getElementById(field === 'heat' ? `roStageHeatVal-${idx}` : `roStageAirVal-${idx}`);
+            if (el) el.textContent = `${roState.stages[idx][field]}%`;
+            onRoastParamChange(false);
+        }
+
+        function applyKaleidoStepDownRule() {
+            // Official Kaleido guide: high initial burner (80%), after Dry End decrease burner 10-12% per stage and increase air 12-15% per stage
+            const baseH = roState.chargeTemp > 195 ? 78 : 80;
+            roState.stages[0].heat = baseH;     roState.stages[0].air = 30;
+            roState.stages[1].heat = baseH - 4; roState.stages[1].air = 35;
+            roState.stages[2].heat = 65;        roState.stages[2].air = 45;
+            roState.stages[3].heat = 50;        roState.stages[3].air = 60;
+            roState.stages[4].heat = 30;        roState.stages[4].air = 80;
+            renderRoastStagesUI();
+            onRoastParamChange(false);
+        }
+
+        function selectRoasterMachine(machineKey) {
+            if (!ROASTER_MACHINES[machineKey]) return;
+            roState.machine = machineKey;
+            const m = ROASTER_MACHINES[machineKey];
+
+            document.querySelectorAll('.roaster-btn').forEach(btn => {
+                btn.className = 'roaster-btn p-2.5 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition';
+            });
+            const active = document.getElementById(`roaster-${machineKey}`);
+            if (active) {
+                active.className = 'roaster-btn active p-2.5 rounded-xl bg-espresso-850 border border-crema text-left transition shadow-md shadow-crema/10';
+            }
+
+            // Clamp batch size to machine range if needed
+            const batchSlider = document.getElementById('roBatchSlider');
+            if (batchSlider) {
+                batchSlider.min = m.minBatch;
+                batchSlider.max = m.maxBatch;
+                if (roState.batchG > m.maxBatch || roState.batchG < m.minBatch) {
+                    roState.batchG = m.optBatch;
+                    batchSlider.value = m.optBatch;
+                }
+            }
+            const capHint = document.getElementById('roBatchCapHint');
+            if (capHint) capHint.textContent = `最佳 ${m.minBatch}-${m.maxBatch}g`;
+            const ratioBadge = document.getElementById('roMachineHeatRatioBadge');
+            if (ratioBadge) ratioBadge.textContent = m.badgeText;
+
+            onRoastParamChange(false);
+        }
+
+        function selectRoastProcess(procKey) {
+            roState.process = procKey;
+            document.querySelectorAll('.ro-proc-btn').forEach(btn => {
+                btn.className = 'ro-proc-btn px-2 py-1.5 rounded-lg text-xs bg-espresso-850 border border-espresso-700 text-cream/80 transition text-center';
+            });
+            const active = document.getElementById(`roProc-${procKey}`);
+            if (active) {
+                active.className = 'ro-proc-btn active px-2 py-1.5 rounded-lg text-xs bg-crema/25 border border-crema text-crema-light font-bold transition text-center';
+            }
+            const hint = document.getElementById('roProcessRiskHint');
+            const hints = {
+                washed: '水洗豆結構乾淨・耐受較高前段熱能與高溫入豆',
+                honey: '黑蜜果膠糖分高・前段勿猛火防豆表先焦化，一爆提早開風門',
+                natural: '日曬豆含糖高・建議稍微拉長梅納期轉化甜橙感，避免悶味',
+                anaerobic: '厭氧發酵豆組織疏鬆易吸熱・建議降溫入豆、溫和推進防焦苦'
+            };
+            if (hint) hint.textContent = hints[procKey] || '';
+            onRoastParamChange(false);
+        }
+
+        function applyRoastPreset(presetKey) {
+            stopRoastSimulation(false);
+            const p = ROAST_PRESETS[presetKey];
+            if (!p) return;
+
+            roState.activePreset = presetKey;
+            roState.machine = p.machine;
+            roState.process = p.process;
+            roState.batchG = p.batchG;
+            roState.moisture = p.moisture;
+            roState.density = p.density;
+            roState.chargeTemp = p.chargeTemp;
+            roState.drumSpeed = p.drumSpeed;
+            roState.devTimeSec = p.devTimeSec;
+            roState.dropTemp = p.dropTemp;
+            roState.stages = p.stages.map(s => ({ ...s }));
+
+            selectRoasterMachine(p.machine);
+            selectRoastProcess(p.process);
+
+            document.getElementById('roBatchSlider').value = p.batchG;
+            document.getElementById('roMoistureSlider').value = p.moisture;
+            document.getElementById('roDensitySlider').value = p.density;
+            document.getElementById('roChargeTempSlider').value = p.chargeTemp;
+            document.getElementById('roDrumSpeedSlider').value = p.drumSpeed;
+            document.getElementById('roDevTimeSlider').value = p.devTimeSec;
+            document.getElementById('roDropTempSlider').value = p.dropTemp;
+
+            document.querySelectorAll('.ro-preset-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.getElementById(`ro-preset-${presetKey}`);
+            if (btn) btn.classList.add('active');
+
+            renderRoastStagesUI();
+            onRoastParamChange(true);
+        }
+
+        /**
+         * Core Coffee Roasting Thermodynamics & Maillard/Caramelization Kinetics Engine
+         */
+        function calculateRoastingPhysics() {
+            const m = ROASTER_MACHINES[roState.machine] || ROASTER_MACHINES.kaleido_m10;
+            const { batchG, moisture, density, chargeTemp, drumSpeed, devTimeSec, dropTemp, stages, process } = roState;
+
+            const loadRatio = batchG / m.optBatch; // 1.0 = optimal load
+            const avgHeat = stages.reduce((s, st) => s + st.heat, 0) / stages.length;
+            const avgAir = stages.reduce((s, st) => s + st.air, 0) / stages.length;
+
+            // 1. Turning Point (TP) Time & Temperature
+            // Larger batch + higher moisture drops TP lower; higher charge temp + higher stage 0 heat raises TP
+            const tpTimeSec = Math.round(72 + loadRatio * 18 + (moisture - 10.0) * 4 - (stages[0].heat - 70) * 0.35 * (1 / m.thermalMass));
+            const tpTemp = Number((chargeTemp * 0.54 - loadRatio * 11.5 - (moisture - 10.0) * 2.2 + (stages[0].heat - 70) * 0.25).toFixed(1));
+
+            // 2. Dehydration / Yellowing End (DE at 150°C)
+            const stage12Heat = stages[0].heat * 0.4 + stages[1].heat * 0.6;
+            const dryPowerFactor = (stage12Heat / 72) / Math.pow(loadRatio, 0.32);
+            const moisturePenalty = 1 + (moisture - 10.2) * 0.055;
+            const dryDurationSec = Math.round(145 * moisturePenalty / Math.max(0.55, dryPowerFactor));
+            const dryEndSec = tpTimeSec + dryDurationSec;
+
+            // 3. Maillard Reaction Phase (150°C -> First Crack at ~196.5°C)
+            // First crack temperature depends slightly on bean density and probe geometry
+            const fcTemp = Number((195.5 + (density - 820) * 0.025).toFixed(1));
+            const stage34Heat = stages[2].heat * 0.55 + stages[3].heat * 0.45;
+            const stage34AirCooling = (stages[2].air * 0.5 + stages[3].air * 0.5 - 50) * 0.004;
+            const maillardRateFactor = Math.max(0.48, (stage34Heat / 56) / Math.pow(loadRatio, 0.28) - stage34AirCooling);
+            const maillardDurationSec = Math.round(235 / maillardRateFactor);
+            const fcStartSec = dryEndSec + maillardDurationSec;
+
+            // 4. Development Phase (FC Start -> Drop)
+            const totalTimeSec = fcStartSec + devTimeSec;
+            const dtrPct = Number(((devTimeSec / totalTimeSec) * 100).toFixed(1));
+            const dryPct = Number(((dryEndSec / totalTimeSec) * 100).toFixed(1));
+            const maillardPct = Number((100 - dryPct - dtrPct).toFixed(1));
+
+            // Effective Drop Temperature responds to BOTH target Drop Temp slider AND stage 4 heat + devTimeSec
+            const devHeatDrive = (stages[4].heat - 32) * 0.12 - (stages[4].air - 75) * 0.04;
+            const naturalTempRiseInDev = (devTimeSec / 60) * (5.2 + devHeatDrive);
+            // Blend user's target dropTemp with physical energy balance
+            const actualDropTemp = Number((dropTemp * 0.65 + (fcTemp + naturalTempRiseInDev) * 0.35).toFixed(1));
+            const devTempRise = Number((actualDropTemp - fcTemp).toFixed(1));
+
+            // Second Crack occurs around 212.5°C
+            const secondCrackOccurred = actualDropTemp >= 212.0;
+
+            // 5. Generate Second-by-Second Time Series (BT, ET, RoR, Heat, Air)
+            const timeSeries = [];
+            const dt = 5; // 5-second resolution for crisp canvas curve
+            let prevBT = chargeTemp;
+
+            for (let t = 0; t <= totalTimeSec; t += dt) {
+                let bt = chargeTemp;
+                let stageIdx = 0;
+                if (t < tpTimeSec) {
+                    stageIdx = 0;
+                    // Parabolic dip from chargeTemp down to tpTemp at tpTimeSec
+                    const u = t / tpTimeSec;
+                    bt = chargeTemp - (chargeTemp - tpTemp) * (2 * u - u * u);
+                } else if (t <= dryEndSec) {
+                    stageIdx = 1;
+                    const u = (t - tpTimeSec) / Math.max(1, dryEndSec - tpTimeSec);
+                    bt = tpTemp + (150.0 - tpTemp) * Math.pow(u, 0.92);
+                } else if (t <= fcStartSec) {
+                    const u = (t - dryEndSec) / Math.max(1, fcStartSec - dryEndSec);
+                    stageIdx = u < 0.5 ? 2 : 3;
+                    bt = 150.0 + (fcTemp - 150.0) * Math.pow(u, 0.86);
+                } else {
+                    stageIdx = 4;
+                    const u = (t - fcStartSec) / Math.max(1, devTimeSec);
+                    bt = fcTemp + (actualDropTemp - fcTemp) * Math.pow(u, 0.88);
+                }
+
+                const st = stages[stageIdx];
+                // RoR (°C / min)
+                let ror = 0;
+                if (t === 0) {
+                    ror = -35;
+                } else {
+                    ror = ((bt - prevBT) / dt) * 60;
+                }
+                // Add realistic First Crack steam turbulence dip/flick on RoR near fcStartSec
+                if (Math.abs(t - fcStartSec) <= 15) {
+                    const steamDip = Math.cos(((t - fcStartSec) / 15) * (Math.PI / 2)) * -1.4;
+                    const flickSpike = stages[4].heat > 48 ? 2.2 : 0;
+                    ror += steamDip + flickSpike;
+                }
+                prevBT = bt;
+
+                // Environment Temp (ET)
+                const et = Math.min(265, Math.max(bt + 6, bt + m.etOffset + (st.heat - 55) * 0.45 - (st.air - 50) * 0.25));
+
+                let phaseTitle = '一爆發展期 (Development)';
+                if (t < tpTimeSec) phaseTitle = '入豆吸熱〜回溫點 (Charging)';
+                else if (t < dryEndSec) phaseTitle = '脫水轉黃期 (Dehydration)';
+                else if (t < fcStartSec) phaseTitle = '梅納焦糖反應期 (Maillard)';
+                else if (secondCrackOccurred && bt >= 212) phaseTitle = '二爆深焙期 (Second Crack)';
+
+                timeSeries.push({
+                    t,
+                    bt: Number(bt.toFixed(1)),
+                    et: Number(et.toFixed(1)),
+                    ror: Number(Math.max(-35, Math.min(26, ror)).toFixed(1)),
+                    heat: st.heat,
+                    air: st.air,
+                    phaseTitle
+                });
+            }
+
+            // 6. Agtron Gourmet Scale (Whole Bean & Ground) + Surface-to-Core Spread
+            // 199°C -> ~82 Whole / 88 Ground; 203°C -> ~73 Whole / 80 Ground; 214°C -> ~46 Whole / 52 Ground
+            const rawWholeAgtron = Math.round(85 - (actualDropTemp - 197.5) * 2.45 - (devTimeSec - 45) * 0.085 - (process === 'honey' || process === 'natural' ? 2.5 : 0));
+            const wholeAgtron = Math.max(32, Math.min(92, rawWholeAgtron));
+
+            // Fast roast / high charge temp / low drum speed increases bean surface vs core gap
+            const roastSpeedPenalty = Math.max(0, (540 - totalTimeSec) / 45);
+            const agtronSpread = Number(Math.max(1.2, (2.2 + roastSpeedPenalty + (chargeTemp > 205 ? 2.5 : 0)) * m.scorchSensitivity).toFixed(1));
+            const groundAgtron = Math.min(96, Math.round(wholeAgtron + (actualDropTemp < 206 ? 6.5 : 3.5) + agtronSpread * 0.5));
+
+            // 7. Weight Loss % (Typical 11.5% light to 18.5% dark)
+            const moistureLoss = moisture * 0.88;
+            const organicDryMatterLoss = Math.max(1.8, (actualDropTemp - 194) * 0.32 + (devTimeSec / 60) * 0.85);
+            const weightLossPct = Number(Math.min(21.0, Math.max(10.5, moistureLoss + organicDryMatterLoss)).toFixed(1));
+            const outWeightG = Math.round(batchG * (1 - weightLossPct / 100));
+
+            // 8. Defect Risk Calculations (0 - 100%)
+            // Scorching / Tipping: high charge temp + high initial heat + low drum speed + honey/natural sugars
+            const procSugarRisk = (process === 'honey' || process === 'natural' || process === 'anaerobic') ? 14 : 0;
+            const drumSlowRisk = drumSpeed < 65 ? (65 - drumSpeed) * 1.1 : 0;
+            let riskScorch = Math.round(Math.max(5, Math.min(98,
+                ( Math.max(0, chargeTemp - 192) * 1.6 + Math.max(0, stages[0].heat - 78) * 1.3 + drumSlowRisk + procSugarRisk ) * m.scorchSensitivity
+            )));
+
+            // Baked (悶焙): total time too long (>12m30s) or low Maillard/Dev heat causing RoR crash (<3°C/min)
+            const slowRoastRisk = Math.max(0, (totalTimeSec - 680) * 0.25);
+            const lowMaillardHeatRisk = Math.max(0, (52 - stage34Heat) * 2.2);
+            let riskBaked = Math.round(Math.max(6, Math.min(98, slowRoastRisk + lowMaillardHeatRisk)));
+
+            // Flick / Crash: stage 4 heat too high (>50%) or air too low (<45%) during exothermic First Crack
+            const flickHeatRisk = Math.max(0, (stages[4].heat - 42) * 2.1);
+            const lowFcAirRisk = Math.max(0, (60 - stages[4].air) * 1.2);
+            let riskFlick = Math.round(Math.max(6, Math.min(98, flickHeatRisk + lowFcAirRisk)));
+
+            // Under-developed (草青夾生): drop temp < 200°C or devTimeSec < 40s or DTR < 9.5%
+            const shortDevRisk = Math.max(0, (50 - devTimeSec) * 1.8) + Math.max(0, (201 - actualDropTemp) * 12);
+            let riskUnder = Math.round(Math.max(5, Math.min(98, shortDevRisk)));
+
+            // 9. Six-Dimension Cupping Sensory Scores
+            // Floral / Fruity Aroma: peaks at Whole Agtron 70-82, DTR 10-14%, clean air
+            let sFloral = Math.round(Math.max(15, Math.min(98,
+                94 - Math.abs(actualDropTemp - 202.0) * 4.5 - Math.max(0, devTimeSec - 85) * 0.35 - riskBaked * 0.35 + (process !== 'washed' ? 4 : 0)
+            )));
+
+            // Bright Acidity
+            let sAcidity = Math.round(Math.max(15, Math.min(98,
+                90 - (actualDropTemp - 199.0) * 3.8 - (devTimeSec - 50) * 0.22
+            )));
+
+            // Maillard Honey/Caramel Sweetness: peaks when Maillard % is 43-50% and DTR is 11.5-16.5%
+            const maillardBonus = maillardPct >= 42 && maillardPct <= 52 ? 8 : -5;
+            let sSweet = Math.round(Math.max(25, Math.min(97,
+                86 + maillardBonus - Math.abs(actualDropTemp - 204.0) * 2.8 - (riskScorch + riskBaked + riskUnder) * 0.22
+            )));
+
+            // Body / Mouthfeel: increases with Maillard duration, medium/dark drop temp, conduction
+            let sBody = Math.round(Math.max(25, Math.min(96,
+                58 + (actualDropTemp - 199.0) * 2.6 + (devTimeSec / 60) * 8 + m.condRatio * 18
+            )));
+
+            // Roast / Cocoa Bitterness
+            let sBitter = Math.round(Math.max(10, Math.min(98,
+                16 + Math.max(0, actualDropTemp - 200.0) * 5.2 + riskScorch * 0.35
+            )));
+
+            // Cleanliness / Clarity
+            let sClean = Math.round(Math.max(20, Math.min(98,
+                93 - (riskScorch * 0.4 + riskBaked * 0.35 + riskFlick * 0.3) + (avgAir - 45) * 0.2
+            )));
+
+            let overallStatus = 'ideal';
+            if (riskScorch >= 52) overallStatus = 'scorch';
+            else if (riskUnder >= 52) overallStatus = 'under';
+            else if (riskBaked >= 52) overallStatus = 'baked';
+            else if (riskFlick >= 52) overallStatus = 'flick';
+
+            roComputed = {
+                machineName: m.name,
+                wattage: Math.round((avgHeat / 100) * m.wattage),
+                avgHeat: Math.round(avgHeat),
+                avgAir: Math.round(avgAir),
+                tpTimeSec,
+                tpTemp,
+                dryEndSec,
+                fcStartSec,
+                fcTemp,
+                totalTimeSec,
+                actualDropTemp,
+                devTempRise,
+                dtrPct,
+                dryPct,
+                maillardPct,
+                wholeAgtron,
+                groundAgtron,
+                agtronSpread,
+                weightLossPct,
+                outWeightG,
+                secondCrackOccurred,
+                timeSeries,
+                risks: { scorch: riskScorch, baked: riskBaked, flick: riskFlick, under: riskUnder },
+                sensory: { floral: sFloral, acidity: sAcidity, sweet: sSweet, body: sBody, bitter: sBitter, clean: sClean },
+                overallStatus
+            };
+        }
+
+        function onRoastParamChange(fromPreset = false) {
+            if (!fromPreset) {
+                roState.activePreset = null;
+                document.querySelectorAll('.ro-preset-btn').forEach(b => b.classList.remove('active'));
+            }
+
+            roState.batchG = parseFloat(document.getElementById('roBatchSlider').value);
+            roState.moisture = parseFloat(document.getElementById('roMoistureSlider').value);
+            roState.density = parseFloat(document.getElementById('roDensitySlider').value);
+            roState.chargeTemp = parseFloat(document.getElementById('roChargeTempSlider').value);
+            roState.drumSpeed = parseFloat(document.getElementById('roDrumSpeedSlider').value);
+            roState.devTimeSec = parseFloat(document.getElementById('roDevTimeSlider').value);
+            roState.dropTemp = parseFloat(document.getElementById('roDropTempSlider').value);
+
+            calculateRoastingPhysics();
+            updateRoastDashboardUI();
+            if (!roState.isSimulating) {
+                const lastPt = roComputed.timeSeries[roComputed.timeSeries.length - 1];
+                updateRoasterApparatusSVG(lastPt, false);
+            }
+            drawRoastArtisanChart(roState.isSimulating ? roState.simElapsed : null);
+            drawRoastChemistryChart();
+            drawRoastRadarChart();
+            updateMobileLiveDock();
+        }
+
+        function updateRoastDashboardUI() {
+            const m = ROASTER_MACHINES[roState.machine] || ROASTER_MACHINES.kaleido_m10;
+            const loadPct = Math.round((roState.batchG / m.maxBatch) * 100);
+            document.getElementById('roBatchVal').textContent = `${roState.batchG}g (${loadPct}%)`;
+            document.getElementById('roMoistureVal').textContent = `${roState.moisture.toFixed(1)}%`;
+            document.getElementById('roDensityVal').textContent = `${roState.density} g/L`;
+
+            const chargeET = Math.round(roState.chargeTemp + m.etOffset);
+            document.getElementById('roChargeTempVal').textContent = `${roState.chargeTemp}°C (ET ${chargeET}°C)`;
+            const rpm = Math.round(30 + (roState.drumSpeed / 100) * 32);
+            document.getElementById('roDrumSpeedVal').textContent = `${roState.drumSpeed}% (${rpm} RPM)`;
+            document.getElementById('roDevTimeVal').textContent = `${roState.devTimeSec} 秒 (${formatMinSec(roState.devTimeSec)})`;
+            document.getElementById('roDropTempVal').textContent = `${roComputed.actualDropTemp.toFixed(1)} °C`;
+
+            document.getElementById('roAvgHeatDisplay').textContent = `${roComputed.avgHeat}% (~${roComputed.wattage}W)`;
+            document.getElementById('roAvgAirDisplay').textContent = `${roComputed.avgAir}%`;
+
+            // Top KPIs
+            document.getElementById('roKpiTotalTime').textContent = formatMinSec(roComputed.totalTimeSec);
+            document.getElementById('roKpiFcTime').textContent = `一爆 ${formatMinSec(roComputed.fcStartSec)}`;
+            document.getElementById('roKpiTpSub').textContent = `回溫點 TP ${formatMinSec(roComputed.tpTimeSec)} (${roComputed.tpTemp}°C)`;
+
+            document.getElementById('roKpiDtr').textContent = `${roComputed.dtrPct}%`;
+            const dtrTag = document.getElementById('roKpiDtrTag');
+            if (roComputed.dtrPct < 10.0) {
+                dtrTag.textContent = '極短爆香';
+                dtrTag.className = 'text-[11px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono';
+            } else if (roComputed.dtrPct <= 16.5) {
+                dtrTag.textContent = '黃金甜感區';
+                dtrTag.className = 'text-[11px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono';
+            } else {
+                dtrTag.textContent = '深層醇厚區';
+                dtrTag.className = 'text-[11px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono';
+            }
+            document.getElementById('roKpiDevSub').textContent = `一爆後升溫 +${roComputed.devTempRise.toFixed(1)}°C`;
+
+            document.getElementById('roKpiAgtron').textContent = `${roComputed.wholeAgtron} / ${roComputed.groundAgtron}`;
+            const rTag = document.getElementById('roKpiRoastLevelTag');
+            let roastName = '淺中焙 City';
+            if (roComputed.wholeAgtron >= 78) roastName = '極淺~淺焙 Light';
+            else if (roComputed.wholeAgtron >= 68) roastName = '淺中焙 City';
+            else if (roComputed.wholeAgtron >= 58) roastName = '中焙 City+';
+            else if (roComputed.wholeAgtron >= 48) roastName = '中深焙 Full City';
+            else roastName = '深焙 Vienna+';
+            rTag.textContent = roastName;
+
+            const spreadSub = document.getElementById('roKpiSpreadSub');
+            spreadSub.textContent = roComputed.agtronSpread <= 4.5
+                ? `豆芯溫差 ${roComputed.agtronSpread}°C・均勻熟透`
+                : `內外色差偏大 (${roComputed.agtronSpread}°C)・注意外熟內生`;
+            spreadSub.className = `mt-1 text-[11px] ${roComputed.agtronSpread <= 4.5 ? 'text-emerald-400' : 'text-amber-400'}`;
+
+            document.getElementById('roKpiWeightLoss').textContent = `${roComputed.weightLossPct}%`;
+            document.getElementById('roKpiOutWeight').textContent = `熟豆 ${roComputed.outWeightG}g`;
+
+            // Phase Ratios Bar
+            document.getElementById('roPhaseDryLabel').textContent = `🌱 脫水期：${roComputed.dryPct}% (${formatMinSec(roComputed.dryEndSec)})`;
+            document.getElementById('roPhaseMaillardLabel').textContent = `🍯 梅納期：${roComputed.maillardPct}% (${formatMinSec(roComputed.fcStartSec - roComputed.dryEndSec)})`;
+            document.getElementById('roPhaseDevLabel').textContent = `🔥 發展期 DTR：${roComputed.dtrPct}% (${formatMinSec(roState.devTimeSec)})`;
+            document.getElementById('roPhaseDryBar').style.width = `${roComputed.dryPct}%`;
+            document.getElementById('roPhaseMaillardBar').style.width = `${roComputed.maillardPct}%`;
+            document.getElementById('roPhaseDevBar').style.width = `${roComputed.dtrPct}%`;
+
+            // Defect Risk Bars
+            const setRiskBar = (id, val) => {
+                const bar = document.getElementById(`roRisk${id}Bar`);
+                const txt = document.getElementById(`roRisk${id}Val`);
+                if (!bar || !txt) return;
+                bar.style.width = `${val}%`;
+                txt.textContent = `${val}%`;
+                const colorClass = val < 30 ? 'bg-emerald-400' : (val < 52 ? 'bg-amber-400' : 'bg-rose-500');
+                const textClass = val < 30 ? 'text-emerald-300' : (val < 52 ? 'text-amber-300' : 'text-rose-400');
+                bar.className = `${colorClass} h-full transition-all duration-300`;
+                txt.className = `font-mono text-[11px] ${textClass} w-10 text-right`;
+            };
+            setRiskBar('Scorch', roComputed.risks.scorch);
+            setRiskBar('Baked', roComputed.risks.baked);
+            setRiskBar('Flick', roComputed.risks.flick);
+            setRiskBar('Under', roComputed.risks.under);
+
+            // Sensory Bars
+            const setSensBar = (id, val) => {
+                document.getElementById(`roVal${id}`).textContent = `${val}%`;
+                document.getElementById(`roBar${id}`).style.width = `${val}%`;
+            };
+            setSensBar('Floral', roComputed.sensory.floral);
+            setSensBar('Acidity', roComputed.sensory.acidity);
+            setSensBar('Sweet', roComputed.sensory.sweet);
+            setSensBar('Body', roComputed.sensory.body);
+            setSensBar('Bitter', roComputed.sensory.bitter);
+            setSensBar('Clean', roComputed.sensory.clean);
+
+            // Coach & Badges
+            const defectBadge = document.getElementById('roKpiDefectBadge');
+            const coachBadge = document.getElementById('roCoachBadge');
+            const coachHeadline = document.getElementById('roCoachHeadline');
+            const coachTasting = document.getElementById('roCoachTasting');
+            const coachPhysics = document.getElementById('roCoachPhysics');
+            const coachActions = document.getElementById('roCoachActions');
+            const rorBadge = document.getElementById('roRorTrendBadge');
+
+            const actions = [];
+            if (roComputed.overallStatus === 'scorch') {
+                defectBadge.textContent = '⚠️ 豆表灼傷風險 (Scorch)';
+                defectBadge.className = 'mt-1 text-[11px] font-semibold text-rose-400';
+                coachBadge.textContent = '需調整：前段熱衝擊過高';
+                coachBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-400/30';
+                coachHeadline.textContent = '入豆溫或前段火力過高（或轉速偏慢），蜜處理/日曬果膠糖分易在豆表先焦黑（Tipping / Scorching）！';
+                coachTasting.textContent = '乾香帶有焦糖微苦與煙燻感，品飲時前段花果香被焦苦掩蓋，尾韻略帶咬喉感與雜澀。';
+                coachPhysics.textContent = `入豆溫 ${roState.chargeTemp}°C 搭配 ${roState.stages[0].heat}% 火力，豆表升溫過快而豆芯尚未熱透（內外溫差達 ${roComputed.agtronSpread}°C）。`;
+                actions.push(`建議將入豆溫度調降至 180–188°C，或將第 1 段火力調降至 70–75%、滾筒轉速提升至 80–90%。`);
+                actions.push('參考桑托斯藝伎黑蜜筆記：入豆後 1:00 可微降火力 5%、微開風門至 40%，讓豆表均勻吸熱。');
+                rorBadge.textContent = '⚠️ 前段 RoR 衝刺過猛・小心豆表先上色';
+                rorBadge.className = 'text-[11px] text-rose-300';
+            } else if (roComputed.overallStatus === 'under') {
+                defectBadge.textContent = '🌱 發展不足 (Under-developed)';
+                defectBadge.className = 'mt-1 text-[11px] font-semibold text-amber-400';
+                coachBadge.textContent = '需調整：豆芯發展不足';
+                coachBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30';
+                coachHeadline.textContent = `一爆後發展時間 (${roState.devTimeSec}s, DTR ${roComputed.dtrPct}%) 或下豆溫 (${roComputed.actualDropTemp}°C) 偏低，有機酸與青草味尚未轉化完成。`;
+                coachTasting.textContent = '入口酸質尖銳刺激，帶有青草、生花生或青豆澀感，中段缺乏焦糖與蜂蜜甜感支撐。';
+                coachPhysics.textContent = '細胞壁剛在一爆撐開，焦糖化反應與梅納中後段芳香物尚未充分熟成即出豆冷卻。';
+                actions.push('建議將「一爆後發展時間」拉長至 60–90 秒（DTR 11.5–15%），或將目標下豆溫提高至 202–204°C。');
+                actions.push('確認一爆定錨點：忽略 194°C 前的孤爆，待 196–198°C 出現「爆米花滾動密集爆」再開始計時發展期。');
+                rorBadge.textContent = '⚡ 發展期過短・甜感尚未完全展開';
+                rorBadge.className = 'text-[11px] text-amber-300';
+            } else if (roComputed.overallStatus === 'baked') {
+                defectBadge.textContent = '📦 悶焙風險 (Baked)';
+                defectBadge.className = 'mt-1 text-[11px] font-semibold text-amber-400';
+                coachBadge.textContent = '需調整：中後段動能不足';
+                coachBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30';
+                coachHeadline.textContent = `總烘焙時間 (${formatMinSec(roComputed.totalTimeSec)}) 偏長或梅納期火力過低，導致 RoR 塌陷、香氣悶掉！`;
+                coachTasting.textContent = '酸質與花果香氣顯得扁平沉悶，少了明亮的水果跳躍感，尾韻略帶烤麵包或紙板味。';
+                coachPhysics.textContent = '梅納中後段熱通量（Heat Flux）不足，一爆前火力低於 40% 導致豆堆失速（Stall）。';
+                actions.push('為強化白花與佛手柑揚香，一爆前（第 3、4 段）火力建議維持在 45–60% 以上，確保充足推進動能。');
+                actions.push('若烘焙日曬藝伎，總時間建議控制在 10:00–11:30 內，避免過長把日曬果香悶熟。');
+                rorBadge.textContent = '📉 中後段 RoR 偏低・小心悶焙失速';
+                rorBadge.className = 'text-[11px] text-amber-300';
+            } else if (roComputed.overallStatus === 'flick') {
+                defectBadge.textContent = '⚡ 尾段暴衝 (RoR Flick)';
+                defectBadge.className = 'mt-1 text-[11px] font-semibold text-rose-400';
+                coachBadge.textContent = '需調整：一爆未收火/開風門';
+                coachBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-400/30';
+                coachHeadline.textContent = '一爆期間豆體由吸熱轉放熱，第 5 段火力過高或風門過小導致尾段 RoR 暴衝（Flick）！';
+                coachTasting.textContent = '花果香被高溫焦苦刺感切斷，入口同時有尖酸與焦澀尾韻，乾淨度下降。';
+                coachPhysics.textContent = '一爆大量釋放高溫水蒸氣與放熱反應，若未及時降火並拉大風門排煙，爐內熱能會瞬間失控堆積。';
+                actions.push('一爆開始（約 196–198°C）請立即將第 5 段火力降至 25–35%，並將風門開大至 75–85% 抽走水蒸氣與銀皮雜煙！');
+                rorBadge.textContent = '⚡ 一爆後 RoR 暴衝 (Flick)・請降火開風門';
+                rorBadge.className = 'text-[11px] text-rose-300';
+            } else {
+                defectBadge.textContent = '✨ 黃金烘焙曲線 (Ideal)';
+                defectBadge.className = 'mt-1 text-[11px] font-semibold text-emerald-400';
+                coachBadge.textContent = '大師級精品曲線';
+                coachBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30';
+                coachHeadline.textContent = `${roComputed.machineName} 曲線極佳！總時間 ${formatMinSec(roComputed.totalTimeSec)}、DTR ${roComputed.dtrPct}%、下豆 ${roComputed.actualDropTemp}°C (Agtron ${roComputed.wholeAgtron}/${roComputed.groundAgtron})。`;
+
+                if (roComputed.wholeAgtron >= 70) {
+                    coachTasting.textContent = '前段百香果、佛手柑與白花香氣奔放；中段浮現水蜜桃果汁、甜橙與蜂蜜甜感；尾韻如絲滑伯爵紅茶般細長乾淨。';
+                } else if (roComputed.wholeAgtron >= 58) {
+                    coachTasting.textContent = '熟桃、柑橘果醬與龍眼蜜甜香飽滿，Body 圓潤厚實，酸甜平衡度極高，帶有焦糖與紅玉紅茶尾韻。';
+                } else {
+                    coachTasting.textContent = '濃郁烤榛果、杏仁與 75% 黑巧克力甘甜，油脂包覆感極佳，有機酸轉化為深邃奶油焦糖回甘，無焦苦味。';
+                }
+                coachPhysics.textContent = `遵循「BT 決定起跑點 (${roState.chargeTemp}°C)，ET 決定推動力」與階梯降火升風原則，一爆於 ${roComputed.fcTemp}°C 密集展開，RoR 全程穩定緩降。`;
+                actions.push('曲線可直接存為 Artisan / Kaleido 基準背景曲線（Background Profile）！');
+                actions.push('可點擊左下方「將此熟豆送入手沖/義式實驗室」，立即測試這鍋豆子的沖煮萃取表現！');
+                rorBadge.textContent = '✨ RoR 單調平滑緩降・甜感與乾淨度極佳';
+                rorBadge.className = 'text-[11px] text-emerald-300';
+            }
+
+            coachActions.innerHTML = actions.map(a => `<li>${a}</li>`).join('');
+        }
+
+        function getBeanColorHexByTemp(bt) {
+            if (bt < 125) return '#7c9a5e';       // Greenish raw bean
+            if (bt < 152) return '#c2a659';       // Yellowing / Hay stage
+            if (bt < 175) return '#b87d3b';       // Cinnamon / Early Maillard
+            if (bt < 196) return '#8f5222';       // Pre-First Crack Light Brown
+            if (bt < 204) return '#733b16';       // City Light-Medium Brown
+            if (bt < 211) return '#54270c';       // Full City Medium-Dark Brown
+            return '#361606';                     // Vienna/French Dark Espresso Brown
+        }
+
+        function updateRoasterApparatusSVG(pt, isRunning) {
+            if (!pt || !roComputed) return;
+            document.getElementById('roLivePhaseText').textContent = pt.phaseTitle;
+            document.getElementById('roLiveTimer').textContent = formatMinSec(pt.t);
+            document.getElementById('roLiveBtEt').textContent = `${pt.bt.toFixed(1)} / ${Math.round(pt.et)}°C`;
+            document.getElementById('roLiveRor').textContent = `${pt.ror.toFixed(1)} °C/m`;
+            document.getElementById('roLiveHeatAir').textContent = `🔥${pt.heat}% · 💨${pt.air}%`;
+
+            // Color the beans inside the drum and the cooling tray swatch
+            const beanHex = getBeanColorHexByTemp(pt.bt);
+            const expansionScale = pt.bt > 194 ? 1.15 : (pt.bt > 160 ? 1.06 : 1.0);
+            document.querySelectorAll('.ro-bean-svg').forEach((el, idx) => {
+                el.setAttribute('fill', beanHex);
+                const jitter = isRunning ? Math.sin(pt.t * 0.8 + idx) * 18 : 0;
+                const cx = parseFloat(el.getAttribute('cx'));
+                const cy = parseFloat(el.getAttribute('cy'));
+                el.setAttribute('transform', `rotate(${(idx * 35 + jitter) % 360} ${cx} ${cy}) scale(${expansionScale})`);
+            });
+
+            // Infrared heater glow intensity based on pt.heat
+            const irOpacity = 0.25 + (pt.heat / 100) * 0.75;
+            const irGroup = document.getElementById('roInfraredTubes');
+            if (irGroup) irGroup.setAttribute('opacity', irOpacity.toFixed(2));
+
+            // First Crack / Second Crack popping sparks
+            const sparks = document.getElementById('roCrackSparks');
+            if (sparks) {
+                const nearCrack = (pt.bt >= roComputed.fcTemp - 1.0 && pt.bt <= roComputed.fcTemp + 4.5) || pt.bt >= 212;
+                sparks.setAttribute('opacity', nearCrack ? '0.95' : '0');
+            }
+
+            // Cooling tray swatch & label
+            const swatch = document.getElementById('roBeanColorSwatch');
+            if (swatch) swatch.setAttribute('fill', getBeanColorHexByTemp(roComputed.actualDropTemp));
+            const trayLabel = document.getElementById('roTrayLabel');
+            if (trayLabel) {
+                trayLabel.textContent = `取樣棒豆色 · 豆表 Agtron ${roComputed.wholeAgtron} / 粉值 ${roComputed.groundAgtron}`;
+            }
+            const scTag = document.getElementById('roSurfaceCoreTag');
+            if (scTag) {
+                scTag.textContent = `豆表/豆芯色差：${roComputed.agtronSpread} (${roComputed.agtronSpread <= 4.5 ? '紅外線穿透均勻' : '外深內淺注意火候'})`;
+            }
+        }
+
+        function drawRoastArtisanChart(activeSimTime = null) {
+            const canvas = document.getElementById('roArtisanCanvas');
+            if (!canvas) return;
+            if (!roComputed) calculateRoastingPhysics();
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+            const pad = { top: 22, right: 44, bottom: 30, left: 44 };
+            const plotW = w - pad.left - pad.right;
+            const plotH = h - pad.top - pad.bottom;
+
+            ctx.clearRect(0, 0, w, h);
+
+            const maxTime = Math.max(660, roComputed.totalTimeSec + 45);
+            const minTemp = 70, maxTemp = 260;
+            const minRor = 0, maxRor = 25;
+
+            const xForT = t => pad.left + (t / maxTime) * plotW;
+            const yForTemp = temp => pad.top + plotH - ((Math.max(minTemp, Math.min(maxTemp, temp)) - minTemp) / (maxTemp - minTemp)) * plotH;
+            const yForRor = ror => pad.top + plotH - ((Math.max(minRor, Math.min(maxRor, ror)) - minRor) / (maxRor - minRor)) * plotH;
+            const yForPct = pct => pad.top + plotH - (pct / 100) * (plotH * 0.42); // Bottom 42% for Heat/Air step lines
+
+            // 1. Phase Vertical Dividers (TP, DE, FCs, Drop)
+            const phases = [
+                { t: roComputed.tpTimeSec, temp: roComputed.tpTemp, label: `TP ${roComputed.tpTemp}°C`, color: '#38bdf8' },
+                { t: roComputed.dryEndSec, temp: 150, label: 'DE 150°C', color: '#34d399' },
+                { t: roComputed.fcStartSec, temp: roComputed.fcTemp, label: `FCs ${roComputed.fcTemp}°C`, color: '#fbbf24' },
+                { t: roComputed.totalTimeSec, temp: roComputed.actualDropTemp, label: `Drop ${roComputed.actualDropTemp}°C`, color: '#fb7185' }
+            ];
+
+            // Grid lines
+            ctx.strokeStyle = 'rgba(245, 235, 225, 0.08)';
+            ctx.font = '10px "JetBrains Mono", monospace';
+            for (let i = 0; i <= 4; i++) {
+                const gy = pad.top + (plotH / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(pad.left, gy);
+                ctx.lineTo(pad.left + plotW, gy);
+                ctx.stroke();
+
+                const tVal = Math.round(maxTemp - (i / 4) * (maxTemp - minTemp));
+                ctx.fillStyle = '#fda4af';
+                ctx.textAlign = 'right';
+                ctx.fillText(`${tVal}°`, pad.left - 6, gy + 3);
+
+                const rVal = ((4 - i) / 4 * maxRor).toFixed(0);
+                ctx.fillStyle = '#7dd3fc';
+                ctx.textAlign = 'left';
+                ctx.fillText(`${rVal}`, pad.left + plotW + 6, gy + 3);
+            }
+
+            // Time X Axis
+            ctx.fillStyle = 'rgba(245, 235, 225, 0.6)';
+            ctx.textAlign = 'center';
+            for (let s = 0; s <= maxTime; s += 120) {
+                ctx.fillText(formatMinSec(s), xForT(s), pad.top + plotH + 18);
+            }
+
+            const pts = activeSimTime !== null
+                ? roComputed.timeSeries.filter(p => p.t <= activeSimTime)
+                : roComputed.timeSeries;
+
+            if (pts.length > 1) {
+                // 2. Burner Heat % Step Area (Subtle Red/Emerald step line at bottom)
+                ctx.beginPath();
+                pts.forEach((p, idx) => {
+                    const px = xForT(p.t);
+                    const py = yForPct(p.heat);
+                    if (idx === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                });
+                ctx.strokeStyle = 'rgba(52, 211, 153, 0.5)';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([3, 2]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // 3. ET (Environment Temp) Curve
+                ctx.beginPath();
+                pts.forEach((p, idx) => {
+                    const px = xForT(p.t);
+                    const py = yForTemp(p.et);
+                    if (idx === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                });
+                ctx.strokeStyle = 'rgba(251, 191, 36, 0.65)';
+                ctx.lineWidth = 1.8;
+                ctx.stroke();
+
+                // 4. RoR (Rate of Rise) Curve ( starts after TP )
+                ctx.beginPath();
+                let rorStarted = false;
+                pts.forEach(p => {
+                    if (p.t >= roComputed.tpTimeSec + 10) {
+                        const px = xForT(p.t);
+                        const py = yForRor(p.ror);
+                        if (!rorStarted) {
+                            ctx.moveTo(px, py);
+                            rorStarted = true;
+                        } else {
+                            ctx.lineTo(px, py);
+                        }
+                    }
+                });
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 2.2;
+                ctx.stroke();
+
+                // 4b. Locked Background Reference Curve (Artisan Background Profile)
+                if (lockedRoastRef && Array.isArray(lockedRoastRef.timeSeries)) {
+                    ctx.beginPath();
+                    lockedRoastRef.timeSeries.forEach((rp, idx) => {
+                        const px = xForT(rp.t);
+                        const py = yForTemp(rp.bt);
+                        if (idx === 0) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                    });
+                    ctx.strokeStyle = 'rgba(245, 235, 225, 0.38)';
+                    ctx.lineWidth = 1.8;
+                    ctx.setLineDash([5, 4]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+
+                // 5. BT (Bean Temp) Primary Curve
+                ctx.beginPath();
+                pts.forEach((p, idx) => {
+                    const px = xForT(p.t);
+                    const py = yForTemp(p.bt);
+                    if (idx === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                });
+                ctx.strokeStyle = '#fb7185';
+                ctx.lineWidth = 2.8;
+                ctx.stroke();
+
+                // 6. Event Markers (TP, DE, FCs, Drop)
+                phases.forEach(ev => {
+                    if (activeSimTime === null || ev.t <= activeSimTime) {
+                        const ex = xForT(ev.t);
+                        const ey = yForTemp(ev.temp);
+
+                        ctx.strokeStyle = ev.color + '55';
+                        ctx.setLineDash([2, 2]);
+                        ctx.beginPath();
+                        ctx.moveTo(ex, pad.top);
+                        ctx.lineTo(ex, pad.top + plotH);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+
+                        ctx.beginPath();
+                        ctx.arc(ex, ey, 4.5, 0, Math.PI * 2);
+                        ctx.fillStyle = ev.color;
+                        ctx.fill();
+                        ctx.strokeStyle = '#0f0b09';
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+
+                        ctx.fillStyle = ev.color;
+                        ctx.font = 'bold 9.5px "JetBrains Mono", monospace';
+                        ctx.textAlign = ex > pad.left + plotW * 0.8 ? 'right' : 'center';
+                        ctx.fillText(ev.label, ex, ey - 8);
+                    }
+                });
+            }
+        }
+
+        function drawRoastChemistryChart() {
+            const canvas = document.getElementById('roChemistryCanvas');
+            if (!canvas) return;
+            if (!roComputed) calculateRoastingPhysics();
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+            const pad = { top: 16, right: 16, bottom: 26, left: 36 };
+            const plotW = w - pad.left - pad.right;
+            const plotH = h - pad.top - pad.bottom;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // X Axis: Bean Temp from 130°C to 222°C
+            const minT = 130, maxT = 222;
+            const xForTemp = t => pad.left + ((t - minT) / (maxT - minT)) * plotW;
+            const yForPct = p => pad.top + plotH - (p / 100) * plotH;
+
+            ctx.strokeStyle = 'rgba(245, 235, 225, 0.08)';
+            ctx.font = '9.5px "JetBrains Mono", monospace';
+            ctx.fillStyle = 'rgba(245, 235, 225, 0.55)';
+            [140, 160, 180, 200, 215].forEach(t => {
+                const x = xForTemp(t);
+                ctx.beginPath();
+                ctx.moveTo(x, pad.top);
+                ctx.lineTo(x, pad.top + plotH);
+                ctx.stroke();
+                ctx.textAlign = 'center';
+                ctx.fillText(`${t}°C`, x, pad.top + plotH + 16);
+            });
+
+            // Draw 3 Chemical Evolution Curves:
+            // 1. Organic & Chlorogenic Acids (Amber - peaks around 190-198°C then degrades)
+            // 2. Sucrose Caramelization & Maillard Sweetness (Emerald - peaks around 202-206°C)
+            // 3. Pyrolysis / Bitter Roast Compounds (Rose - rises sharply above 208°C)
+            const drawChemCurve = (fn, color, label, labelT) => {
+                ctx.beginPath();
+                for (let t = minT; t <= maxT; t += 2) {
+                    const x = xForTemp(t);
+                    const y = yForPct(fn(t));
+                    if (t === minT) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                const lx = xForTemp(labelT);
+                const ly = yForPct(fn(labelT));
+                ctx.fillStyle = color;
+                ctx.font = 'bold 9.5px "Noto Sans TC", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(label, lx, ly - 6);
+            };
+
+            drawChemCurve(t => Math.max(15, 92 * Math.exp(-Math.pow((t - 192) / 26, 2))), '#fbbf24', '🍋果酸與花香揮發物', 184);
+            drawChemCurve(t => Math.max(10, 94 * Math.exp(-Math.pow((t - 204) / 18, 2))), '#34d399', '🍯梅納與焦糖化甜感', 203);
+            drawChemCurve(t => Math.min(98, 8 + Math.pow(Math.max(0, t - 188) / 3.4, 2)), '#fb7185', '🍫焦苦與熱裂解物', 214);
+
+            // Current Drop Temp Vertical Line Marker
+            const dropX = xForTemp(Math.max(minT, Math.min(maxT, roComputed.actualDropTemp)));
+            ctx.strokeStyle = '#f5ebe1';
+            ctx.lineWidth = 1.8;
+            ctx.setLineDash([4, 3]);
+            ctx.beginPath();
+            ctx.moveTo(dropX, pad.top);
+            ctx.lineTo(dropX, pad.top + plotH);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = '#ecc38e';
+            ctx.font = 'bold 10px "JetBrains Mono", monospace';
+            ctx.textAlign = dropX > pad.left + plotW * 0.75 ? 'right' : 'left';
+            ctx.fillText(`目前下豆 ${roComputed.actualDropTemp}°C`, dropX + (dropX > pad.left + plotW * 0.75 ? -5 : 5), pad.top + 11);
+        }
+
+        function drawRoastRadarChart() {
+            const canvas = document.getElementById('roRadarCanvas');
+            if (!canvas) return;
+            if (!roComputed) calculateRoastingPhysics();
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+            const cx = w / 2;
+            const cy = h / 2 + 4;
+            const radius = Math.min(w, h) * 0.35;
+
+            ctx.clearRect(0, 0, w, h);
+
+            const s = roComputed.sensory;
+            const axes = [
+                { label: '花果揚香', val: s.floral },
+                { label: '明亮果酸', val: s.acidity },
+                { label: '梅納蜜甜', val: s.sweet },
+                { label: '乾淨度',   val: s.clean },
+                { label: '醇厚黏稠', val: s.body },
+                { label: '苦甜烘焙', val: s.bitter }
+            ];
+            const n = axes.length;
+
+            for (let level = 1; level <= 4; level++) {
+                const r = (radius / 4) * level;
+                ctx.beginPath();
+                for (let i = 0; i < n; i++) {
+                    const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+                    const x = cx + r * Math.cos(angle);
+                    const y = cy + r * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = 'rgba(245, 235, 225, 0.12)';
+                ctx.stroke();
+            }
+
+            ctx.font = 'bold 10px "Noto Sans TC", sans-serif';
+            axes.forEach((ax, i) => {
+                const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + radius * Math.cos(angle), cy + radius * Math.sin(angle));
+                ctx.strokeStyle = 'rgba(245, 235, 225, 0.15)';
+                ctx.stroke();
+
+                const lx = cx + (radius + 20) * Math.cos(angle);
+                const ly = cy + (radius + 14) * Math.sin(angle);
+                ctx.fillStyle = '#f5ebe1';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(ax.label, lx, ly);
+            });
+
+            ctx.beginPath();
+            axes.forEach((ax, i) => {
+                const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+                const r = (ax.val / 100) * radius;
+                const x = cx + r * Math.cos(angle);
+                const y = cy + r * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(251, 146, 60, 0.30)';
+            ctx.fill();
+            ctx.strokeStyle = '#fb923c';
+            ctx.lineWidth = 2.2;
+            ctx.stroke();
+        }
+
+        function autoOptimizeRoastProfile() {
+            stopRoastSimulation(false);
+            // Automatically tune charge temp, dev time, drop temp & 5-stage heat/air for current bean & batch
+            const isLightFloral = roState.dropTemp < 205;
+            document.getElementById('roChargeTempSlider').value = isLightFloral ? 186 : 180;
+            document.getElementById('roDrumSpeedSlider').value = 85;
+            document.getElementById('roDevTimeSlider').value = isLightFloral ? 70 : 95;
+            document.getElementById('roDropTempSlider').value = isLightFloral ? 202.5 : 207.0;
+            applyKaleidoStepDownRule();
+        }
+
+        function toggleRoastSimulation() {
+            if (roState.isSimulating) {
+                stopRoastSimulation(false);
+            } else {
+                startRoastSimulation();
+            }
+        }
+
+        function startRoastSimulation() {
+            calculateRoastingPhysics();
+            roState.isSimulating = true;
+            roState.simElapsed = 0;
+            roState.lastFrameTime = performance.now();
+
+            document.getElementById('roSimBtnIcon').textContent = '⏹️';
+            document.getElementById('roSimBtnText').textContent = '停止烘豆模擬 (Stop Roast)';
+            roState.simFrameId = requestAnimationFrame(roastSimStep);
+        }
+
+        function stopRoastSimulation(skipToEnd = false) {
+            roState.isSimulating = false;
+            if (roState.simFrameId) {
+                cancelAnimationFrame(roState.simFrameId);
+                roState.simFrameId = null;
+            }
+            const icon = document.getElementById('roSimBtnIcon');
+            const txt = document.getElementById('roSimBtnText');
+            const badge = document.getElementById('roSimStatusBadge');
+            if (icon) icon.textContent = '▶️';
+            if (txt) txt.textContent = '開始動態烘豆模擬 (Start Roast)';
+            if (badge) badge.textContent = skipToEnd ? '出豆冷卻完成 (Roast Complete)' : '完成預覽模式';
+
+            if (roComputed && roComputed.timeSeries.length > 0) {
+                const lastPt = roComputed.timeSeries[roComputed.timeSeries.length - 1];
+                updateRoasterApparatusSVG(lastPt, false);
+                drawRoastArtisanChart(null);
+            }
+        }
+
+        function roastSimStep(now) {
+            if (!roState.isSimulating) return;
+            const dtReal = (now - roState.lastFrameTime) / 1000;
+            roState.lastFrameTime = now;
+
+            // 50x speed so a 9m30s roast animates smoothly in ~11.5 seconds
+            roState.simElapsed += dtReal * 50.0;
+
+            if (roState.simElapsed >= roComputed.totalTimeSec) {
+                stopRoastSimulation(true);
+                return;
+            }
+
+            let currentPt = roComputed.timeSeries[0];
+            for (let p of roComputed.timeSeries) {
+                if (p.t <= roState.simElapsed) currentPt = p;
+                else break;
+            }
+
+            document.getElementById('roSimStatusBadge').textContent = `🔥 ${currentPt.phaseTitle} (${currentPt.bt}°C)...`;
+            updateRoasterApparatusSVG(currentPt, true);
+            drawRoastArtisanChart(roState.simElapsed);
+
+            roState.simFrameId = requestAnimationFrame(roastSimStep);
+        }
+
+        // Cross-Lab Handoff: Send freshly roasted beans directly into Pour-Over or Espresso Lab!
+        function sendRoastedBeanToLab(targetLab) {
+            if (!roComputed) calculateRoastingPhysics();
+            // Map Agtron (85 light -> 35 dark) to 1-100 roast slider
+            const mappedRoast = Math.max(5, Math.min(98, Math.round((86 - roComputed.wholeAgtron) * 1.85)));
+            // Map sensory floral vs bitter/body to 0-100 charIndex
+            const mappedChar = Math.max(5, Math.min(95, Math.round(100 - roComputed.sensory.floral * 0.85 + roComputed.sensory.bitter * 0.35)));
+
+            if (targetLab === 'pourover') {
+                document.getElementById('poRoastSlider').value = mappedRoast;
+                document.getElementById('poCharSlider').value = mappedChar;
+                // Recommend optimal water temp based on roast level (Light: 92°C, Medium: 89°C, Dark: 85°C)
+                const recTemp = Math.max(84, Math.min(94, Math.round(93 - mappedRoast * 0.09)));
+                document.getElementById('poBaseTempSlider').value = recTemp;
+                syncAllPulseTemps();
+                switchLabMode('pourover');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Espresso Lab: adjust temperature & grind slightly for roast degree
+                const recEspTemp = Number(Math.max(89.0, Math.min(95.0, 94.5 - mappedRoast * 0.05)).toFixed(1));
+                const recEspGrind = Number(Math.max(3.2, Math.min(5.2, 3.8 + mappedRoast * 0.012)).toFixed(1));
+                document.getElementById('tempSlider').value = recEspTemp;
+                document.getElementById('grindSlider').value = recEspGrind;
+                switchLabMode('espresso');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        
+
+        
         const poState = {
             roast: 22,          // 1 (Nordic Light) to 100 (Dark Italian)
             charIndex: 15,      // 0 (Floral/Fruity) to 100 (Nutty/Cocoa/Roasty)
@@ -3146,43 +5051,52 @@
             activeLabMode = mode;
             const espMain = document.getElementById('espressoLabMain');
             const poMain = document.getElementById('pouroverLabMain');
+            const roMain = document.getElementById('roastLabMain');
             const espBar = document.getElementById('espressoPresetsBar');
             const poBar = document.getElementById('pouroverPresetsBar');
+            const roBar = document.getElementById('roastPresetsBar');
             const tabEsp = document.getElementById('tabBtnEspresso');
             const tabPo = document.getElementById('tabBtnPourover');
+            const tabRo = document.getElementById('tabBtnRoast');
             const icon = document.getElementById('labBrandIcon');
 
-            if (mode === 'pourover') {
+            const inactiveClass = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 text-cream/75 hover:text-crema-light';
+            const activeClass = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-gradient-to-r from-crema-dark to-crema text-espresso-950 shadow';
+
+            tabEsp.className = mode === 'espresso' ? activeClass : inactiveClass;
+            tabPo.className = mode === 'pourover' ? activeClass : inactiveClass;
+            if (tabRo) tabRo.className = mode === 'roast' ? activeClass : inactiveClass;
+
+            espMain.classList.toggle('hidden', mode !== 'espresso');
+            poMain.classList.toggle('hidden', mode !== 'pourover');
+            if (roMain) roMain.classList.toggle('hidden', mode !== 'roast');
+
+            espBar.classList.toggle('hidden', mode !== 'espresso');
+            poBar.classList.toggle('hidden', mode !== 'pourover');
+            poBar.classList.toggle('flex', mode === 'pourover');
+            if (roBar) {
+                roBar.classList.toggle('hidden', mode !== 'roast');
+                roBar.classList.toggle('flex', mode === 'roast');
+            }
+
+            if (mode === 'roast') {
                 stopShotSimulation(false);
-                espMain.classList.add('hidden');
-                espBar.classList.add('hidden');
-                poMain.classList.remove('hidden');
-                poBar.classList.remove('hidden');
-                poBar.classList.add('flex');
-
-                tabPo.className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-gradient-to-r from-crema-dark to-crema text-espresso-950 shadow';
-                tabEsp.className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 text-cream/75 hover:text-crema-light';
+                stopPouroverSimulation(false);
+                icon.textContent = '🔥';
+                onRoastParamChange(true);
+            } else if (mode === 'pourover') {
+                stopShotSimulation(false);
+                stopRoastSimulation(false);
                 icon.textContent = '🫖';
-
                 onPouroverParamChange(true);
-                setMobileSectionView(currentMobileSection);
-                updateMobileLiveDock();
             } else {
                 stopPouroverSimulation(false);
-                poMain.classList.add('hidden');
-                poBar.classList.add('hidden');
-                poBar.classList.remove('flex');
-                espMain.classList.remove('hidden');
-                espBar.classList.remove('hidden');
-
-                tabEsp.className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 bg-gradient-to-r from-crema-dark to-crema text-espresso-950 shadow';
-                tabPo.className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition flex items-center gap-1.5 text-cream/75 hover:text-crema-light';
+                stopRoastSimulation(false);
                 icon.textContent = '☕';
-
                 onParamChange(true);
-                setMobileSectionView(currentMobileSection);
-                updateMobileLiveDock();
             }
+            setMobileSectionView(currentMobileSection);
+            updateMobileLiveDock();
         }
 
         function renderPourStagesUI() {
@@ -4121,7 +6035,11 @@
 
         // Handle Responsive Canvas Redraws
         window.addEventListener('resize', () => {
-            if (activeLabMode === 'pourover') {
+            if (activeLabMode === 'roast') {
+                drawRoastArtisanChart(roState.isSimulating ? roState.simElapsed : null);
+                drawRoastChemistryChart();
+                drawRoastRadarChart();
+            } else if (activeLabMode === 'pourover') {
                 drawPouroverFlowChart(poState.isSimulating ? poState.simElapsed : null);
                 drawPouroverGoldCupChart();
                 drawPouroverRadarChart();
@@ -4139,13 +6057,18 @@
             enhanceAllRangeSlidersWithTouchSteppers();
             applyPreset('golden');
             applyPouroverPreset('peru_geisha');
-            switchLabMode('pourover');
+            applyRoastPreset('m10_peru_geisha');
+            switchLabMode('roast');
             updateDripperGeometrySVG();
             updateMobileLiveDock();
 
             if (typeof ResizeObserver !== 'undefined') {
                 const ro = new ResizeObserver(() => {
-                    if (activeLabMode === 'pourover') {
+                    if (activeLabMode === 'roast') {
+                        drawRoastArtisanChart(roState.isSimulating ? roState.simElapsed : null);
+                        drawRoastChemistryChart();
+                        drawRoastRadarChart();
+                    } else if (activeLabMode === 'pourover') {
                         drawPouroverFlowChart(poState.isSimulating ? poState.simElapsed : null);
                         drawPouroverGoldCupChart();
                         drawPouroverRadarChart();
@@ -4155,7 +6078,7 @@
                         drawFlavorRadarChart();
                     }
                 });
-                ['flowCurveCanvas', 'brewingChartCanvas', 'flavorRadarCanvas', 'poFlowCurveCanvas', 'poGoldCupCanvas', 'poRadarCanvas'].forEach(id => {
+                ['flowCurveCanvas', 'brewingChartCanvas', 'flavorRadarCanvas', 'poFlowCurveCanvas', 'poGoldCupCanvas', 'poRadarCanvas', 'roArtisanCanvas', 'roChemistryCanvas', 'roRadarCanvas'].forEach(id => {
                     const el = document.getElementById(id);
                     if (el && el.parentElement) ro.observe(el.parentElement);
                 });
