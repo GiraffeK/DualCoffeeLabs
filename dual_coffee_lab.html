@@ -417,7 +417,7 @@
             </div>
 
             <!-- Espresso Quick Presets Bar -->
-            <div id="espressoPresetsBar" class="flex items-center gap-1.5 sm:gap-2 pt-1 border-t border-crema/10 overflow-x-auto mobile-scroll-x py-1 lg:flex-wrap">
+            <div id="espressoPresetsBar" class="hidden items-center gap-1.5 sm:gap-2 pt-1 border-t border-crema/10 overflow-x-auto mobile-scroll-x py-1 lg:flex-wrap">
                 <span class="text-xs font-mono text-cream/50 mr-1 flex items-center gap-1 shrink-0">
                     <svg class="w-3.5 h-3.5 text-crema" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     義式食譜預設：
@@ -440,7 +440,7 @@
             </div>
 
             <!-- Pour-Over Functional Control Bar: [1. 挑選咖啡豆] + [2. 沖煮法流派與動態演化] -->
-            <div id="pouroverPresetsBar" class="hidden flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-crema/15 py-1 relative">
+            <div id="pouroverPresetsBar" class="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-crema/15 py-1 relative">
                 <div class="flex flex-wrap items-center gap-2.5 flex-1 min-w-0">
                     <!-- ZONE 1 (Red Box): Clickable Bean Selector Dropdown -->
                     <div class="relative" id="poBeanDropdownWrap">
@@ -540,7 +540,7 @@
         </div>
     </header>
 
-    <main id="espressoLabMain" class="max-w-[1600px] mx-auto px-4 lg:px-8 pt-6">
+    <main id="espressoLabMain" class="hidden max-w-[1600px] mx-auto px-4 lg:px-8 pt-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
             <!-- LEFT COLUMN: PARAMETER CONTROLS & LIVE ESPRESSO SIMULATOR (4 Columns) -->
@@ -1058,7 +1058,7 @@
         </div>
     </main>
 
-    <main id="pouroverLabMain" class="hidden max-w-[1600px] mx-auto px-4 lg:px-8 pt-6">
+    <main id="pouroverLabMain" class="max-w-[1600px] mx-auto px-4 lg:px-8 pt-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
             <!-- LEFT COLUMN: POUR-OVER CONTROLS & DRIPPER SIMULATOR (5 Columns) -->
@@ -3466,7 +3466,6 @@
         let lockedEspressoRef = null;
         let lockedPouroverRef = null;
         let currentMobileSection = 'all';
-        let activeLabMode = 'pourover';
 
         function stepStageParam(idx, field, delta) {
             if (!poState.pours[idx]) return;
@@ -3826,7 +3825,7 @@
             }
         }
 
-        let activeLabMode = 'espresso'; // 'espresso' | 'pourover'
+        let activeLabMode = 'pourover'; // 'espresso' | 'pourover' | 'roast'
 
         // =========================================================================
         // MODULE 3: INTERACTIVE COFFEE ROASTING LAB (KALEIDO SNIPER M10 & POPULAR ROASTERS)
