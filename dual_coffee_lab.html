@@ -1182,9 +1182,9 @@
                         </div>
                     </div>
 
-                    <!-- Merged Brewing Parameters Strip (Dose, Ratio, Agitation) -->
-                    <div class="space-y-2 mb-2.5 bg-espresso-950/70 border border-crema/15 rounded-xl p-2.5">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- Merged Brewing Parameters Strip (Dose, Ratio, Agitation) - Compacted -->
+                    <div class="mb-1.5 bg-espresso-950/70 border border-crema/15 rounded-xl p-2 space-y-1.5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <div>
                                 <div class="flex justify-between items-baseline mb-0.5">
                                     <label for="poDoseSlider" class="text-[11px] text-cream/80">⚖️ 咖啡粉重 (Dose)</label>
@@ -1202,43 +1202,43 @@
                             </div>
                         </div>
 
-                        <div class="pt-1.5 border-t border-crema/10 flex flex-wrap items-center justify-between gap-1.5">
-                            <span class="text-[11px] font-medium text-cream/90">🥄 沖煮手法與攪拌擾流：</span>
+                        <div class="pt-1 border-t border-crema/10 flex flex-wrap items-center justify-between gap-1">
+                            <span class="text-[10px] font-medium text-cream/70">🥄 擾流手法：</span>
                             <div class="flex flex-wrap gap-1">
-                                <button type="button" onclick="selectAgitation('center')" id="agit-center" class="agit-btn px-2 py-0.5 rounded text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
+                                <button type="button" onclick="selectAgitation('center')" id="agit-center" class="agit-btn px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
                                     🎯 中心定點
                                 </button>
-                                <button type="button" onclick="selectAgitation('circle')" id="agit-circle" class="agit-btn active px-2 py-0.5 rounded text-[11px] bg-crema/25 border border-crema text-crema-light transition">
+                                <button type="button" onclick="selectAgitation('circle')" id="agit-circle" class="agit-btn active px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] bg-crema/25 border border-crema text-crema-light transition">
                                     🌀 同心圓繞圈
                                 </button>
-                                <button type="button" onclick="selectAgitation('swirl')" id="agit-swirl" class="agit-btn px-2 py-0.5 rounded text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
-                                    💫 悶蒸搖晃(Rao)
+                                <button type="button" onclick="selectAgitation('swirl')" id="agit-swirl" class="agit-btn px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
+                                    💫 悶蒸搖晃
                                 </button>
-                                <button type="button" onclick="selectAgitation('stir')" id="agit-stir" class="agit-btn px-2 py-0.5 rounded text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
+                                <button type="button" onclick="selectAgitation('stir')" id="agit-stir" class="agit-btn px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
                                     🥄 十字攪拌
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Synchronized Method Evolution Strip inside Card 2 (Compact) -->
-                    <div class="mb-2 bg-espresso-950/90 border border-emerald-500/30 rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2">
+                    <!-- Synchronized Method Evolution Strip inside Card 2 (Ultra-Compact) -->
+                    <div class="mb-1.5 bg-espresso-950/90 border border-emerald-500/30 rounded-xl px-2 py-1 flex items-center justify-between gap-1.5">
                         <div class="min-w-0 flex-1">
                             <div class="flex items-center gap-1.5">
                                 <span id="poCardMethodTitle" class="text-xs font-bold text-emerald-200 truncate">🏆 粕谷哲 4:6 法・五段變溫沖煮</span>
-                                <span id="poCardMethodBadge" class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 shrink-0">原版基準</span>
+                                <span id="poCardMethodBadge" class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 shrink-0">原版基準</span>
                             </div>
-                            <div id="poCardMethodSub" class="text-[10px] font-mono text-cream/60 truncate mt-0.5">
+                            <div id="poCardMethodSub" class="text-[9px] font-mono text-cream/60 truncate mt-0.5">
                                 配水結構：前段 43% : 後段 57% ｜ 溫度策略：91°C ➔ 89°C 階梯降溫
                             </div>
                         </div>
-                        <button type="button" onclick="togglePoPickerMenu('method', event)" class="text-[11px] px-2 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/35 text-emerald-300 font-mono transition shrink-0">
+                        <button type="button" onclick="togglePoPickerMenu('method', event)" class="text-[10px] px-2 py-0.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/35 text-emerald-300 font-mono transition shrink-0">
                             🫖 切換流派
                         </button>
                     </div>
 
                     <!-- Dynamic Pour Stages Rows -->
-                    <div id="pourStagesContainer" class="space-y-1.5 max-h-[440px] overflow-y-auto pr-0.5"></div>
+                    <div id="pourStagesContainer" class="space-y-1.5 max-h-[460px] overflow-y-auto overflow-x-hidden pr-0.5"></div>
 
                     <!-- Summary Bar -->
                     <div class="mt-2.5 pt-2 border-t border-crema/15 flex flex-wrap items-center justify-between text-xs font-mono gap-2">
@@ -5887,98 +5887,97 @@
                 const cleanLabel = (p.label || '').replace(/【.*?】/g, '').trim();
                 const timingHtml = buildCompactStageTimingHtml(idx);
 
-                // Switch valve buttons (if Switch dripper is active)
+                // Compact Switch valve pills (Row 1)
                 const switchControlsHtml = isSwitch ? `
-                    <div class="flex items-center gap-1 shrink-0">
-                        <span class="font-mono text-emerald-300/85">閥門:</span>
+                    <div class="inline-flex items-center gap-0.5 shrink-0 ml-1">
                         <button type="button" onclick="updateStageValveMode(${idx}, 'open')"
-                            class="px-1.5 py-0.5 rounded font-mono transition ${valve === 'open' ? 'bg-emerald-500/30 text-emerald-200 border border-emerald-400 font-bold' : 'bg-espresso-900 text-cream/60 border border-espresso-700 hover:text-cream'}">
-                            🟢開閥落水
+                            class="px-1 py-0.5 rounded font-mono text-[9px] transition ${valve === 'open' ? 'bg-emerald-500/30 text-emerald-200 border border-emerald-400 font-bold' : 'bg-espresso-900 text-cream/60 border border-espresso-700 hover:text-cream'}">
+                            🟢落水
                         </button>
                         <button type="button" onclick="updateStageValveMode(${idx}, 'closed_release')"
-                            class="px-1.5 py-0.5 rounded font-mono transition ${valve === 'closed' && releaseMode === 'open_after' ? 'bg-amber-500/30 text-amber-200 border border-amber-400 font-bold' : 'bg-espresso-900 text-cream/60 border border-espresso-700 hover:text-cream'}">
-                            🔒浸泡➔開閥
+                            class="px-1 py-0.5 rounded font-mono text-[9px] transition ${valve === 'closed' && releaseMode === 'open_after' ? 'bg-amber-500/30 text-amber-200 border border-amber-400 font-bold' : 'bg-espresso-900 text-cream/60 border border-espresso-700 hover:text-cream'}">
+                            🔒浸泡
                         </button>
                         ${!isLast ? `
                         <button type="button" onclick="updateStageValveMode(${idx}, 'closed_hold')"
-                            class="px-1.5 py-0.5 rounded font-mono transition ${valve === 'closed' && releaseMode === 'keep_closed' ? 'bg-rose-500/30 text-rose-200 border border-rose-400 font-bold' : 'bg-espresso-900 text-cream/60 border border-espresso-700 hover:text-cream'}">
-                            🔒續浸下段
+                            class="px-1 py-0.5 rounded font-mono text-[9px] transition ${valve === 'closed' && releaseMode === 'keep_closed' ? 'bg-rose-500/30 text-rose-200 border border-rose-400 font-bold' : 'bg-espresso-900 text-cream/60 border border-espresso-700 hover:text-cream'}">
+                            🔒續浸
                         </button>
                         ` : ''}
                     </div>
                 ` : '';
 
-                // Timing & Stage Duration Steppers (Stage 1 Bloom / Interval Duration / Closed Valve Steep)
+                // Timing & Stage Duration Steppers (Column 4)
                 const timingControlsHtml = (valve === 'closed') ? `
-                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/20 shrink-0" title="Switch 止水浸泡秒數">
-                        <span class="font-mono text-cream/70">⏳浸泡:</span>
-                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(${idx}, 'steepSec', -1)">−</button>
-                        <span id="stageSteepVal-${idx}" class="font-mono font-bold text-cream w-7 text-center">${steepSec}s</span>
-                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(${idx}, 'steepSec', 1)">+</button>
+                    <div class="flex items-center justify-between px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/20" title="Switch 止水浸泡秒數 (點擊 ±1s)">
+                        <span class="text-cream/70 text-[10px]">⏳浸泡</span>
+                        <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'steepSec', -1)">−</button>
+                        <span id="stageSteepVal-${idx}" class="font-bold text-cream">${steepSec}s</span>
+                        <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'steepSec', 1)">+</button>
                     </div>
                 ` : (idx === 0 ? `
-                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/20 shrink-0" title="第1段悶蒸排氣總時長（直接連動時間軸 00:00~XX）">
-                        <span class="font-mono text-cream/70">⏳悶蒸總長:</span>
-                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(0, 'stageSec', -1)">−</button>
-                        <span id="stageSecVal-0" class="font-mono font-bold text-cream w-7 text-center">${stageSec}s</span>
-                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(0, 'stageSec', 1)">+</button>
+                    <div class="flex items-center justify-between px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/20" title="第1段悶蒸總時長 (點擊 ±1s)">
+                        <span class="text-cream/70 text-[10px]">⏳悶蒸</span>
+                        <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(0, 'stageSec', -1)">−</button>
+                        <span id="stageSecVal-0" class="font-bold text-cream">${stageSec}s</span>
+                        <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(0, 'stageSec', 1)">+</button>
                     </div>
                 ` : (!isLast ? `
-                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/20 shrink-0" title="本段注水與滴濾間隔總長度">
-                        <span class="font-mono text-cream/70">⏳間隔時長:</span>
-                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(${idx}, 'stageSec', -1)">−</button>
-                        <span id="stageSecVal-${idx}" class="font-mono font-bold text-cream w-7 text-center">${stageSec}s</span>
-                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(${idx}, 'stageSec', 1)">+</button>
+                    <div class="flex items-center justify-between px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/20" title="本段間隔時長 (點擊 ±1s)">
+                        <span class="text-cream/70 text-[10px]">⏳間隔</span>
+                        <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'stageSec', -1)">−</button>
+                        <span id="stageSecVal-${idx}" class="font-bold text-cream">${stageSec}s</span>
+                        <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'stageSec', 1)">+</button>
                     </div>
-                ` : ''));
+                ` : `
+                    <div class="flex items-center justify-center px-1.5 py-0.5 rounded bg-espresso-900/60 border border-crema/10 text-cream/50 text-[10px]">
+                        <span>⏳ 滴濾至完成</span>
+                    </div>
+                `));
 
                 return `
-                <div class="bg-espresso-950/85 border ${isSwitch && valve === 'closed' ? 'border-amber-400/45' : 'border-crema/15'} rounded-lg px-2.5 py-1.5 transition">
-                    <!-- Row 1: Stage Label + Water + Flow Speed (with pour duration) + Temp -->
-                    <div class="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2">
-                        <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                <div class="bg-espresso-950/85 border ${isSwitch && valve === 'closed' ? 'border-amber-400/45' : 'border-crema/15'} rounded-lg p-2 transition">
+                    <!-- Row 1: Stage Info & Valve Mode (Left) + Schedule Timing Badge (Right) -->
+                    <div class="flex items-center justify-between gap-1.5 min-w-0">
+                        <div class="flex items-center gap-1 min-w-0 flex-1">
                             <span class="w-4 h-4 rounded-full ${isSwitch && valve === 'closed' ? 'bg-amber-500/30 text-amber-200' : 'bg-crema/20 text-crema-light'} font-mono text-[10px] flex items-center justify-center font-bold shrink-0">${idx + 1}</span>
-                            <span class="text-xs font-medium text-cream truncate" title="${cleanLabel}">${cleanLabel}</span>
+                            <span class="text-xs font-semibold text-cream truncate max-w-[120px] sm:max-w-[170px]" title="${cleanLabel}">${cleanLabel}</span>
+                            ${switchControlsHtml}
                         </div>
-                        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 shrink-0">
-                            <!-- Water Volume -->
-                            <div class="flex items-center gap-0.5" title="本段注水量">
-                                <span class="text-[10px] font-mono text-sky-300">💧</span>
-                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'water', -5)">−</button>
-                                <input type="range" min="20" max="240" step="5" value="${p.water}" class="w-14 sm:w-16" oninput="updateStageParam(${idx}, 'water', this.value)" onchange="updateStageParam(${idx}, 'water', this.value)">
-                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'water', 5)">+</button>
-                                <span id="stageWaterVal-${idx}" class="font-mono text-[11px] font-bold text-sky-300 w-10 text-right">${p.water}ml</span>
-                            </div>
-
-                            <!-- Flow Speed & Pour Duration -->
-                            <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-espresso-900/80 border border-espresso-700" title="本段手沖注水水流速度與耗時">
-                                <span class="text-[10px] font-mono text-sky-300">🌊</span>
-                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'pourSpeed', -0.5)">−</button>
-                                <span id="stageSpeedVal-${idx}" class="font-mono text-[11px] font-bold text-sky-300 w-11 text-center">${pourSpeed.toFixed(1)}<span class="text-[9px] font-normal text-sky-400/80">ml/s</span></span>
-                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'pourSpeed', 0.5)">+</button>
-                                <span class="text-[10px] font-mono text-cream/70 ml-0.5" id="stagePourDurationTag-${idx}">(注${pourDuration}s)</span>
-                            </div>
-
-                            <!-- Temperature -->
-                            <div class="flex items-center gap-0.5" title="本段注水溫度">
-                                <span class="text-[10px] font-mono text-amber-300">🌡️</span>
-                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'temp', -1)">−</button>
-                                <input type="range" min="70" max="96" step="1" value="${p.temp}" class="w-12 sm:w-14" oninput="updateStageParam(${idx}, 'temp', this.value)" onchange="updateStageParam(${idx}, 'temp', this.value)">
-                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'temp', 1)">+</button>
-                                <span id="stageTempVal-${idx}" class="font-mono text-[11px] font-bold text-amber-300 w-8 text-right">${p.temp}°C</span>
-                            </div>
+                        <div id="stageTimingBadge-${idx}" class="shrink-0 text-right font-mono text-[10px] ml-auto">
+                            ${timingHtml}
                         </div>
                     </div>
 
-                    <!-- Row 2: Valve Controls + Timing Steppers + Timing Badge -->
-                    <div class="mt-1 pt-1 border-t border-crema/10 flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5 text-[10px]">
-                        <div class="flex flex-wrap items-center gap-1.5 shrink-0">
-                            ${switchControlsHtml}
-                            ${timingControlsHtml}
+                    <!-- Row 2: 4 Unified Stepper Controls (Water, Flow Speed, Temp, Stage Duration) -->
+                    <div class="mt-1 pt-1 border-t border-crema/10 grid grid-cols-2 sm:grid-cols-4 gap-1 text-[11px] font-mono">
+                        <!-- 1. Water Volume -->
+                        <div class="flex items-center justify-between px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/15" title="本段注水量 (點擊 ±5ml)">
+                            <span class="text-sky-300 text-[10px]">💧</span>
+                            <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'water', -5)">−</button>
+                            <span id="stageWaterVal-${idx}" class="font-bold text-sky-300">${p.water}ml</span>
+                            <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'water', 5)">+</button>
                         </div>
-                        <div id="stageTimingBadge-${idx}" class="min-w-0 truncate text-right ml-auto">
-                            ${timingHtml}
+
+                        <!-- 2. Flow Speed & Pour Duration -->
+                        <div class="flex items-center justify-between px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/15" title="手沖水流速度與耗時 (點擊 ±0.5ml/s)">
+                            <span class="text-sky-300 text-[10px]">🌊</span>
+                            <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'pourSpeed', -0.5)">−</button>
+                            <span id="stageSpeedVal-${idx}" class="font-bold text-sky-300">${pourSpeed.toFixed(1)}<span class="text-[9px] font-normal text-sky-400/80">m/s</span></span>
+                            <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'pourSpeed', 0.5)">+</button>
+                            <span class="text-[9px] text-cream/70" id="stagePourDurationTag-${idx}">注${pourDuration}s</span>
                         </div>
+
+                        <!-- 3. Water Temperature -->
+                        <div class="flex items-center justify-between px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/15" title="本段注水溫度 (點擊 ±1°C)">
+                            <span class="text-amber-300 text-[10px]">🌡️</span>
+                            <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'temp', -1)">−</button>
+                            <span id="stageTempVal-${idx}" class="font-bold text-amber-300">${p.temp}°C</span>
+                            <button type="button" class="w-4 h-4 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-bold flex items-center justify-center transition" onclick="stepStageParam(${idx}, 'temp', 1)">+</button>
+                        </div>
+
+                        <!-- 4. Stage Duration Stepper -->
+                        ${timingControlsHtml}
                     </div>
                 </div>
                 `;
