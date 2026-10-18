@@ -3466,6 +3466,7 @@
         let lockedEspressoRef = null;
         let lockedPouroverRef = null;
         let currentMobileSection = 'all';
+        let activeLabMode = 'pourover';
 
         function stepStageParam(idx, field, delta) {
             if (!poState.pours[idx]) return;
@@ -7311,7 +7312,7 @@
             applyPreset('golden');
             applyPouroverPreset('peru_geisha');
             applyRoastPreset('m10_peru_geisha');
-            switchLabMode('roast');
+            switchLabMode('pourover');
             updateDripperGeometrySVG();
             updateMobileLiveDock();
 
