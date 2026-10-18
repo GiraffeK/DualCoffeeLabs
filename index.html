@@ -342,6 +342,26 @@
             position: relative;
         }
 
+        /* Solid Opaque Popover Menus for Bean & Method Pickers (Prevents text bleed-through) */
+        .po-picker-popover {
+            background-color: #110b08 !important;
+            background-image: linear-gradient(180deg, #1a120e 0%, #100b08 100%) !important;
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.96), 0 0 0 1px rgba(212, 154, 89, 0.28) !important;
+            z-index: 9999 !important;
+        }
+        .po-picker-item {
+            background-color: #1d1510 !important;
+        }
+        .po-picker-item:hover {
+            background-color: #2a1e17 !important;
+        }
+        .po-picker-item.selected-bean {
+            background-color: #38181e !important;
+        }
+        .po-picker-item.selected-method {
+            background-color: #112e24 !important;
+        }
+
     </style>
 </head>
 <body class="min-h-screen antialiased selection:bg-crema selection:text-espresso-950 pb-10">
@@ -353,7 +373,7 @@
         </div>
     </noscript>
 
-    <header class="relative lg:sticky lg:top-0 z-30 bg-espresso-950/90 backdrop-blur-md border-b border-crema/15 px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3">
+    <header style="z-index: 500;" class="relative lg:sticky lg:top-0 z-50 bg-espresso-950/95 backdrop-blur-md border-b border-crema/15 px-3 sm:px-4 lg:px-8 py-2.5 sm:py-3">
         <div class="max-w-[1600px] mx-auto flex flex-col gap-2.5 sm:gap-3">
             <!-- Top Row: Brand, Lab Mode Switcher & Audio Button -->
             <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3">
@@ -419,30 +439,67 @@
                 </button>
             </div>
 
-            <!-- Pour-Over Quick Presets Bar (Integrated with Notebook Beans) -->
-            <div id="pouroverPresetsBar" class="hidden items-center gap-1.5 sm:gap-2 pt-1 border-t border-crema/10 overflow-x-auto mobile-scroll-x py-1 lg:flex-wrap">
-                <span class="text-xs font-mono text-cream/50 mr-1 flex items-center gap-1 shrink-0">
-                    <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-                    資料庫莊園豆與手沖名家預設：
-                </span>
-                <button onclick="applyPouroverPreset('peru_geisha')" id="po-preset-peru_geisha" class="po-preset-btn preset-btn active text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
-                    🍑 祕魯桑托斯 藝伎黑蜜 (V60 蜜桃紅茶)
-                </button>
-                <button onclick="applyPouroverPreset('sidamo_winnie')" id="po-preset-sidamo_winnie" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
-                    🍓 西達摩 溫妮公主日曬 (18g/93°C 三段中心注水)
-                </button>
-                <button onclick="applyPouroverPreset('kenya_geisha')" id="po-preset-kenya_geisha" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
-                    🍍 肯亞麒麟雅佳 日曬藝伎 (Origami 熱帶水果)
-                </button>
-                <button onclick="applyPouroverPreset('salvador_bourbon')" id="po-preset-salvador_bourbon" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
-                    🍯 薩爾瓦多 聖依蓮娜波旁蜜 (Kalita 甜潤厚實)
-                </button>
-                <button onclick="applyPouroverPreset('kasuya_46')" id="po-preset-kasuya_46" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
-                    🏆 粕谷哲 4:6 法五段變溫沖煮
-                </button>
-                <button onclick="applyPouroverPreset('dark_nutty')" id="po-preset-dark_nutty" class="po-preset-btn preset-btn text-xs px-3 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 hover:border-crema/50 transition font-medium shrink-0 whitespace-nowrap">
-                    🍫 經典深焙曼巴 堅果黑巧 (Kono 低溫濃厚)
-                </button>
+            <!-- Pour-Over Functional Control Bar: [1. 挑選咖啡豆] + [2. 沖煮法流派與動態演化] -->
+            <div id="pouroverPresetsBar" class="hidden flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-crema/15 py-1 relative">
+                <div class="flex flex-wrap items-center gap-2.5 flex-1 min-w-0">
+                    <!-- ZONE 1 (Red Box): Clickable Bean Selector Dropdown -->
+                    <div class="relative" id="poBeanDropdownWrap">
+                        <button type="button" onclick="togglePoPickerMenu('bean', event)" id="poBeanPickerBtn" class="px-3 py-1.5 rounded-xl bg-espresso-900 hover:bg-espresso-850 border border-amber-500/45 shadow-sm transition flex items-center gap-2 text-left group">
+                            <span class="text-xs px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold shrink-0">🫘 莊園豆</span>
+                            <span id="poTopBeanName" class="text-xs sm:text-sm font-bold text-cream truncate max-w-[210px] sm:max-w-[260px]">🍑 祕魯桑托斯 藝伎黑蜜</span>
+                            <span id="poTopBeanMeta" class="hidden md:inline-block text-[11px] font-mono text-amber-300/90 bg-espresso-950 px-2 py-0.5 rounded border border-amber-500/25">淺焙 Agtron 75 · V60推薦</span>
+                            <span class="text-xs text-crema-light group-hover:translate-y-0.5 transition-transform ml-0.5">▾</span>
+                        </button>
+
+                        <!-- Bean Picker Floating Panel -->
+                        <div id="poBeanPickerMenu" class="po-picker-popover hidden absolute left-0 top-full mt-2 w-[350px] sm:w-[460px] max-w-[92vw] rounded-2xl border border-amber-500/50 p-3.5">
+                            <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-crema/15">
+                                <div>
+                                    <div class="text-xs font-bold text-amber-300 flex items-center gap-1.5">🫘 選擇手沖精品咖啡豆 (Bean Library)</div>
+                                    <div class="text-[11px] text-cream/65">點選豆款載入烘焙度、吸水率與品種風味光譜</div>
+                                </div>
+                                <button type="button" onclick="closeAllPoPickerMenus()" class="text-xs text-cream/60 hover:text-cream px-2 py-0.5 rounded bg-espresso-850">✕</button>
+                            </div>
+                            <label style="background-color: #1c1410;" class="flex items-center gap-2 text-[11px] text-crema-light border border-crema/25 rounded-lg px-2.5 py-1.5 mb-2.5 cursor-pointer select-none">
+                                <input type="checkbox" id="poSyncRecipeOnBeanChange" checked class="accent-amber-400 rounded">
+                                <span>換豆時同步套用該豆款之「推薦濾杯與最佳沖煮手法」</span>
+                            </label>
+                            <div id="poBeanPickerList" class="space-y-2 max-h-[340px] overflow-y-auto pr-1"></div>
+                        </div>
+                    </div>
+
+                    <!-- ZONE 2 (Green Box): Clickable Brewing Method Selector + Live Dynamic Evolution Badge -->
+                    <div class="relative flex flex-wrap items-center gap-1.5" id="poMethodDropdownWrap">
+                        <button type="button" onclick="togglePoPickerMenu('method', event)" id="poMethodPickerBtn" class="px-3 py-1.5 rounded-xl bg-espresso-900 hover:bg-espresso-850 border border-emerald-500/45 shadow-sm transition flex items-center gap-2 text-left group">
+                            <span class="text-xs px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold shrink-0">🫖 沖煮法</span>
+                            <span id="poTopMethodTitle" class="text-xs sm:text-sm font-bold text-emerald-200 truncate max-w-[230px] sm:max-w-[320px]">🏆 粕谷哲 4:6 法・五段變溫沖煮</span>
+                            <span id="poTopMethodEvolutionTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 shrink-0">標準原版</span>
+                            <span class="text-xs text-emerald-300 group-hover:translate-y-0.5 transition-transform ml-0.5">▾</span>
+                        </button>
+
+                        <button type="button" id="poResetMethodDefaultBtn" onclick="resetCurrentMethodToDefault()" class="hidden px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-[11px] font-mono text-amber-300 transition shrink-0" title="將被修改的段數、水溫或悶蒸還原為此沖煮法標準設定">
+                            ↺ 還原原版手法
+                        </button>
+
+                        <!-- Brewing Method Picker Floating Panel -->
+                        <div id="poMethodPickerMenu" class="po-picker-popover hidden absolute left-0 top-full mt-2 w-[350px] sm:w-[490px] max-w-[92vw] rounded-2xl border border-emerald-500/50 p-3.5">
+                            <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-crema/15">
+                                <div>
+                                    <div class="text-xs font-bold text-emerald-300 flex items-center gap-1.5">🫖 選擇名家沖煮手法流派 (Brewing Methods)</div>
+                                    <div class="text-[11px] text-cream/65">選取後若於下方調整段數、悶蒸、水溫或 Switch 止水閥，手法名稱將即時動態演化！</div>
+                                </div>
+                                <button type="button" onclick="closeAllPoPickerMenus()" class="text-xs text-cream/60 hover:text-cream px-2 py-0.5 rounded bg-espresso-850">✕</button>
+                            </div>
+                            <div id="poMethodPickerList" class="space-y-2 max-h-[350px] overflow-y-auto pr-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right-aligned live recipe summary pill on large screens -->
+                <div id="poActiveRecipeBreadcrumb" class="hidden xl:inline-flex items-center gap-1.5 text-[11px] font-mono text-cream/65 bg-espresso-900/90 border border-crema/15 px-3 py-1 rounded-xl shrink-0">
+                    <span class="text-crema">🔗 當前連動：</span>
+                    <span id="poBreadcrumbText" class="text-crema-light font-semibold">🍑 祕魯桑托斯 藝伎黑蜜 × ✨ 粕谷哲 4:6 法・三段變溫沖煮</span>
+                </div>
             </div>
 
             <!-- Roasting Quick Presets Bar (Kaleido M10 & Notebook Beans) -->
@@ -471,24 +528,13 @@
                 </button>
             </div>
 
-            <!-- Mobile Quick Section Switcher & Reference Lock Bar -->
-            <div class="flex flex-wrap items-center justify-between gap-2 pt-1.5 border-t border-crema/10">
-                <div class="flex items-center gap-1.5 overflow-x-auto mobile-scroll-x py-0.5">
-                    <span class="text-[11px] font-mono text-cream/50 shrink-0 lg:hidden">📱 畫面切換：</span>
-                    <button type="button" onclick="setMobileSectionView('all')" id="mView-all" class="m-view-btn active lg:hidden">📋 全部顯示</button>
-                    <button type="button" onclick="setMobileSectionView('controls')" id="mView-controls" class="m-view-btn lg:hidden">🎛️ 參數調整</button>
-                    <button type="button" onclick="setMobileSectionView('charts')" id="mView-charts" class="m-view-btn lg:hidden">📊 金杯與圖表</button>
-                    <button type="button" onclick="setMobileSectionView('sim')" id="mView-sim" class="m-view-btn lg:hidden">🔬 動態模擬器</button>
-                </div>
-                <div class="flex items-center gap-2 ml-auto">
-                    <button type="button" id="lockRefBtn" onclick="lockDualReference()" class="px-3 py-1 rounded-lg bg-espresso-850 hover:bg-espresso-800 border border-crema/35 text-xs font-mono text-crema-light transition flex items-center gap-1.5">
-                        <span>📌</span>
-                        <span id="lockRefBtnText">鎖定當前為對照基準</span>
-                    </button>
-                    <button type="button" id="clearRefBtn" onclick="clearDualReference()" class="hidden px-2.5 py-1 rounded-lg bg-espresso-900 hover:bg-rose-950/60 border border-rose-400/30 text-xs font-mono text-rose-300 transition">
-                        ✕ 清除對照
-                    </button>
-                </div>
+            <!-- Mobile-Only Quick Section Switcher -->
+            <div class="flex lg:hidden items-center gap-1.5 pt-1.5 border-t border-crema/10 overflow-x-auto mobile-scroll-x py-0.5">
+                <span class="text-[11px] font-mono text-cream/50 shrink-0">📱 畫面切換：</span>
+                <button type="button" onclick="setMobileSectionView('all')" id="mView-all" class="m-view-btn active">📋 全部顯示</button>
+                <button type="button" onclick="setMobileSectionView('controls')" id="mView-controls" class="m-view-btn">🎛️ 參數調整</button>
+                <button type="button" onclick="setMobileSectionView('charts')" id="mView-charts" class="m-view-btn">📊 金杯與圖表</button>
+                <button type="button" onclick="setMobileSectionView('sim')" id="mView-sim" class="m-view-btn">🔬 動態模擬器</button>
             </div>
 
         </div>
@@ -1016,193 +1062,196 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
             <!-- LEFT COLUMN: POUR-OVER CONTROLS & DRIPPER SIMULATOR (5 Columns) -->
-            <div class="lg:col-span-5 flex flex-col gap-6">
+            <div class="lg:col-span-5 flex flex-col gap-4">
 
-                <!-- 1. Bean Profile, Dripper & Core Brewing Parameters -->
-                <section class="lab-card rounded-2xl p-5">
-                    <div class="lab-card-header pb-3 mb-4 flex items-center justify-between">
+                <!-- 1. Bean Profile & Equipment Setup (Card 1) -->
+                <section class="lab-card rounded-2xl p-4">
+                    <div class="lab-card-header pb-2 mb-2.5 flex flex-wrap items-center justify-between gap-2">
                         <div class="flex items-center gap-2">
-                            <span class="w-2 h-5 rounded-full bg-amber-400"></span>
-                            <h2 class="font-bold text-base tracking-wide text-cream">豆款特性、濾杯與沖煮參數設定</h2>
+                            <span class="w-2 h-4 rounded-full bg-amber-400"></span>
+                            <h2 class="font-bold text-sm sm:text-base tracking-wide text-cream">豆款特性與研磨器材設定</h2>
                         </div>
-                        <button onclick="applyPouroverPreset('peru_geisha')" class="text-xs text-crema-light hover:underline font-mono">重置標準</button>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="togglePoPickerMenu('bean', event)" class="text-[11px] px-2 py-0.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/35 text-amber-300 font-mono transition">
+                                🫘 點選換豆
+                            </button>
+                            <button type="button" onclick="applyPouroverBean('peru_geisha', true)" class="text-[11px] text-crema-light hover:underline font-mono">重置標準</button>
+                        </div>
                     </div>
 
-                    <div class="space-y-4">
-                        <!-- Bean Roast Level (Light to Dark) -->
-                        <div>
-                            <div class="flex justify-between items-baseline mb-1">
-                                <label for="poRoastSlider" class="text-xs sm:text-sm font-medium text-cream flex items-center gap-1.5">
-                                    <span>🔥 烘焙度 (淺焙 Light ➔ 深焙 Dark)</span>
-                                </label>
-                                <div class="flex items-center gap-2">
-                                    <span id="poRoastBadge" class="text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono">淺焙 City- (Agtron 78)</span>
+                    <div class="space-y-2.5">
+                        <!-- Active Bean Summary Strip (Compact 2-line) -->
+                        <div class="bg-espresso-950/85 border border-amber-500/25 rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2">
+                            <div class="min-w-0 flex-1">
+                                <div class="flex items-center gap-1.5">
+                                    <span id="poCardBeanTitle" class="text-xs font-bold text-cream truncate">🇵🇪 祕魯 桑托斯莊園 藝伎黑蜜</span>
+                                    <span id="poCardBeanCustomTag" class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-300 border border-rose-400/30 shrink-0">莊園原版設定</span>
                                 </div>
-                            </div>
-                            <input id="poRoastSlider" type="range" min="1" max="100" step="1" value="22" class="w-full" oninput="onPouroverParamChange()">
-                            <div class="flex justify-between text-[10px] text-cream/50 mt-0.5 font-mono">
-                                <span>1 極淺焙 (高密度/高果酸)</span>
-                                <span>50 中焙 (平衡焦糖)</span>
-                                <span>100 深焙 (多孔隙/易萃苦甜)</span>
+                                <div id="poCardBeanOriginSub" class="text-[10px] text-cream/65 truncate mt-0.5">祕魯 卡哈瑪卡 1,950m · 藝伎黑蜜處理 ｜ 🎵 橙花、佛手柑、水蜜桃汁、蜂蜜紅茶</div>
                             </div>
                         </div>
 
-                        <!-- Bean Flavor Orientation (Fruity/Floral vs Nutty/Cocoa) -->
-                        <div>
-                            <div class="flex justify-between items-baseline mb-1">
-                                <label for="poCharSlider" class="text-xs sm:text-sm font-medium text-cream flex items-center gap-1.5">
-                                    <span>🌸 豆種風味光譜 (花果調 ➔ 堅果可可調)</span>
-                                </label>
-                                <span id="poCharBadge" class="text-[11px] px-2 py-0.5 rounded bg-pink-500/20 text-pink-300 font-mono">奔放白花與水蜜桃調</span>
-                            </div>
-                            <input id="poCharSlider" type="range" min="0" max="100" step="1" value="15" class="w-full" oninput="onPouroverParamChange()">
-                            <div class="flex justify-between text-[10px] text-cream/50 mt-0.5 font-mono">
-                                <span>0% 藝伎花香/柑橘莓果</span>
-                                <span>50% 蜂蜜紅茶/熟果甜</span>
-                                <span>100% 烤堅果/黑巧/木質</span>
-                            </div>
-                        </div>
-
-                        <!-- Dripper Type Selector -->
-                        <div>
-                            <label class="text-xs sm:text-sm font-medium text-cream block mb-1.5">▽ 濾杯型式與流速幾何 (Dripper Geometry)</label>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                <button type="button" onclick="selectDripper('v60')" id="dripper-v60" class="dripper-btn active p-2 rounded-xl bg-espresso-850 border border-crema text-left transition">
-                                    <div class="text-xs font-bold text-crema-light">V60 錐形</div>
-                                    <div class="text-[10px] text-cream/60">螺旋肋骨・流速快層次高</div>
-                                </button>
-                                <button type="button" onclick="selectDripper('kalita')" id="dripper-kalita" class="dripper-btn p-2 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition">
-                                    <div class="text-xs font-bold text-cream">Kalita 蛋糕</div>
-                                    <div class="text-[10px] text-cream/60">平底三孔・萃取均勻甜感穩</div>
-                                </button>
-                                <button type="button" onclick="selectDripper('origami')" id="dripper-origami" class="dripper-btn p-2 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition">
-                                    <div class="text-xs font-bold text-cream">Origami 摺紙</div>
-                                    <div class="text-[10px] text-cream/60">20溝槽・高排氣高通透花果</div>
-                                </button>
-                                <button type="button" onclick="selectDripper('kono')" id="dripper-kono" class="dripper-btn p-2 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition">
-                                    <div class="text-xs font-bold text-cream">Kono / 聰明</div>
-                                    <div class="text-[10px] text-cream/60">底部短肋・半浸泡醇厚飽滿</div>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Grind Size & Pour Flow Speed -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                        <!-- Bean Roast Level & Flavor Spectrum (Side-by-Side 2-Column Grid) -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
-                                <div class="flex justify-between items-baseline mb-1">
-                                    <label for="poGrindSlider" class="text-xs font-medium text-cream">⚙️ 手沖研磨度</label>
-                                    <span id="poGrindVal" class="font-mono text-xs font-bold text-crema-light">5.2 (680μm)</span>
+                                <div class="flex justify-between items-baseline mb-0.5 gap-1">
+                                    <label for="poRoastSlider" class="text-xs font-medium text-cream shrink-0">🔥 烘焙度</label>
+                                    <span id="poRoastBadge" class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono truncate">極淺焙 Nordic Light (Agtron 76)</span>
                                 </div>
-                                <input id="poGrindSlider" type="range" min="1.0" max="10.0" step="0.2" value="5.2" class="w-full" oninput="onPouroverParamChange()">
-                                <div class="flex justify-between text-[10px] text-cream/40 font-mono">
-                                    <span>1.0 極細(易積水)</span>
-                                    <span>10.0 粗砂糖</span>
+                                <input id="poRoastSlider" type="range" min="1" max="100" step="1" value="18" class="w-full" oninput="onPouroverParamChange()">
+                                <div class="flex justify-between text-[9px] text-cream/45 font-mono">
+                                    <span>極淺焙(果酸)</span>
+                                    <span>中焙(焦糖)</span>
+                                    <span>深焙(苦甜)</span>
                                 </div>
                             </div>
 
                             <div>
-                                <div class="flex justify-between items-baseline mb-1">
-                                    <label for="poPourSpeedSlider" class="text-xs font-medium text-cream">🌊 手沖水流速度</label>
-                                    <span id="poPourSpeedVal" class="font-mono text-xs font-bold text-sky-300">5.5 ml/s (柔和)</span>
+                                <div class="flex justify-between items-baseline mb-0.5 gap-1">
+                                    <label for="poCharSlider" class="text-xs font-medium text-cream shrink-0">🌸 風味光譜</label>
+                                    <span id="poCharBadge" class="text-[10px] px-1.5 py-0.5 rounded bg-pink-500/20 text-pink-300 font-mono truncate">🍑 水蜜桃軟糖・紫羅蘭・荔枝・龍眼花蜜調</span>
                                 </div>
-                                <input id="poPourSpeedSlider" type="range" min="3.0" max="12.0" step="0.5" value="5.5" class="w-full" oninput="onPouroverParamChange()">
-                                <div class="flex justify-between text-[10px] text-cream/40 font-mono">
-                                    <span>3.0 涓滴點注</span>
-                                    <span>12.0 大水柱翻攪</span>
+                                <input id="poCharSlider" type="range" min="0" max="100" step="1" value="12" class="w-full" oninput="onPouroverParamChange()">
+                                <div class="flex justify-between text-[9px] text-cream/45 font-mono">
+                                    <span>0% 花果茶香</span>
+                                    <span>50% 蜜糖熟果</span>
+                                    <span>100% 堅果可可</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Dose, Ratio, Base Temp & Bloom Time -->
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-crema/10">
-                            <div>
-                                <div class="flex justify-between items-baseline mb-1">
-                                    <label for="poDoseSlider" class="text-[11px] text-cream/80">⚖️ 粉重 Dose</label>
-                                    <span id="poDoseVal" class="font-mono text-xs font-bold text-crema-light">18g</span>
-                                </div>
-                                <input id="poDoseSlider" type="range" min="10" max="30" step="1" value="18" class="w-full" oninput="onPouroverParamChange(false, true)">
+                        <!-- Grind Size (Fine to Coarse) -->
+                        <div class="pt-1 border-t border-crema/10">
+                            <div class="flex justify-between items-baseline mb-0.5">
+                                <label for="poGrindSlider" class="text-xs font-medium text-cream">⚙️ 手沖研磨粗細度</label>
+                                <span id="poGrindVal" class="font-mono text-xs font-bold text-crema-light">5.2 (680μm)</span>
                             </div>
-
-                            <div>
-                                <div class="flex justify-between items-baseline mb-1">
-                                    <label for="poRatioSlider" class="text-[11px] text-cream/80">💧 粉水比</label>
-                                    <span id="poRatioVal" class="font-mono text-xs font-bold text-crema-light">1:15.5</span>
-                                </div>
-                                <input id="poRatioSlider" type="range" min="12.0" max="18.0" step="0.5" value="15.5" class="w-full" oninput="onPouroverParamChange(false, true)">
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between items-baseline mb-1">
-                                    <label for="poBaseTempSlider" class="text-[11px] text-cream/80">🌡️ 基準水溫</label>
-                                    <span id="poBaseTempVal" class="font-mono text-xs font-bold text-amber-300">91°C</span>
-                                </div>
-                                <input id="poBaseTempSlider" type="range" min="82" max="96" step="1" value="91" class="w-full" oninput="syncAllPulseTemps()">
-                            </div>
-
-                            <div>
-                                <div class="flex justify-between items-baseline mb-1">
-                                    <label for="poBloomTimeSlider" class="text-[11px] text-cream/80">⏳ 悶蒸時間</label>
-                                    <span id="poBloomTimeVal" class="font-mono text-xs font-bold text-emerald-300">35s</span>
-                                </div>
-                                <input id="poBloomTimeSlider" type="range" min="15" max="60" step="5" value="35" class="w-full" oninput="onPouroverParamChange()">
+                            <input id="poGrindSlider" type="range" min="1.0" max="10.0" step="0.2" value="5.2" class="w-full" oninput="onPouroverParamChange()">
+                            <div class="flex justify-between text-[9px] text-cream/45 font-mono">
+                                <span>1.0 極細(易積水過萃)</span>
+                                <span>5.2 義式手沖黃金帶</span>
+                                <span>10.0 粗砂糖(低萃茶感)</span>
                             </div>
                         </div>
 
-                        <!-- Agitation / Stirring Method -->
-                        <div class="pt-2 border-t border-crema/10 flex flex-wrap items-center justify-between gap-2">
-                            <span class="text-xs font-medium text-cream">🥄 沖煮手法與是否攪拌 (Agitation & Swirl)：</span>
-                            <div class="flex flex-wrap gap-1.5">
-                                <button type="button" onclick="selectAgitation('center')" id="agit-center" class="agit-btn px-2.5 py-1 rounded-lg text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
-                                    🎯 中心定點不繞圈
+                        <!-- Dripper Type Selector (Compact 5-Button Strip) -->
+                        <div class="pt-1 border-t border-crema/10">
+                            <div class="flex items-center justify-between gap-1 mb-1">
+                                <label class="text-xs font-medium text-cream">▽ 濾杯幾何與止水構造</label>
+                                <span class="text-[10px] font-mono text-emerald-300/85">選 Switch 可於下方排程切換各段止水/落水</span>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5">
+                                <button type="button" onclick="selectDripper('v60')" id="dripper-v60" class="dripper-btn active px-2 py-1.5 rounded-lg bg-espresso-850 border border-crema text-left transition">
+                                    <div class="text-[11px] font-bold text-crema-light leading-tight">V60 錐形</div>
+                                    <div class="text-[9px] text-cream/55 truncate">長肋・層次分明</div>
                                 </button>
-                                <button type="button" onclick="selectAgitation('circle')" id="agit-circle" class="agit-btn active px-2.5 py-1 rounded-lg text-[11px] bg-crema/25 border border-crema text-crema-light transition">
-                                    🌀 穩定同心圓繞圈
+                                <button type="button" onclick="selectDripper('kalita')" id="dripper-kalita" class="dripper-btn px-2 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 text-left transition">
+                                    <div class="text-[11px] font-bold text-cream leading-tight">Kalita 蛋糕</div>
+                                    <div class="text-[9px] text-cream/55 truncate">平底・均勻甜穩</div>
                                 </button>
-                                <button type="button" onclick="selectAgitation('swirl')" id="agit-swirl" class="agit-btn px-2.5 py-1 rounded-lg text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
-                                    💫 悶蒸搖晃濾杯 (Rao Spin)
+                                <button type="button" onclick="selectDripper('origami')" id="dripper-origami" class="dripper-btn px-2 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 text-left transition">
+                                    <div class="text-[11px] font-bold text-cream leading-tight">Origami 摺紙</div>
+                                    <div class="text-[9px] text-cream/55 truncate">20槽・高排氣</div>
                                 </button>
-                                <button type="button" onclick="selectAgitation('stir')" id="agit-stir" class="agit-btn px-2.5 py-1 rounded-lg text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
-                                    🥄 十字湯匙攪拌 (高萃取)
+                                <button type="button" onclick="selectDripper('kono')" id="dripper-kono" class="dripper-btn px-2 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 text-left transition">
+                                    <div class="text-[11px] font-bold text-cream leading-tight">Kono 名門</div>
+                                    <div class="text-[9px] text-cream/55 truncate">短肋・虹吸醇厚</div>
+                                </button>
+                                <button type="button" onclick="selectDripper('switch')" id="dripper-switch" class="dripper-btn px-2 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 text-left transition col-span-2 sm:col-span-1">
+                                    <div class="text-[11px] font-bold text-emerald-300 flex items-center gap-0.5 leading-tight"><span>🔀</span><span>Switch 聰明杯</span></div>
+                                    <div class="text-[9px] text-cream/55 truncate">止水浸泡/落水</div>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- 2. Multi-Stage Pouring Schedule Card (Number of Pours, Per-Pour Temp & Water Volume) -->
-                <section class="lab-card rounded-2xl p-5">
-                    <div class="lab-card-header pb-3 mb-3 flex flex-wrap items-center justify-between gap-2">
-                        <div>
-                            <h3 class="font-bold text-sm sm:text-base text-cream flex items-center gap-2">
-                                <span class="w-2 h-5 rounded-full bg-sky-400"></span>
-                                分段注水排程表 (分幾次注水・各段水溫與水量)
-                            </h3>
-                            <p class="text-[11px] text-cream/55">可獨立調整悶蒸與每一段注水的水量 (ml) 與變溫策略 (°C)</p>
-                        </div>
+                <!-- 2. Multi-Stage Pouring Schedule & Core Brewing Parameters Card (Card 2) -->
+                <section class="lab-card rounded-2xl p-4">
+                    <div class="lab-card-header pb-2 mb-2 flex flex-wrap items-center justify-between gap-2">
+                        <h3 class="font-bold text-sm sm:text-base text-cream flex items-center gap-2">
+                            <span class="w-2 h-4 rounded-full bg-sky-400"></span>
+                            分段注水與止水閥排程表
+                        </h3>
                         <div class="flex items-center gap-1">
-                            <span class="text-xs text-cream/60 mr-1">總注水次數：</span>
-                            <button onclick="setPourCount(2)" id="pourCountBtn-2" class="pour-count-btn px-2 py-1 rounded text-xs font-mono bg-espresso-850 border border-espresso-700">2段(一刀流)</button>
-                            <button onclick="setPourCount(3)" id="pourCountBtn-3" class="pour-count-btn active px-2 py-1 rounded text-xs font-mono bg-crema/25 border border-crema text-crema-light">3段標準</button>
-                            <button onclick="setPourCount(4)" id="pourCountBtn-4" class="pour-count-btn px-2 py-1 rounded text-xs font-mono bg-espresso-850 border border-espresso-700">4段</button>
-                            <button onclick="setPourCount(5)" id="pourCountBtn-5" class="pour-count-btn px-2 py-1 rounded text-xs font-mono bg-espresso-850 border border-espresso-700">5段(4:6法)</button>
+                            <span class="text-[11px] text-cream/60 mr-0.5">段數：</span>
+                            <button onclick="setPourCount(2)" id="pourCountBtn-2" class="pour-count-btn px-2 py-0.5 rounded text-[11px] font-mono bg-espresso-850 border border-espresso-700">2段(一刀流)</button>
+                            <button onclick="setPourCount(3)" id="pourCountBtn-3" class="pour-count-btn active px-2 py-0.5 rounded text-[11px] font-mono bg-crema/25 border border-crema text-crema-light">3段標準</button>
+                            <button onclick="setPourCount(4)" id="pourCountBtn-4" class="pour-count-btn px-2 py-0.5 rounded text-[11px] font-mono bg-espresso-850 border border-espresso-700">4段</button>
+                            <button onclick="setPourCount(5)" id="pourCountBtn-5" class="pour-count-btn px-2 py-0.5 rounded text-[11px] font-mono bg-espresso-850 border border-espresso-700">5段(4:6法)</button>
                         </div>
                     </div>
 
+                    <!-- Merged Brewing Parameters Strip (Dose, Ratio, Agitation) -->
+                    <div class="space-y-2 mb-2.5 bg-espresso-950/70 border border-crema/15 rounded-xl p-2.5">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <div class="flex justify-between items-baseline mb-0.5">
+                                    <label for="poDoseSlider" class="text-[11px] text-cream/80">⚖️ 咖啡粉重 (Dose)</label>
+                                    <span id="poDoseVal" class="font-mono text-xs font-bold text-crema-light">18g</span>
+                                </div>
+                                <input id="poDoseSlider" type="range" min="10" max="30" step="1" value="18" class="w-full" oninput="onPouroverParamChange(false, true)">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-baseline mb-0.5">
+                                    <label for="poRatioSlider" class="text-[11px] text-cream/80">💧 粉水比 (Ratio)</label>
+                                    <span id="poRatioVal" class="font-mono text-xs font-bold text-crema-light">1:15.5</span>
+                                </div>
+                                <input id="poRatioSlider" type="range" min="12.0" max="18.0" step="0.5" value="15.5" class="w-full" oninput="onPouroverParamChange(false, true)">
+                            </div>
+                        </div>
+
+                        <div class="pt-1.5 border-t border-crema/10 flex flex-wrap items-center justify-between gap-1.5">
+                            <span class="text-[11px] font-medium text-cream/90">🥄 沖煮手法與攪拌擾流：</span>
+                            <div class="flex flex-wrap gap-1">
+                                <button type="button" onclick="selectAgitation('center')" id="agit-center" class="agit-btn px-2 py-0.5 rounded text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
+                                    🎯 中心定點
+                                </button>
+                                <button type="button" onclick="selectAgitation('circle')" id="agit-circle" class="agit-btn active px-2 py-0.5 rounded text-[11px] bg-crema/25 border border-crema text-crema-light transition">
+                                    🌀 同心圓繞圈
+                                </button>
+                                <button type="button" onclick="selectAgitation('swirl')" id="agit-swirl" class="agit-btn px-2 py-0.5 rounded text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
+                                    💫 悶蒸搖晃(Rao)
+                                </button>
+                                <button type="button" onclick="selectAgitation('stir')" id="agit-stir" class="agit-btn px-2 py-0.5 rounded text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition">
+                                    🥄 十字攪拌
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Synchronized Method Evolution Strip inside Card 2 (Compact) -->
+                    <div class="mb-2 bg-espresso-950/90 border border-emerald-500/30 rounded-xl px-2.5 py-1.5 flex items-center justify-between gap-2">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-1.5">
+                                <span id="poCardMethodTitle" class="text-xs font-bold text-emerald-200 truncate">🏆 粕谷哲 4:6 法・五段變溫沖煮</span>
+                                <span id="poCardMethodBadge" class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 shrink-0">原版基準</span>
+                            </div>
+                            <div id="poCardMethodSub" class="text-[10px] font-mono text-cream/60 truncate mt-0.5">
+                                配水結構：前段 43% : 後段 57% ｜ 溫度策略：91°C ➔ 89°C 階梯降溫
+                            </div>
+                        </div>
+                        <button type="button" onclick="togglePoPickerMenu('method', event)" class="text-[11px] px-2 py-1 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/35 text-emerald-300 font-mono transition shrink-0">
+                            🫖 切換流派
+                        </button>
+                    </div>
+
                     <!-- Dynamic Pour Stages Rows -->
-                    <div id="pourStagesContainer" class="space-y-2.5 max-h-[250px] overflow-y-auto pr-1"></div>
+                    <div id="pourStagesContainer" class="space-y-1.5 max-h-[440px] overflow-y-auto pr-0.5"></div>
 
                     <!-- Summary Bar -->
-                    <div class="mt-3 pt-2.5 border-t border-crema/15 flex flex-wrap items-center justify-between text-xs font-mono gap-2">
+                    <div class="mt-2.5 pt-2 border-t border-crema/15 flex flex-wrap items-center justify-between text-xs font-mono gap-2">
                         <div>
                             <span class="text-cream/60">總注水量：</span>
                             <span id="poTotalWaterDisplay" class="font-bold text-sky-300">280 ml</span>
                             <span class="text-cream/40 mx-1">|</span>
                             <span class="text-cream/60">預計下壺液重：</span>
-                            <span id="poBeverageWeightDisplay" class="font-bold text-crema-light">244 g</span>
+                            <span id="poBeverageWeightDisplay" class="font-bold text-emerald-300">244 g</span>
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="distributeWaterEvenly()" class="text-[11px] px-2 py-0.5 rounded bg-espresso-800 hover:bg-espresso-700 text-crema-light border border-crema/20 transition">
-                                ⚖️ 依粉水比自動均分水量
+                            <button onclick="distributeWaterEvenly()" class="text-[10px] px-2 py-0.5 rounded bg-espresso-800 hover:bg-espresso-700 text-crema-light border border-crema/20 transition">
+                                ⚖️ 依粉水比均分水量
                             </button>
                         </div>
                     </div>
@@ -1226,6 +1275,10 @@
                             <div class="bg-espresso-950/90 border border-crema/15 rounded-xl p-2.5">
                                 <div class="text-[11px] text-cream/50">當前沖煮階段</div>
                                 <div id="poLiveStageLabel" class="text-xs font-bold text-amber-300 truncate mt-0.5">沖煮完成預覽</div>
+                            </div>
+                            <div class="bg-espresso-950/90 border border-crema/15 rounded-xl p-2.5 flex justify-between items-center">
+                                <span class="text-xs text-cream/60">止水閥狀態</span>
+                                <span id="poLiveValveStatus" class="font-mono text-xs font-bold text-emerald-300">🟢 開閥落水</span>
                             </div>
                             <div class="bg-espresso-950/90 border border-crema/15 rounded-xl p-2.5 flex justify-between items-center">
                                 <span class="text-xs text-cream/60">計時器</span>
@@ -1284,6 +1337,14 @@
                                 </g>
                                 <!-- Dripper Base Plate -->
                                 <rect x="72" y="118" width="76" height="5" rx="2" fill="#d49a59" />
+
+                                <!-- Hario Switch / Clever Valve Stopper & Toggle Lever Visual -->
+                                <g id="poSwitchValveGroup" class="hidden">
+                                    <rect x="92" y="115" width="36" height="11" rx="3" fill="#1f1916" stroke="#d49a59" stroke-width="1.2" />
+                                    <circle id="poSwitchBall" cx="110" cy="119" r="3.8" fill="#34d399" />
+                                    <line id="poSwitchLever" x1="126" y1="120" x2="148" y2="125" stroke="#34d399" stroke-width="2.8" stroke-linecap="round" />
+                                    <text id="poSwitchSvgText" x="152" y="124" fill="#34d399" font-size="7.5" font-family="monospace" font-weight="bold">OPEN</text>
+                                </g>
 
                                 <!-- Dripping Coffee Stream into Server -->
                                 <line id="poDripStream" x1="110" y1="123" x2="110" y2="215" stroke="#b86b28" stroke-width="3" stroke-linecap="round" />
@@ -1371,6 +1432,36 @@
                     </div>
                 </div>
 
+                <!-- Live Physics & Mass-Balance Verification Panel -->
+                <details id="poPhysicsVerificationPanel" class="lab-card rounded-2xl p-4 border border-crema/25 group" open>
+                    <summary class="cursor-pointer select-none flex flex-wrap items-center justify-between gap-2 list-none">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-4 rounded-full bg-emerald-400"></span>
+                            <h3 class="font-bold text-xs sm:text-sm text-cream flex items-center gap-1.5">
+                                <span>🔬 萃取率物理計算驗算與 8 大沖煮變數即時貢獻明細</span>
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-400/30">100% 真實參數耦合</span>
+                            </h3>
+                        </div>
+                        <span class="text-[11px] font-mono text-crema-light group-open:rotate-180 transition-transform">▼ 收合/展開驗算式</span>
+                    </summary>
+
+                    <div class="mt-3 pt-3 border-t border-crema/15 space-y-3">
+                        <!-- Mass Balance & Refractometer Equation Strip -->
+                        <div class="bg-espresso-950/90 border border-crema/15 rounded-xl p-3 text-[11px] font-mono space-y-1.5">
+                            <div class="flex flex-wrap items-center justify-between gap-1 text-crema-light font-semibold">
+                                <span>📐 SCA / Gagné 滲濾質量守恆驗算 (可與光學折射儀 TDS 計直接對照)</span>
+                                <span id="poVerifyMassSummary" class="text-emerald-300">溶出固體 3.55g (下壺 3.31g + 粉渣殘留 0.24g)</span>
+                            </div>
+                            <div id="poVerifyEquationText" class="text-cream/80 leading-relaxed break-all">
+                                EY (19.7%) = 基準 19.55% × Π(8項物理倍率) ｜ 下壺液重 245g = 總水 280ml − 粉吸水 35g (1.93g/g) ｜ TDS (1.35%) = 溶出固體 ÷ 有效滲濾液重
+                            </div>
+                        </div>
+
+                        <!-- 8 Live Parameter Multipliers Grid -->
+                        <div id="poFactorBreakdownGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] font-mono"></div>
+                    </div>
+                </details>
+
                 <!-- Chart 1: Pour-Over Flow Rate, Slurry Volume & Cumulative Beverage Curve -->
                 <section class="lab-card rounded-2xl p-5">
                     <div class="lab-card-header pb-3 mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -1381,10 +1472,10 @@
                             </h3>
                             <p class="text-xs text-cream/60 mt-0.5">呈現每次斷水與注水造成的濾杯水位高低起伏、滴濾流速變化與溫度曲線</p>
                         </div>
-                        <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
-                            <span class="flex items-center gap-1 text-sky-300"><span class="w-3 h-1 rounded bg-sky-400 inline-block"></span>下壺滴濾流速 (g/s)</span>
-                            <span class="flex items-center gap-1 text-amber-300"><span class="w-3 h-1 rounded bg-amber-400 inline-block"></span>濾杯內水位 (ml)</span>
-                            <span class="flex items-center gap-1 text-crema-light"><span class="w-3 h-1 rounded bg-crema inline-block"></span>累積總水量 (ml)</span>
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-mono font-medium">
+                            <span class="flex items-center gap-1.5 text-[#34d399]"><span class="w-3 h-1 rounded bg-[#34d399] inline-block"></span>下壺滴濾流速 (g/s)</span>
+                            <span class="flex items-center gap-1.5 text-[#fbbf24]"><span class="w-3 h-1 rounded bg-[#fbbf24] inline-block"></span>濾杯內水位 (ml)</span>
+                            <span class="flex items-center gap-1.5 text-[#38bdf8]"><span class="w-3 h-1 rounded bg-[#38bdf8] inline-block"></span>累積注水量 (ml)</span>
                         </div>
                     </div>
                     <div class="w-full h-[235px] relative">
@@ -3378,11 +3469,23 @@
 
         function stepStageParam(idx, field, delta) {
             if (!poState.pours[idx]) return;
-            const min = field === 'water' ? 20 : 80;
-            const max = field === 'water' ? 220 : 96;
-            const nextVal = Math.max(min, Math.min(max, poState.pours[idx][field] + delta));
+            let min = 20, max = 250;
+            if (field === 'water') { min = 20; max = 250; }
+            else if (field === 'pourSpeed') { min = 3.0; max = 12.0; }
+            else if (field === 'stageSec') { min = 10; max = 120; }
+            else if (field === 'steepSec') { min = 15; max = 120; }
+            else if (field === 'temp') { min = 70; max = 96; }
+
+            let cur = poState.pours[idx][field];
+            if (cur === undefined) {
+                if (field === 'pourSpeed') cur = poState.pours[idx].pourSpeed || poState.pourSpeed || 5.5;
+                else if (field === 'stageSec') cur = (idx === 0 ? (poState.bloomTime || 30) : 24);
+                else if (field === 'steepSec') cur = 40;
+                else if (field === 'temp') cur = 90;
+                else cur = 60;
+            }
+            const nextVal = Math.max(min, Math.min(max, Number((cur + delta).toFixed(1))));
             updateStageParam(idx, field, nextVal);
-            renderPourStagesUI();
         }
 
         function stepSliderById(sliderId, delta) {
@@ -3402,8 +3505,8 @@
         function enhanceAllRangeSlidersWithTouchSteppers() {
             const sliderIds = [
                 'grindSlider', 'tempSlider', 'pressureSlider', 'doseSlider', 'yieldSlider',
-                'poRoastSlider', 'poCharSlider', 'poGrindSlider', 'poPourSpeedSlider',
-                'poDoseSlider', 'poRatioSlider', 'poBaseTempSlider', 'poBloomTimeSlider'
+                'poRoastSlider', 'poCharSlider', 'poGrindSlider',
+                'poDoseSlider', 'poRatioSlider'
             ];
             sliderIds.forEach(id => {
                 const input = document.getElementById(id);
@@ -3447,7 +3550,12 @@
             const ribsGroup = document.getElementById('poDripperRibs');
             const bedPoly = document.getElementById('poCoffeeBed');
             const bedTag = document.getElementById('poBedStatusTag');
+            const switchValveGroup = document.getElementById('poSwitchValveGroup');
             if (!outline || !clipPoly || !ribsGroup || !bedPoly) return;
+
+            if (switchValveGroup) {
+                switchValveGroup.setAttribute('opacity', poState.dripper === 'switch' ? '1' : '0');
+            }
 
             // Roast color for coffee grounds bed
             const r = poState.roast;
@@ -3496,6 +3604,24 @@
                     <line x1="134" y1="82" x2="120" y2="116" />
                 `;
                 if (bedTag) bedTag.textContent = 'Kono 下部短肋：上半緊貼虹吸半浸泡・口感濃郁滑順';
+            } else if (poState.dripper === 'switch') {
+                // Hario Switch glass V60 cone + bottom silicone ball valve seat
+                outline.setAttribute('points', '50,40 170,40 127,118 93,118');
+                clipPoly.setAttribute('points', '52,42 168,42 126,118 94,118');
+                bedPoly.setAttribute('points', '65,92 155,92 130,118 90,118');
+                ribsGroup.innerHTML = `
+                    <path d="M66,42 Q88,80 98,116" fill="none" stroke="rgba(167,243,208,0.35)" />
+                    <path d="M88,42 Q100,80 104,116" fill="none" stroke="rgba(167,243,208,0.35)" />
+                    <path d="M110,42 Q112,80 110,116" fill="none" stroke="rgba(167,243,208,0.35)" />
+                    <path d="M132,42 Q122,80 116,116" fill="none" stroke="rgba(167,243,208,0.35)" />
+                    <path d="M154,42 Q134,80 122,116" fill="none" stroke="rgba(167,243,208,0.35)" />
+                `;
+                const closedCount = poState.pours.filter(p => p.valve === 'closed').length;
+                if (bedTag) {
+                    bedTag.textContent = closedCount > 0
+                        ? `Switch 聰明濾杯：混合式止水浸泡 (${closedCount}段關閥止水 ➔ 開閥落水)`
+                        : 'Switch 聰明濾杯：目前全段開閥落水 (等同玻璃 V60 錐形濾杯)';
+                }
             } else {
                 // Standard V60 spiral ribs
                 outline.setAttribute('points', '50,40 170,40 127,118 93,118');
@@ -4913,12 +5039,17 @@
             const mappedChar = Math.max(5, Math.min(95, Math.round(100 - roComputed.sensory.floral * 0.85 + roComputed.sensory.bitter * 0.35)));
 
             if (targetLab === 'pourover') {
+                const greenInfo = ROAST_GREEN_BEANS[roState.greenBeanKey];
+                poState.selectedBeanKey = 'custom_roast';
+                poState.customBeanTitle = greenInfo ? `🔥 自烘熟豆・${greenInfo.name.replace(/^[^\s]+\s/, '')}` : '🔥 自烘實驗室直送熟豆';
+                poState.customBeanMeta = `${roComputed.roastLevelName} · Agtron ${roComputed.wholeAgtron}`;
                 document.getElementById('poRoastSlider').value = mappedRoast;
                 document.getElementById('poCharSlider').value = mappedChar;
                 // Recommend optimal water temp based on roast level (Light: 92°C, Medium: 89°C, Dark: 85°C)
                 const recTemp = Math.max(84, Math.min(94, Math.round(93 - mappedRoast * 0.09)));
-                document.getElementById('poBaseTempSlider').value = recTemp;
-                syncAllPulseTemps();
+                const baseSlider = document.getElementById('poBaseTempSlider');
+                if (baseSlider) baseSlider.value = recTemp;
+                syncAllPulseTemps(recTemp);
                 switchLabMode('pourover');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
@@ -4932,25 +5063,26 @@
             }
         }
 
-        
-
-        
         const poState = {
-            roast: 22,          // 1 (Nordic Light) to 100 (Dark Italian)
-            charIndex: 15,      // 0 (Floral/Fruity) to 100 (Nutty/Cocoa/Roasty)
-            dripper: 'v60',     // 'v60' | 'kalita' | 'origami' | 'kono'
+            selectedBeanKey: 'peru_geisha',
+            selectedMethodKey: 'kasuya_46_3',
+            customBeanTitle: null,
+            customBeanMeta: null,
+            roast: 20,          // 1 (Nordic Light) to 100 (Dark Italian)
+            charIndex: 12,      // 0 (Floral/Fruity) to 100 (Nutty/Cocoa/Roasty)
+            dripper: 'v60',     // 'v60' | 'kalita' | 'origami' | 'kono' | 'switch'
             grind: 5.2,         // 1.0 (Fine 380um) to 10.0 (Coarse 1050um)
             pourSpeed: 5.5,     // 3.0 to 12.0 ml/s
             dose: 18,           // 10g to 30g
-            ratio: 15.5,         // 1:12 to 1:18
+            ratio: 15.5,        // 1:12 to 1:18
             baseTemp: 91,       // 82°C to 96°C
             bloomTime: 35,      // 15s to 60s
             agitation: 'circle',// 'center' | 'circle' | 'swirl' | 'stir'
             pourCount: 3,       // 2 to 5 stages (including Stage 1 Bloom)
             pours: [
-                { label: '悶蒸 (Bloom)', water: 36, temp: 91 },
-                { label: '第 1 段注水 (風味前段)', water: 120, temp: 91 },
-                { label: '第 2 段注水 (甜感尾段)', water: 124, temp: 89 }
+                { label: '悶蒸 (前40%調酸：白花佛手柑)', water: 45, temp: 91, valve: 'open', releaseMode: 'open_after', steepSec: 35 },
+                { label: '第 2 注 (前40%調甜：蜜桃甜感)', water: 67, temp: 91, valve: 'open', releaseMode: 'open_after', steepSec: 35 },
+                { label: '第 3 注 (後60%一刀高甜收尾)', water: 168, temp: 89, valve: 'open', releaseMode: 'open_after', steepSec: 40 }
             ],
             activePreset: 'peru_geisha',
             isSimulating: false,
@@ -4974,74 +5106,678 @@
             aroma: 93,
             body: 72,
             clarity: 90,
-            timePoints: [{ t: 0, slurry: 0, poured: 0, beverage: 0, dripRate: 0, temp: 91, stageName: '待命' }],
+            stageTimings: [],
+            timePoints: [{ t: 0, slurry: 0, poured: 0, beverage: 0, dripRate: 0, temp: 91, stageName: '待命', valveState: 'open' }],
             diagnosis: 'balanced'
         };
 
-        const POUROVER_PRESETS = {
+        // =========================================================================
+        // 1. 莊園豆與配方豆資料庫 (Red Zone: Bean Selector Library)
+        // =========================================================================
+        const POUROVER_BEANS = {
             peru_geisha: {
+                icon: '🇵🇪',
                 name: '祕魯 桑托斯莊園 藝伎黑蜜',
-                roast: 20, charIndex: 12, dripper: 'v60', grind: 5.0, pourSpeed: 5.0,
-                dose: 18, ratio: 15.5, baseTemp: 91, bloomTime: 35, agitation: 'circle', pourCount: 3,
-                pours: [
-                    { label: '悶蒸 (釋放白花與佛手柑)', water: 36, temp: 91 },
-                    { label: '第 1 段柔水 (水蜜桃酸甜)', water: 122, temp: 91 },
-                    { label: '第 2 段降溫 (蜂蜜紅茶尾韻)', water: 122, temp: 89 }
-                ]
+                origin: '祕魯 卡哈瑪卡 1,950m · 藝伎黑蜜處理',
+                roastLabel: '淺焙 Light (Agtron 75)',
+                flavorNotes: '橙花、佛手柑、水蜜桃汁、蜂蜜紅茶',
+                charBadge: '🍑 橙花・佛手柑・水蜜桃汁・蜂蜜紅茶調',
+                tastingDetail: '高溫散發祕魯藝伎特有的橙花與佛手柑香氣；中溫浮現飽滿水蜜桃汁與白桃酸甜；低溫轉為黑蜜處理法帶來的蜂蜜紅茶尾韻。',
+                roast: 20,
+                charIndex: 12,
+                recommendedMethod: 'kasuya_46_3'
             },
             sidamo_winnie: {
+                icon: '🇪🇹',
                 name: '衣索比亞 西達摩 溫妮公主日曬',
-                roast: 24, charIndex: 18, dripper: 'v60', grind: 5.4, pourSpeed: 6.0,
-                dose: 18, ratio: 15.5, baseTemp: 93, bloomTime: 35, agitation: 'center', pourCount: 4,
-                pours: [
-                    { label: '悶蒸 35ml (高溫喚醒日曬果香)', water: 35, temp: 93 },
-                    { label: '第 1 段中心注水 (不繞圈)', water: 85, temp: 93 },
-                    { label: '第 2 段中心注水 (甜感堆疊)', water: 80, temp: 92 },
-                    { label: '第 3 段中心注水 (乾淨收尾)', water: 80, temp: 91 }
-                ]
+                origin: '衣索比亞 西達摩 G1 2,100m · 慢速非洲床日曬',
+                roastLabel: '淺焙 Light~City- (Agtron 73)',
+                flavorNotes: '草莓果醬、百香果、甜橙、佛手柑',
+                charBadge: '🍓 草莓果醬・百香果・甜橙・佛手柑調',
+                tastingDetail: '高溫奔放衣索比亞日曬草莓果醬與百香果香氣；中溫展現甜橙與蜜漬熱帶水果感；尾韻帶有佛手柑與花蜜甜香。',
+                roast: 24,
+                charIndex: 18,
+                recommendedMethod: 'center_3stage'
             },
             kenya_geisha: {
+                icon: '🇰🇪',
                 name: '肯亞 麒麟雅佳 辛巴處理站 日曬藝伎',
-                roast: 18, charIndex: 8, dripper: 'origami', grind: 4.8, pourSpeed: 5.5,
-                dose: 16, ratio: 16.0, baseTemp: 92, bloomTime: 40, agitation: 'swirl', pourCount: 3,
-                pours: [
-                    { label: '悶蒸搖晃 (百香果與鳳梨爆發)', water: 35, temp: 92 },
-                    { label: '第 1 段注水 (甜橙與葡萄汁感)', water: 115, temp: 92 },
-                    { label: '第 2 段注水 (茉莉花蜜香)', water: 106, temp: 90 }
-                ]
+                origin: '肯亞 麒麟雅佳產區 1,850m · 日曬藝伎批次',
+                roastLabel: '極淺焙 Nordic Light (Agtron 76)',
+                flavorNotes: '百香果、鳳梨、紫葡萄汁、茉莉花蜜',
+                charBadge: '🍍 百香果・鳳梨・紫葡萄汁・茉莉花蜜調',
+                tastingDetail: '高溫爆發肯亞日曬藝伎濃郁的百香果與熟鳳梨香；中溫呈現紫葡萄汁與血橙般的厚實果酸；低溫浮現茉莉花蜜長尾韻。',
+                roast: 18,
+                charIndex: 8,
+                recommendedMethod: 'switch_devil'
+            },
+            kaffa_geisha: {
+                icon: '🌿',
+                name: '衣索比亞 卡法森林 野生藝伎水洗',
+                origin: '衣索比亞 Kaffa 生物圈保護區 · 傳統水洗 G1',
+                roastLabel: '淺焙 Light (Agtron 74)',
+                flavorNotes: '白茉莉、檸檬草、白桃、高山烏龍茶感',
+                charBadge: '🌿 白茉莉・檸檬草・白桃・高山烏龍茶調',
+                tastingDetail: '高溫散發卡法森林水洗藝伎純淨的白茉莉與檸檬草清香；中溫浮現白桃與佛手柑清甜；尾韻如高山烏龍茶般清雅回甘。',
+                roast: 22,
+                charIndex: 10,
+                recommendedMethod: 'hoffmann_5pulse'
             },
             salvador_bourbon: {
+                icon: '🇸🇻',
                 name: '薩爾瓦多 聖安娜火山 聖依蓮娜波旁蜜處理',
-                roast: 48, charIndex: 55, dripper: 'kalita', grind: 5.6, pourSpeed: 5.0,
-                dose: 20, ratio: 15.0, baseTemp: 90, bloomTime: 35, agitation: 'circle', pourCount: 3,
-                pours: [
-                    { label: '悶蒸 (薰衣草與熟果香)', water: 40, temp: 90 },
-                    { label: '第 1 段穩定繞圈 (龍眼葡萄乾甜)', water: 130, temp: 90 },
-                    { label: '第 2 段溫和注水 (厚實黏稠度)', water: 130, temp: 88 }
-                ]
-            },
-            kasuya_46: {
-                name: '粕谷哲 4:6 法 (五段粗研磨高甜度)',
-                roast: 35, charIndex: 35, dripper: 'v60', grind: 7.4, pourSpeed: 7.5,
-                dose: 20, ratio: 15.0, baseTemp: 92, bloomTime: 45, agitation: 'circle', pourCount: 5,
-                pours: [
-                    { label: '第 1 注 (前40%調酸甜：花果香)', water: 50, temp: 92 },
-                    { label: '第 2 注 (前40%強化焦糖甜感)', water: 70, temp: 92 },
-                    { label: '第 3 注 (後60%調濃度第一段)', water: 60, temp: 90 },
-                    { label: '第 4 注 (後60%調濃度第二段)', water: 60, temp: 89 },
-                    { label: '第 5 注 (後60%調濃度第三段)', water: 60, temp: 88 }
-                ]
+                origin: '薩爾瓦多 聖安娜火山 1,750m · 紅波旁黃蜜',
+                roastLabel: '中焙 City+ (Agtron 61)',
+                flavorNotes: '龍眼蜜、葡萄乾、烤杏仁、奶油太妃糖',
+                charBadge: '🍯 龍眼蜜・葡萄乾・烤杏仁・奶油太妃糖調',
+                tastingDetail: '前段帶有火山波旁柔和紅果與龍眼蜜香；中段浮現葡萄乾、烤杏仁與焦糖甜感；口感如奶油太妃糖般圓潤厚實。',
+                roast: 48,
+                charIndex: 55,
+                recommendedMethod: 'kasuya_46_5'
             },
             dark_nutty: {
-                name: '經典深焙 烤堅果與黑巧克力調',
-                roast: 85, charIndex: 90, dripper: 'kono', grind: 6.8, pourSpeed: 4.0,
-                dose: 20, ratio: 13.5, baseTemp: 85, bloomTime: 30, agitation: 'center', pourCount: 2,
+                icon: '🍫',
+                name: '經典深焙 曼巴老饕 烤堅果與黑巧克力調',
+                origin: '蘇門答臘黃金曼特寧 × 巴西喜拉朵 日曬拼配',
+                roastLabel: '深焙 Full City+ (Agtron 43)',
+                flavorNotes: '75% 黑巧克力、烤榛果、焦糖奶油、雪松回甘',
+                charBadge: '🍫 75%黑巧克力・烤榛果・焦糖奶油・雪松調',
+                tastingDetail: '香氣飽滿帶有烤榛果與煙燻焦糖香；入口如奶油般絲滑醇厚，苦甜平衡如 75% 黑巧克力，尾韻帶有雪松木質甘甜。',
+                roast: 85,
+                charIndex: 90,
+                recommendedMethod: 'kono_1pour'
+            }
+        };
+
+        // Unified Roast Level & Agtron Descriptor (guarantees 100% consistency between Top Bar, Bean Menu & Roast Slider)
+        function getUnifiedRoastDescriptor(roastVal) {
+            const agtron = Math.round(85 - roastVal * 0.5);
+            if (roastVal <= 19) {
+                return { label: `極淺焙 Nordic Light (Agtron ${agtron})`, badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono' };
+            } else if (roastVal <= 22) {
+                return { label: `淺焙 Light (Agtron ${agtron})`, badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono' };
+            } else if (roastVal <= 30) {
+                return { label: `淺焙 Light~City- (Agtron ${agtron})`, badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono' };
+            } else if (roastVal <= 42) {
+                return { label: `淺中焙 City (Agtron ${agtron})`, badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono' };
+            } else if (roastVal <= 58) {
+                return { label: `中焙 City+ (Agtron ${agtron})`, badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono' };
+            } else if (roastVal <= 76) {
+                return { label: `中深焙 Full City (Agtron ${agtron})`, badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 font-mono' };
+            } else {
+                return { label: `深焙 Full City+ (Agtron ${agtron})`, badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono' };
+            }
+        }
+
+        // Unified Flavor Spectrum Descriptor (uses the selected bean's exact flavor notes unless user manually shifts the slider)
+        function getUnifiedFlavorDescriptor() {
+            const beanInfo = POUROVER_BEANS[poState.selectedBeanKey] || POUROVER_BEANS.peru_geisha;
+            const isCharEdited = poState.customBeanTitle !== null || Math.abs(poState.charIndex - beanInfo.charIndex) >= 4;
+            if (!isCharEdited && beanInfo.charBadge) {
+                const badgeCls = poState.charIndex < 30
+                    ? 'text-[11px] px-2 py-0.5 rounded bg-pink-500/20 text-pink-300 font-mono'
+                    : (poState.charIndex < 68
+                        ? 'text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono'
+                        : 'text-[11px] px-2 py-0.5 rounded bg-crema/20 text-crema-light font-mono');
+                return { label: beanInfo.charBadge, badgeClass: badgeCls, tastingDetail: beanInfo.tastingDetail };
+            }
+            // User manually adjusted the flavor spectrum slider
+            if (poState.charIndex < 15) {
+                return {
+                    label: `🌸 極致花香・熱帶百香果・柑橘高酸調 (${poState.charIndex}%)`,
+                    badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-pink-500/20 text-pink-300 font-mono',
+                    tastingDetail: '高溫爆發奔放白花、百香果與柑橘香氣；中溫果酸明亮多汁；尾韻帶有茉莉綠茶般清香。'
+                };
+            } else if (poState.charIndex < 35) {
+                return {
+                    label: `🍑 白花水蜜桃・甜橙・佛手柑紅茶調 (${poState.charIndex}%)`,
+                    badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-pink-500/20 text-pink-300 font-mono',
+                    tastingDetail: '高溫散發佛手柑與白花香氣；中溫浮現水蜜桃果汁與甜橙感；低溫轉為蜂蜜紅茶尾韻。'
+                };
+            } else if (poState.charIndex < 68) {
+                return {
+                    label: `🍯 蜜處理熟果・龍眼蜜・奶油太妃糖調 (${poState.charIndex}%)`,
+                    badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono',
+                    tastingDetail: '前段帶有柔和柑橘與紅果香，中段龍眼蜜、葡萄乾與太妃糖甜感厚實，口感圓潤滑順。'
+                };
+            } else {
+                return {
+                    label: `🍫 烤榛果・75%黑巧克力・奶油焦糖調 (${poState.charIndex}%)`,
+                    badgeClass: 'text-[11px] px-2 py-0.5 rounded bg-crema/20 text-crema-light font-mono',
+                    tastingDetail: '香氣飽滿帶有烤杏仁與焦糖香，入口奶油般絲滑醇厚，苦甜平衡如 75% 黑巧克力，回甘持久。'
+                };
+            }
+        }
+
+        // =========================================================================
+        // 2. 冠軍與經典沖煮流派資料庫 (Green Zone: Method Selector Library)
+        // =========================================================================
+        const POUROVER_METHODS = {
+            kasuya_46_5: {
+                icon: '🏆',
+                familyName: '粕谷哲 4:6 法',
+                variantName: '五段變溫高甜標準版',
+                fullName: '🏆 粕谷哲 4:6 法・五段變溫沖煮',
+                badgeText: 'WBrC 冠軍經典 5 段',
+                desc: '前 40% 兩段水量決定酸甜平衡，後 60% 分三段注水配合階梯降溫萃出高甜醇厚度',
+                dripper: 'v60',
+                grind: 7.2,
+                pourSpeed: 7.2,
+                dose: 20,
+                ratio: 15.0,
+                baseTemp: 92,
+                bloomTime: 45,
+                agitation: 'circle',
+                pourCount: 5,
                 pours: [
-                    { label: '低溫悶蒸 (悶出堅果油脂香)', water: 40, temp: 86 },
-                    { label: '一刀流中心慢注 (濃厚奶油黑巧)', water: 230, temp: 84 }
+                    { label: '第 1 注 (前40%調酸：花果香氣)', water: 50, temp: 92, valve: 'open', releaseMode: 'open_after', steepSec: 45 },
+                    { label: '第 2 注 (前40%調甜：焦糖蜜感)', water: 70, temp: 92, valve: 'open', releaseMode: 'open_after', steepSec: 40 },
+                    { label: '第 3 注 (後60%濃度第 1 段)', water: 60, temp: 90, valve: 'open', releaseMode: 'open_after', steepSec: 35 },
+                    { label: '第 4 注 (後60%濃度第 2 段)', water: 60, temp: 89, valve: 'open', releaseMode: 'open_after', steepSec: 35 },
+                    { label: '第 5 注 (後60%降溫收尾段)', water: 60, temp: 88, valve: 'open', releaseMode: 'open_after', steepSec: 35 }
+                ]
+            },
+            kasuya_46_3: {
+                icon: '✨',
+                familyName: '粕谷哲 4:6 法',
+                variantName: '三段變溫清爽進化版',
+                fullName: '✨ 粕谷哲 4:6 法・三段變溫沖煮',
+                badgeText: '4:6 三段高乾淨度',
+                desc: '保留前 40% 兩段調酸甜精髓，將後 60% 合併為單一降溫長注水，大幅提升藝伎花香乾淨度',
+                dripper: 'v60',
+                grind: 5.4,
+                pourSpeed: 5.5,
+                dose: 18,
+                ratio: 15.5,
+                baseTemp: 91,
+                bloomTime: 35,
+                agitation: 'circle',
+                pourCount: 3,
+                pours: [
+                    { label: '第 1 注 (前40%調酸：白花佛手柑)', water: 45, temp: 91, valve: 'open', releaseMode: 'open_after', steepSec: 35 },
+                    { label: '第 2 注 (前40%調甜：水蜜桃甜感)', water: 67, temp: 91, valve: 'open', releaseMode: 'open_after', steepSec: 35 },
+                    { label: '第 3 注 (後60%合併降溫順注)', water: 168, temp: 89, valve: 'open', releaseMode: 'open_after', steepSec: 40 }
+                ]
+            },
+            switch_devil: {
+                icon: '😈',
+                familyName: 'Switch 惡魔混合法',
+                variantName: '前段開閥滴濾＋後段70°C止水浸泡',
+                fullName: '😈 粕谷哲 Switch 惡魔食譜 (Hybrid 先滴後浸)',
+                badgeText: 'Switch 開閥+關閥混合',
+                desc: '前兩段開閥高溫滴濾搶出奔放花果香；第 3 段關閉 Switch 閥門並注入低溫水浸泡，1:45 準時開閥落水',
+                dripper: 'switch',
+                grind: 5.2,
+                pourSpeed: 6.0,
+                dose: 20,
+                ratio: 14.0,
+                baseTemp: 91,
+                bloomTime: 30,
+                agitation: 'circle',
+                pourCount: 3,
+                pours: [
+                    { label: '第 1 段・高溫悶蒸排氣', water: 60, temp: 91, valve: 'open', releaseMode: 'open_after', steepSec: 30 },
+                    { label: '第 2 段・高溫前段滴濾', water: 60, temp: 91, valve: 'open', releaseMode: 'open_after', steepSec: 30 },
+                    { label: '第 3 段・低溫止水浸泡釋甜', water: 160, temp: 80, valve: 'closed', releaseMode: 'open_after', steepSec: 40 }
+                ]
+            },
+            switch_immersion: {
+                icon: '🔓',
+                familyName: 'Switch 聰明杯先浸後濾法',
+                variantName: '兩段止水浸泡＋開閥高壓落水',
+                fullName: '🔓 Switch 聰明濾杯・先止水浸泡後開閥法',
+                badgeText: 'Switch 經典浸泡落水',
+                desc: '第 1 段關閥止水全方位浸泡粉層釋放極致甜感，開閥落水後再補第 2 段開閥沖洗尾段香氣',
+                dripper: 'switch',
+                grind: 5.5,
+                pourSpeed: 6.5,
+                dose: 18,
+                ratio: 15.5,
+                baseTemp: 92,
+                bloomTime: 35,
+                agitation: 'stir',
+                pourCount: 2,
+                pours: [
+                    { label: '第 1 段・關閥滿水浸泡', water: 180, temp: 92, valve: 'closed', releaseMode: 'open_after', steepSec: 65 },
+                    { label: '第 2 段・開閥繞圈沖洗', water: 100, temp: 90, valve: 'open', releaseMode: 'open_after', steepSec: 30 }
+                ]
+            },
+            center_3stage: {
+                icon: '🎯',
+                familyName: '日式三段斷水法',
+                variantName: '高溫中心柔和注水',
+                fullName: '🎯 日式三段斷水・變溫柔水沖煮',
+                badgeText: '經典三段高穩定度',
+                desc: '標準 2 倍粉量悶蒸後分兩段穩定給水，後段微降溫避免木質苦澀，適用多數單品淺中焙',
+                dripper: 'v60',
+                grind: 5.0,
+                pourSpeed: 5.0,
+                dose: 18,
+                ratio: 15.5,
+                baseTemp: 91,
+                bloomTime: 35,
+                agitation: 'circle',
+                pourCount: 3,
+                pours: [
+                    { label: '悶蒸 (釋放花香與排氣潤濕)', water: 36, temp: 91, valve: 'open', releaseMode: 'open_after', steepSec: 35 },
+                    { label: '第 1 段柔水繞圈 (主體果酸與甜感)', water: 122, temp: 91, valve: 'open', releaseMode: 'open_after', steepSec: 35 },
+                    { label: '第 2 段降溫注水 (蜂蜜紅茶尾韻)', water: 122, temp: 89, valve: 'open', releaseMode: 'open_after', steepSec: 35 }
+                ]
+            },
+            hoffmann_5pulse: {
+                icon: '🌀',
+                familyName: 'Hoffmann 搖晃五段脈衝法',
+                variantName: '細研磨恆溫高萃法',
+                fullName: '🌀 James Hoffmann 1-Cup 五段恆溫搖晃法',
+                badgeText: '高萃取率極致乾淨',
+                desc: '每段等量 50ml 脈衝注水維持粉層高溫與恆定水位，搭配悶蒸與收尾旋轉搖晃平整粉床',
+                dripper: 'origami',
+                grind: 4.6,
+                pourSpeed: 5.5,
+                dose: 15,
+                ratio: 16.5,
+                baseTemp: 93,
+                bloomTime: 40,
+                agitation: 'swirl',
+                pourCount: 5,
+                pours: [
+                    { label: '悶蒸搖晃 (Swirl 全面潤濕粉床)', water: 50, temp: 93, valve: 'open', releaseMode: 'open_after', steepSec: 40 },
+                    { label: '第 2 脈衝 (補水至 40% 水位)', water: 50, temp: 93, valve: 'open', releaseMode: 'open_after', steepSec: 30 },
+                    { label: '第 3 脈衝 (補水至 60% 水位)', water: 50, temp: 93, valve: 'open', releaseMode: 'open_after', steepSec: 30 },
+                    { label: '第 4 脈衝 (補水至 80% 水位)', water: 50, temp: 92, valve: 'open', releaseMode: 'open_after', steepSec: 30 },
+                    { label: '第 5 脈衝 (滿水輕搖平整粉床)', water: 50, temp: 92, valve: 'open', releaseMode: 'open_after', steepSec: 30 }
+                ]
+            },
+            kono_1pour: {
+                icon: '🍯',
+                familyName: '日式點滴一刀流',
+                variantName: '低溫中心慢注濃厚法',
+                fullName: '🍯 Kono 點滴悶蒸・一刀流中心慢注法',
+                badgeText: '中深焙奶油醇厚',
+                desc: '低溫悶蒸喚醒深焙油脂，隨後以細水柱定點中心一刀流慢注，完全壓抑苦焦味並凸顯黑巧甜韻',
+                dripper: 'kono',
+                grind: 6.6,
+                pourSpeed: 4.0,
+                dose: 20,
+                ratio: 13.5,
+                baseTemp: 85,
+                bloomTime: 30,
+                agitation: 'center',
+                pourCount: 2,
+                pours: [
+                    { label: '低溫悶蒸 (悶出堅果可可油脂)', water: 40, temp: 86, valve: 'open', releaseMode: 'open_after', steepSec: 30 },
+                    { label: '一刀流中心慢注 (濃厚奶油黑巧)', water: 230, temp: 84, valve: 'open', releaseMode: 'open_after', steepSec: 40 }
                 ]
             }
         };
+
+        // Keep legacy POUROVER_PRESETS mapped for backwards compatibility
+        const POUROVER_PRESETS = {
+            peru_geisha: { bean: 'peru_geisha', method: 'kasuya_46_3' },
+            sidamo_winnie: { bean: 'sidamo_winnie', method: 'center_3stage' },
+            kenya_geisha: { bean: 'kenya_geisha', method: 'switch_devil' },
+            salvador_bourbon: { bean: 'salvador_bourbon', method: 'kasuya_46_5' },
+            kasuya_46: { bean: 'salvador_bourbon', method: 'kasuya_46_5' },
+            dark_nutty: { bean: 'dark_nutty', method: 'kono_1pour' }
+        };
+
+        // =========================================================================
+        // 3. 下拉選單互動與動態沖煮法演化引擎 (Dynamic Method Evolution Engine)
+        // =========================================================================
+        function togglePoPickerMenu(type, event) {
+            if (event) event.stopPropagation();
+            const beanMenu = document.getElementById('poBeanPickerMenu');
+            const methodMenu = document.getElementById('poMethodPickerMenu');
+            if (!beanMenu || !methodMenu) return;
+
+            if (type === 'bean') {
+                const isHidden = beanMenu.classList.contains('hidden');
+                methodMenu.classList.add('hidden');
+                beanMenu.classList.toggle('hidden', !isHidden);
+                if (isHidden) renderPoPickerMenus();
+            } else if (type === 'method') {
+                const isHidden = methodMenu.classList.contains('hidden');
+                beanMenu.classList.add('hidden');
+                methodMenu.classList.toggle('hidden', !isHidden);
+                if (isHidden) renderPoPickerMenus();
+            }
+        }
+
+        function closeAllPoPickerMenus() {
+            const beanMenu = document.getElementById('poBeanPickerMenu');
+            const methodMenu = document.getElementById('poMethodPickerMenu');
+            if (beanMenu) beanMenu.classList.add('hidden');
+            if (methodMenu) methodMenu.classList.add('hidden');
+        }
+
+        document.addEventListener('click', (e) => {
+            const beanWrap = document.getElementById('poBeanDropdownWrap');
+            const methodWrap = document.getElementById('poMethodDropdownWrap');
+            if (beanWrap && !beanWrap.contains(e.target) && methodWrap && !methodWrap.contains(e.target)) {
+                closeAllPoPickerMenus();
+            }
+        });
+
+        function renderPoPickerMenus() {
+            const beanListEl = document.getElementById('poBeanPickerList');
+            if (beanListEl) {
+                beanListEl.innerHTML = Object.entries(POUROVER_BEANS).map(([key, b]) => {
+                    const isSelected = poState.selectedBeanKey === key;
+                    const recM = POUROVER_METHODS[b.recommendedMethod];
+                    return `
+                        <button type="button" onclick="applyPouroverBean('${key}')"
+                            class="po-picker-item w-full text-left p-2.5 rounded-xl border transition block ${isSelected ? 'selected-bean border-rose-400 shadow-md' : 'border-espresso-700'}">
+                            <div class="flex items-center justify-between gap-2">
+                                <div class="flex items-center gap-1.5 min-w-0">
+                                    <span class="text-sm shrink-0">${b.icon}</span>
+                                    <span class="text-xs font-bold ${isSelected ? 'text-rose-200' : 'text-cream'} truncate">${b.name}</span>
+                                </div>
+                                <span class="shrink-0 text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/40">推薦：${recM ? recM.familyName : ''}</span>
+                            </div>
+                            <div class="text-[11px] text-cream/70 mt-1 truncate">${b.origin} ｜ ${b.roastLabel}</div>
+                            <div class="text-[11px] text-rose-300 mt-0.5 truncate">🎵 風味：${b.flavorNotes}</div>
+                        </button>
+                    `;
+                }).join('');
+            }
+
+            const methodListEl = document.getElementById('poMethodPickerList');
+            if (methodListEl) {
+                methodListEl.innerHTML = Object.entries(POUROVER_METHODS).map(([key, m]) => {
+                    const isSelected = poState.selectedMethodKey === key;
+                    const hasClosed = m.pours.some(p => p.valve === 'closed');
+                    return `
+                        <button type="button" onclick="applyPouroverMethod('${key}')"
+                            class="po-picker-item w-full text-left p-2.5 rounded-xl border transition block ${isSelected ? 'selected-method border-emerald-400 shadow-md' : 'border-espresso-700'}">
+                            <div class="flex items-center justify-between gap-2 flex-wrap">
+                                <span class="text-xs font-bold ${isSelected ? 'text-emerald-200' : 'text-cream'}">${m.fullName}</span>
+                                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded ${hasClosed ? 'bg-amber-950 text-amber-300 border border-amber-400/40' : 'bg-emerald-950 text-emerald-300 border border-emerald-500/35'}">${m.badgeText}</span>
+                            </div>
+                            <div class="text-[11px] text-cream/75 mt-1 leading-relaxed">${m.desc}</div>
+                            <div class="text-[10px] font-mono text-crema-light/90 mt-1">濾杯：${m.dripper.toUpperCase()} ｜ ${m.pourCount} 段注水 ｜ 基準 ${m.baseTemp}°C ｜ 悶蒸 ${m.bloomTime}s</div>
+                        </button>
+                    `;
+                }).join('');
+            }
+        }
+
+        function applyPouroverBean(beanKey, forceSyncRecipe = null) {
+            stopPouroverSimulation(false);
+            const bean = POUROVER_BEANS[beanKey];
+            if (!bean) return;
+
+            poState.selectedBeanKey = beanKey;
+            poState.customBeanTitle = null;
+            poState.customBeanMeta = null;
+            poState.roast = bean.roast;
+            poState.charIndex = bean.charIndex;
+
+            document.getElementById('poRoastSlider').value = bean.roast;
+            document.getElementById('poCharSlider').value = bean.charIndex;
+
+            const syncCheckbox = document.getElementById('poSyncRecipeOnBeanChange');
+            const shouldSyncMethod = forceSyncRecipe !== null ? forceSyncRecipe : (syncCheckbox ? syncCheckbox.checked : true);
+
+            closeAllPoPickerMenus();
+
+            if (shouldSyncMethod && bean.recommendedMethod && POUROVER_METHODS[bean.recommendedMethod]) {
+                applyPouroverMethod(bean.recommendedMethod, true);
+            } else {
+                onPouroverParamChange(true, false);
+            }
+        }
+
+        function applyPouroverMethod(methodKey, skipCloseMenu = false) {
+            stopPouroverSimulation(false);
+            const m = POUROVER_METHODS[methodKey];
+            if (!m) return;
+
+            poState.selectedMethodKey = methodKey;
+            poState.dripper = m.dripper;
+            poState.grind = m.grind;
+            poState.pourSpeed = m.pourSpeed;
+            poState.dose = m.dose;
+            poState.ratio = m.ratio;
+            poState.baseTemp = m.baseTemp;
+            poState.bloomTime = m.bloomTime;
+            poState.agitation = m.agitation;
+            poState.pourCount = m.pourCount;
+            poState.pours = m.pours.map(item => ({
+                label: item.label,
+                water: item.water,
+                temp: item.temp,
+                pourSpeed: item.pourSpeed || m.pourSpeed || poState.pourSpeed || 5.5,
+                stageSec: item.stageSec || item.steepSec || 30,
+                valve: item.valve || 'open',
+                releaseMode: item.releaseMode || 'open_after',
+                steepSec: item.steepSec || 35
+            }));
+
+            document.getElementById('poGrindSlider').value = m.grind;
+            const speedSlider = document.getElementById('poPourSpeedSlider');
+            if (speedSlider) speedSlider.value = m.pourSpeed;
+            document.getElementById('poDoseSlider').value = m.dose;
+            document.getElementById('poRatioSlider').value = m.ratio;
+            const baseSlider = document.getElementById('poBaseTempSlider');
+            if (baseSlider) baseSlider.value = m.baseTemp;
+            const bloomSlider = document.getElementById('poBloomTimeSlider');
+            if (bloomSlider) bloomSlider.value = m.bloomTime;
+
+            if (!skipCloseMenu) closeAllPoPickerMenus();
+
+            selectDripper(m.dripper, true);
+            selectAgitation(m.agitation, true);
+            renderPourStagesUI();
+            onPouroverParamChange(true, false);
+        }
+
+        function resetCurrentMethodToDefault() {
+            if (poState.selectedMethodKey && POUROVER_METHODS[poState.selectedMethodKey]) {
+                applyPouroverMethod(poState.selectedMethodKey);
+            } else {
+                applyPouroverMethod('kasuya_46_3');
+            }
+        }
+
+        function applyPouroverPreset(key) {
+            const mapping = POUROVER_PRESETS[key];
+            if (mapping) {
+                applyPouroverBean(mapping.bean, false);
+                applyPouroverMethod(mapping.method, true);
+            } else if (POUROVER_BEANS[key]) {
+                applyPouroverBean(key, true);
+            } else if (POUROVER_METHODS[key]) {
+                applyPouroverMethod(key, true);
+            }
+        }
+
+        /**
+         * Dynamic Method Evolution Engine (上下連貫動態沖煮法識別器)
+         * Compares current poState parameters with the base selectedMethodKey template.
+         * If the user alters stage count (e.g., 5 stages -> 3 stages), temperature profile,
+         * bloom time, dripper (e.g., switching to Hario Switch), or valve states,
+         * generates an evolved method title & modification badge in real time!
+         */
+        function computeDynamicMethodDescriptor() {
+            const baseMethod = POUROVER_METHODS[poState.selectedMethodKey] || POUROVER_METHODS.kasuya_46_3;
+            const stageNumNames = { 1: '一刀流', 2: '二段', 3: '三段', 4: '四段', 5: '五段' };
+            const countLabel = stageNumNames[poState.pours.length] || `${poState.pours.length}段`;
+
+            // Temperature profile classification
+            const temps = poState.pours.map(p => p.temp);
+            const firstT = temps[0] || poState.baseTemp;
+            const lastT = temps[temps.length - 1] || poState.baseTemp;
+            const maxT = Math.max(...temps);
+            const minT = Math.min(...temps);
+            let tempDesc = '恆溫';
+            if (maxT - minT >= 2) {
+                tempDesc = firstT >= lastT ? '變溫降溫' : '變溫升溫';
+                if (minT <= 82) tempDesc = '高低溫差變溫';
+            }
+
+            // Switch / Valve detection
+            const closedStages = poState.pours
+                .map((p, i) => (p.valve === 'closed' ? i + 1 : null))
+                .filter(Boolean);
+            const hasClosedValve = poState.dripper === 'switch' && closedStages.length > 0;
+
+            // Detect differences from baseMethod
+            const diffs = [];
+            if (poState.pours.length !== baseMethod.pourCount) {
+                diffs.push(`改${countLabel}注水`);
+            }
+            if (Math.abs(poState.bloomTime - baseMethod.bloomTime) >= 3) {
+                diffs.push(`悶蒸${poState.bloomTime}s`);
+            }
+            if (poState.dripper !== baseMethod.dripper) {
+                const dripMap = { v60: 'V60', kalita: 'Kalita', origami: 'Origami', kono: 'Kono', switch: 'Switch聰明杯' };
+                diffs.push(`換${dripMap[poState.dripper] || poState.dripper}`);
+            }
+            if (Math.abs(poState.grind - baseMethod.grind) >= 0.4) {
+                diffs.push(`研磨${poState.grind.toFixed(1)}`);
+            }
+
+            // Check if stage water or temp or valve differs from baseMethod
+            let stageEdited = false;
+            if (poState.pours.length === baseMethod.pours.length) {
+                for (let i = 0; i < poState.pours.length; i++) {
+                    const curP = poState.pours[i];
+                    const baseP = baseMethod.pours[i];
+                    if (Math.abs(curP.water - baseP.water) >= 5 || Math.abs(curP.temp - baseP.temp) >= 1 || (curP.valve || 'open') !== (baseP.valve || 'open') || (curP.steepSec || 35) !== (baseP.steepSec || 35)) {
+                        stageEdited = true;
+                        break;
+                    }
+                }
+            } else {
+                stageEdited = true;
+            }
+            if (stageEdited && diffs.length === 0) {
+                diffs.push('微調配水/水溫/閥門');
+            }
+
+            const isModified = diffs.length > 0 || stageEdited;
+
+            // Build evolved title
+            let dynamicTitle = baseMethod.fullName;
+            let badgeText = '標準原版';
+            let subSummary = baseMethod.desc;
+
+            if (isModified) {
+                let coreFamily = baseMethod.familyName;
+                if (poState.dripper === 'switch' && !coreFamily.includes('Switch')) {
+                    coreFamily = `${coreFamily} × Switch`;
+                }
+                const valveSuffix = hasClosedValve
+                    ? ` (含第${closedStages.join(',')}段止水浸泡)`
+                    : '';
+                dynamicTitle = `${baseMethod.icon} ${coreFamily}・${countLabel}${tempDesc}進化版${valveSuffix}`;
+                badgeText = `⚡ 進化微調 (${diffs.slice(0, 2).join(' · ')})`;
+
+                // Build live stage formula summary (e.g., 45ml -> 67ml -> 168ml)
+                const waterChain = poState.pours.map((p, idx) => {
+                    const vTag = (poState.dripper === 'switch')
+                        ? (p.valve === 'closed' ? `🔒浸${p.steepSec || 35}s` : '🟢落')
+                        : '';
+                    return `${p.water}ml(${p.temp}°C${vTag})`;
+                }).join(' ➔ ');
+                subSummary = `動態演化配方：${waterChain} ｜ 悶蒸 ${poState.bloomTime}s · 研磨 ${poState.grind.toFixed(1)}`;
+            } else {
+                const waterChain = poState.pours.map(p => {
+                    const vTag = (poState.dripper === 'switch')
+                        ? (p.valve === 'closed' ? `🔒浸${p.steepSec || 35}s` : '🟢落')
+                        : '';
+                    return `${p.water}ml(${p.temp}°C${vTag})`;
+                }).join(' ➔ ');
+                subSummary = `${baseMethod.desc} ｜ 配水：${waterChain}`;
+            }
+
+            return {
+                isModified,
+                dynamicTitle,
+                badgeText,
+                subSummary,
+                diffs
+            };
+        }
+
+        function updateDynamicHeaderAndCardBadges() {
+            // 1. Update Bean Header & Card 1 Bean Strip
+            const beanInfo = POUROVER_BEANS[poState.selectedBeanKey] || POUROVER_BEANS.peru_geisha;
+            const isBeanModified = poState.customBeanTitle !== null || Math.abs(poState.roast - beanInfo.roast) >= 3 || Math.abs(poState.charIndex - beanInfo.charIndex) >= 4;
+            const roastDesc = getUnifiedRoastDescriptor(poState.roast);
+            const flavorDesc = getUnifiedFlavorDescriptor();
+
+            const topBeanNameEl = document.getElementById('poTopBeanName');
+            const topBeanMetaEl = document.getElementById('poTopBeanMeta');
+            const cardBeanTitleEl = document.getElementById('poCardBeanTitle');
+            const cardBeanOriginSubEl = document.getElementById('poCardBeanOriginSub');
+            const cardBeanCustomTagEl = document.getElementById('poCardBeanCustomTag');
+
+            const displayBeanTitle = poState.customBeanTitle
+                ? poState.customBeanTitle
+                : `${beanInfo.icon} ${beanInfo.name}`;
+            const displayBeanMeta = poState.customBeanMeta
+                ? poState.customBeanMeta
+                : roastDesc.label;
+
+            if (topBeanNameEl) topBeanNameEl.textContent = displayBeanTitle;
+            if (topBeanMetaEl) {
+                topBeanMetaEl.textContent = displayBeanMeta;
+                topBeanMetaEl.className = isBeanModified
+                    ? 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30 shrink-0'
+                    : 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-500/15 text-rose-300 border border-rose-400/25 shrink-0';
+            }
+            if (cardBeanTitleEl) cardBeanTitleEl.textContent = displayBeanTitle;
+            if (cardBeanOriginSubEl) {
+                cardBeanOriginSubEl.textContent = isBeanModified
+                    ? `${beanInfo.origin} ｜ ⚡ ${roastDesc.label} · ${flavorDesc.label}`
+                    : `${beanInfo.origin} ｜ 🎵 風味：${beanInfo.flavorNotes}`;
+            }
+            if (cardBeanCustomTagEl) {
+                cardBeanCustomTagEl.textContent = isBeanModified ? '⚡ 已微調烘焙/調性' : '莊園原版設定';
+                cardBeanCustomTagEl.className = isBeanModified
+                    ? 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30 shrink-0'
+                    : 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-400/30 shrink-0';
+            }
+
+            // 2. Update Method Header & Card 2 Evolution Banner
+            const desc = computeDynamicMethodDescriptor();
+            const topMethodTitleEl = document.getElementById('poTopMethodTitle');
+            const topMethodTagEl = document.getElementById('poTopMethodEvolutionTag');
+            const resetBtnEl = document.getElementById('poResetMethodDefaultBtn');
+            const cardMethodTitleEl = document.getElementById('poCardMethodTitle');
+            const cardMethodBadgeEl = document.getElementById('poCardMethodBadge');
+            const cardMethodSubEl = document.getElementById('poCardMethodSub');
+            const breadcrumbEl = document.getElementById('poBreadcrumbText');
+
+            if (topMethodTitleEl) topMethodTitleEl.textContent = desc.dynamicTitle;
+            if (topMethodTagEl) {
+                topMethodTagEl.textContent = desc.badgeText;
+                topMethodTagEl.className = desc.isModified
+                    ? 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/25 text-amber-300 border border-amber-400/40 shrink-0'
+                    : 'text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 shrink-0';
+            }
+            if (resetBtnEl) {
+                resetBtnEl.classList.toggle('hidden', !desc.isModified);
+            }
+            if (cardMethodTitleEl) cardMethodTitleEl.textContent = desc.dynamicTitle;
+            if (cardMethodBadgeEl) {
+                cardMethodBadgeEl.textContent = desc.isModified ? desc.badgeText : '原版基準';
+                cardMethodBadgeEl.className = desc.isModified
+                    ? 'text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-500/25 text-amber-300 border border-amber-400/40 shrink-0'
+                    : 'text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 shrink-0';
+            }
+            if (cardMethodSubEl) cardMethodSubEl.textContent = desc.subSummary;
+
+            if (breadcrumbEl) {
+                const dripNames = { v60: 'V60 01', kalita: 'Kalita Wave', origami: 'Origami', kono: 'Kono Meimon', switch: 'Switch 聰明濾杯' };
+                const closedCount = poState.dripper === 'switch' ? poState.pours.filter(p => p.valve === 'closed').length : 0;
+                const switchNote = poState.dripper === 'switch'
+                    ? (closedCount > 0 ? ` · 🔒${closedCount}段止水浸泡` : ' · 🟢全開閥滴濾')
+                    : '';
+                breadcrumbEl.textContent = `${displayBeanTitle} × ${desc.dynamicTitle} (${dripNames[poState.dripper] || 'V60'}${switchNote} · 1:${(poComputed.totalWater / poState.dose).toFixed(1)} · EY ${poComputed.ey.toFixed(1)}%)`;
+            }
+        }
 
         function switchLabMode(mode) {
             activeLabMode = mode;
@@ -5095,170 +5831,339 @@
             updateMobileLiveDock();
         }
 
+        function updateStageValveMode(idx, modeStr) {
+            if (!poState.pours[idx]) return;
+            if (modeStr === 'open') {
+                poState.pours[idx].valve = 'open';
+                poState.pours[idx].releaseMode = 'open_after';
+            } else if (modeStr === 'closed_hold') {
+                poState.pours[idx].valve = 'closed';
+                poState.pours[idx].releaseMode = 'keep_closed';
+                if (!poState.pours[idx].steepSec) poState.pours[idx].steepSec = 35;
+            } else {
+                poState.pours[idx].valve = 'closed';
+                poState.pours[idx].releaseMode = 'open_after';
+                if (!poState.pours[idx].steepSec) poState.pours[idx].steepSec = 40;
+            }
+            onPouroverParamChange(false, false);
+            renderPourStagesUI();
+        }
+
+        function buildCompactStageTimingHtml(idx) {
+            const isSwitch = poState.dripper === 'switch';
+            const timings = poComputed.stageTimings || [];
+            const p = poState.pours[idx];
+            const st = timings[idx];
+            if (!p || !st) return '';
+
+            const isLast = idx === poState.pours.length - 1;
+            const valve = p.valve || 'open';
+            const releaseMode = isLast ? 'open_after' : (p.releaseMode || 'open_after');
+            const steepSec = p.steepSec || 40;
+
+            if (isSwitch && valve === 'closed') {
+                if (releaseMode === 'keep_closed' && !isLast) {
+                    return `<span class="text-[10px] font-mono text-cream/70 truncate"><span class="text-amber-300 font-bold">🔒 ${formatMinSec(st.startT)} 浸${steepSec}s</span> ➔ 續浸入第${idx + 2}段</span>`;
+                }
+                return `<span class="text-[10px] font-mono text-cream/70 truncate"><span class="text-amber-300 font-bold">🔒 ${formatMinSec(st.startT)} 浸${steepSec}s</span> ➔ <span class="text-emerald-400 font-bold">🔓<strong>${formatMinSec(st.releaseT)}開閥</strong>~${formatMinSec(st.endT)}</span> (<span class="text-emerald-300 font-bold">☕下壺${Math.round(st.endBev)}g</span>)</span>`;
+            }
+            return `<span class="text-[10px] font-mono text-cream/70 truncate">${formatMinSec(st.startT)}~${formatMinSec(st.endT)} · <span class="text-emerald-300 font-bold">☕下壺${Math.round(st.endBev)}g</span></span>`;
+        }
+
         function renderPourStagesUI() {
             const container = document.getElementById('pourStagesContainer');
             if (!container) return;
 
-            container.innerHTML = poState.pours.map((p, idx) => `
-                <div class="bg-espresso-950/80 border border-crema/15 rounded-xl p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div class="flex items-center gap-2 min-w-[145px]">
-                        <span class="w-5 h-5 rounded-full bg-crema/20 text-crema-light font-mono text-xs flex items-center justify-center font-bold">${idx + 1}</span>
-                        <span class="text-xs font-medium text-cream truncate">${p.label}</span>
+            const isSwitch = poState.dripper === 'switch';
+
+            container.innerHTML = poState.pours.map((p, idx) => {
+                const isLast = idx === poState.pours.length - 1;
+                const valve = p.valve || 'open';
+                const releaseMode = isLast ? 'open_after' : (p.releaseMode || 'open_after');
+                const steepSec = p.steepSec || 40;
+                const stageSec = p.stageSec || (idx === 0 ? (poState.bloomTime || 30) : 24);
+                const pourSpeed = p.pourSpeed || poState.pourSpeed || 5.5;
+                const pourDuration = Math.max(3, Math.round(p.water / pourSpeed));
+                const cleanLabel = (p.label || '').replace(/【.*?】/g, '').trim();
+                const timingHtml = buildCompactStageTimingHtml(idx);
+
+                // Switch valve buttons (if Switch dripper is active)
+                const switchControlsHtml = isSwitch ? `
+                    <div class="flex items-center gap-1 shrink-0">
+                        <span class="font-mono text-emerald-300/85">閥門:</span>
+                        <button type="button" onclick="updateStageValveMode(${idx}, 'open')"
+                            class="px-1.5 py-0.5 rounded font-mono transition ${valve === 'open' ? 'bg-emerald-500/30 text-emerald-200 border border-emerald-400 font-bold' : 'bg-espresso-900 text-cream/60 border border-espresso-700 hover:text-cream'}">
+                            🟢開閥落水
+                        </button>
+                        <button type="button" onclick="updateStageValveMode(${idx}, 'closed_release')"
+                            class="px-1.5 py-0.5 rounded font-mono transition ${valve === 'closed' && releaseMode === 'open_after' ? 'bg-amber-500/30 text-amber-200 border border-amber-400 font-bold' : 'bg-espresso-900 text-cream/60 border border-espresso-700 hover:text-cream'}">
+                            🔒浸泡➔開閥
+                        </button>
+                        ${!isLast ? `
+                        <button type="button" onclick="updateStageValveMode(${idx}, 'closed_hold')"
+                            class="px-1.5 py-0.5 rounded font-mono transition ${valve === 'closed' && releaseMode === 'keep_closed' ? 'bg-rose-500/30 text-rose-200 border border-rose-400 font-bold' : 'bg-espresso-900 text-cream/60 border border-espresso-700 hover:text-cream'}">
+                            🔒續浸下段
+                        </button>
+                        ` : ''}
                     </div>
-                    <div class="flex items-center gap-3 flex-1 justify-end">
-                        <div class="flex items-center gap-1 flex-1 max-w-[195px]">
-                            <span class="text-[10px] font-mono text-sky-300 shrink-0">💧</span>
-                            <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'water', -5)">−</button>
-                            <input type="range" min="20" max="220" step="5" value="${p.water}" class="w-full" oninput="updateStageParam(${idx}, 'water', this.value)" onchange="updateStageParam(${idx}, 'water', this.value)">
-                            <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'water', 5)">+</button>
-                            <span id="stageWaterVal-${idx}" class="font-mono text-xs font-bold text-sky-300 w-11 text-right">${p.water}ml</span>
+                ` : '';
+
+                // Timing & Stage Duration Steppers (Stage 1 Bloom / Interval Duration / Closed Valve Steep)
+                const timingControlsHtml = (valve === 'closed') ? `
+                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/20 shrink-0" title="Switch 止水浸泡秒數">
+                        <span class="font-mono text-cream/70">⏳浸泡:</span>
+                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(${idx}, 'steepSec', -1)">−</button>
+                        <span id="stageSteepVal-${idx}" class="font-mono font-bold text-cream w-7 text-center">${steepSec}s</span>
+                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(${idx}, 'steepSec', 1)">+</button>
+                    </div>
+                ` : (idx === 0 ? `
+                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/20 shrink-0" title="第1段悶蒸排氣總時長（直接連動時間軸 00:00~XX）">
+                        <span class="font-mono text-cream/70">⏳悶蒸總長:</span>
+                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(0, 'stageSec', -1)">−</button>
+                        <span id="stageSecVal-0" class="font-mono font-bold text-cream w-7 text-center">${stageSec}s</span>
+                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(0, 'stageSec', 1)">+</button>
+                    </div>
+                ` : (!isLast ? `
+                    <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-espresso-900/80 border border-crema/20 shrink-0" title="本段注水與滴濾間隔總長度">
+                        <span class="font-mono text-cream/70">⏳間隔時長:</span>
+                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(${idx}, 'stageSec', -1)">−</button>
+                        <span id="stageSecVal-${idx}" class="font-mono font-bold text-cream w-7 text-center">${stageSec}s</span>
+                        <button type="button" class="px-1 rounded bg-espresso-800 hover:bg-espresso-700 text-cream font-mono" onclick="stepStageParam(${idx}, 'stageSec', 1)">+</button>
+                    </div>
+                ` : ''));
+
+                return `
+                <div class="bg-espresso-950/85 border ${isSwitch && valve === 'closed' ? 'border-amber-400/45' : 'border-crema/15'} rounded-lg px-2.5 py-1.5 transition">
+                    <!-- Row 1: Stage Label + Water + Flow Speed (with pour duration) + Temp -->
+                    <div class="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                            <span class="w-4 h-4 rounded-full ${isSwitch && valve === 'closed' ? 'bg-amber-500/30 text-amber-200' : 'bg-crema/20 text-crema-light'} font-mono text-[10px] flex items-center justify-center font-bold shrink-0">${idx + 1}</span>
+                            <span class="text-xs font-medium text-cream truncate" title="${cleanLabel}">${cleanLabel}</span>
                         </div>
-                        <div class="flex items-center gap-1 flex-1 max-w-[185px]">
-                            <span class="text-[10px] font-mono text-amber-300 shrink-0">🌡️</span>
-                            <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'temp', -1)">−</button>
-                            <input type="range" min="80" max="96" step="1" value="${p.temp}" class="w-full" oninput="updateStageParam(${idx}, 'temp', this.value)" onchange="updateStageParam(${idx}, 'temp', this.value)">
-                            <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'temp', 1)">+</button>
-                            <span id="stageTempVal-${idx}" class="font-mono text-xs font-bold text-amber-300 w-9 text-right">${p.temp}°C</span>
+                        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 shrink-0">
+                            <!-- Water Volume -->
+                            <div class="flex items-center gap-0.5" title="本段注水量">
+                                <span class="text-[10px] font-mono text-sky-300">💧</span>
+                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'water', -5)">−</button>
+                                <input type="range" min="20" max="240" step="5" value="${p.water}" class="w-14 sm:w-16" oninput="updateStageParam(${idx}, 'water', this.value)" onchange="updateStageParam(${idx}, 'water', this.value)">
+                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'water', 5)">+</button>
+                                <span id="stageWaterVal-${idx}" class="font-mono text-[11px] font-bold text-sky-300 w-10 text-right">${p.water}ml</span>
+                            </div>
+
+                            <!-- Flow Speed & Pour Duration -->
+                            <div class="flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-espresso-900/80 border border-espresso-700" title="本段手沖注水水流速度與耗時">
+                                <span class="text-[10px] font-mono text-sky-300">🌊</span>
+                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'pourSpeed', -0.5)">−</button>
+                                <span id="stageSpeedVal-${idx}" class="font-mono text-[11px] font-bold text-sky-300 w-11 text-center">${pourSpeed.toFixed(1)}<span class="text-[9px] font-normal text-sky-400/80">ml/s</span></span>
+                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'pourSpeed', 0.5)">+</button>
+                                <span class="text-[10px] font-mono text-cream/70 ml-0.5" id="stagePourDurationTag-${idx}">(注${pourDuration}s)</span>
+                            </div>
+
+                            <!-- Temperature -->
+                            <div class="flex items-center gap-0.5" title="本段注水溫度">
+                                <span class="text-[10px] font-mono text-amber-300">🌡️</span>
+                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'temp', -1)">−</button>
+                                <input type="range" min="70" max="96" step="1" value="${p.temp}" class="w-12 sm:w-14" oninput="updateStageParam(${idx}, 'temp', this.value)" onchange="updateStageParam(${idx}, 'temp', this.value)">
+                                <button type="button" class="touch-step-btn touch-step-btn-sm" onclick="stepStageParam(${idx}, 'temp', 1)">+</button>
+                                <span id="stageTempVal-${idx}" class="font-mono text-[11px] font-bold text-amber-300 w-8 text-right">${p.temp}°C</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Valve Controls + Timing Steppers + Timing Badge -->
+                    <div class="mt-1 pt-1 border-t border-crema/10 flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5 text-[10px]">
+                        <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                            ${switchControlsHtml}
+                            ${timingControlsHtml}
+                        </div>
+                        <div id="stageTimingBadge-${idx}" class="min-w-0 truncate text-right ml-auto">
+                            ${timingHtml}
                         </div>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
 
             document.querySelectorAll('.pour-count-btn').forEach(btn => {
-                btn.className = 'pour-count-btn px-2 py-1 rounded text-xs font-mono bg-espresso-850 border border-espresso-700 text-cream/70';
+                btn.className = 'pour-count-btn px-2 py-0.5 rounded text-[11px] font-mono bg-espresso-850 border border-espresso-700 text-cream/70';
             });
             const activeBtn = document.getElementById(`pourCountBtn-${poState.pourCount}`);
             if (activeBtn) {
-                activeBtn.className = 'pour-count-btn active px-2 py-1 rounded text-xs font-mono bg-crema/25 border border-crema text-crema-light font-bold';
+                activeBtn.className = 'pour-count-btn active px-2 py-0.5 rounded text-[11px] font-mono bg-crema/25 border border-crema text-crema-light font-bold';
             }
         }
 
         function updateStageParam(idx, field, val) {
             if (!poState.pours[idx]) return;
             poState.pours[idx][field] = parseFloat(val);
-            const labelEl = document.getElementById(field === 'water' ? `stageWaterVal-${idx}` : `stageTempVal-${idx}`);
-            if (labelEl) {
-                labelEl.textContent = field === 'water' ? `${poState.pours[idx].water}ml` : `${poState.pours[idx].temp}°C`;
+            if (idx === 0) {
+                if (field === 'temp') poState.baseTemp = poState.pours[0].temp;
+                if (field === 'steepSec' || field === 'stageSec') {
+                    poState.bloomTime = poState.pours[0][field];
+                    poState.pours[0].steepSec = poState.bloomTime;
+                    poState.pours[0].stageSec = poState.bloomTime;
+                }
             }
-            // Update ratio display from manual water sum
-            const totalW = poState.pours.reduce((acc, item) => acc + item.water, 0);
-            const newRatio = Math.max(12, Math.min(18, totalW / poState.dose));
-            poState.ratio = Number(newRatio.toFixed(1));
-            document.getElementById('poRatioSlider').value = poState.ratio;
+            if (field === 'water') {
+                const totalW = poState.pours.reduce((acc, item) => acc + item.water, 0);
+                const newRatio = Math.max(12, Math.min(18, totalW / poState.dose));
+                poState.ratio = Number(newRatio.toFixed(1));
+                const ratioSlider = document.getElementById('poRatioSlider');
+                if (ratioSlider) ratioSlider.value = poState.ratio;
+            }
             onPouroverParamChange(false, false);
+            renderPourStagesUI();
         }
 
         function setPourCount(count) {
             poState.pourCount = count;
             const targetWater = Math.round(poState.dose * poState.ratio);
-            const bloomW = Math.round(poState.dose * 2.0);
-            const remainW = Math.max(40, targetWater - bloomW);
-            const mainStages = count - 1;
-            const perStageW = Math.round(remainW / mainStages);
-
-            const stageLabels = [
-                '悶蒸 (Bloom 排氣潤濕)',
-                '第 1 段注水 (前段酸香展開)',
-                '第 2 段注水 (中段甜感銜接)',
-                '第 3 段注水 (醇厚度調節)',
-                '第 4 段注水 (尾段濃度收尾)'
-            ];
+            const isKasuyaFamily = poState.selectedMethodKey && poState.selectedMethodKey.startsWith('kasuya_46');
 
             const newPours = [];
-            for (let i = 0; i < count; i++) {
-                const w = i === 0 ? bloomW : (i === count - 1 ? targetWater - bloomW - perStageW * (mainStages - 1) : perStageW);
-                const t = Math.max(82, poState.baseTemp - (i >= 2 ? (i - 1) : 0));
+            if (isKasuyaFamily && count >= 3) {
+                // Preserve 4:6 Method philosophy: First 2 pours = 40% total water, remaining pours split the back 60%!
+                const front40 = Math.round(targetWater * 0.40);
+                const w1 = Math.round((front40 * 0.42) / 5) * 5;
+                const w2 = Math.max(20, front40 - w1);
+                const back60 = Math.max(40, targetWater - w1 - w2);
+                const backStages = count - 2;
+                const perBack = Math.round((back60 / backStages) / 5) * 5;
+
                 newPours.push({
-                    label: stageLabels[i] || `第 ${i} 段注水`,
-                    water: Math.max(20, w),
-                    temp: t
+                    label: '第 1 注 (前40%調酸：花果香氣)',
+                    water: w1,
+                    temp: poState.baseTemp,
+                    pourSpeed: poState.pourSpeed || 5.5,
+                    stageSec: poState.bloomTime || 30,
+                    valve: 'open',
+                    releaseMode: 'open_after',
+                    steepSec: poState.bloomTime || 30
                 });
+                newPours.push({
+                    label: '第 2 注 (前40%調甜：焦糖蜜感)',
+                    water: w2,
+                    temp: poState.baseTemp,
+                    pourSpeed: poState.pourSpeed || 5.5,
+                    stageSec: 24,
+                    valve: 'open',
+                    releaseMode: 'open_after',
+                    steepSec: 35
+                });
+                for (let i = 0; i < backStages; i++) {
+                    const w = i === backStages - 1 ? Math.max(20, back60 - perBack * (backStages - 1)) : perBack;
+                    const t = Math.max(80, poState.baseTemp - (i + 1));
+                    const isSwitchLast = poState.dripper === 'switch' && i === backStages - 1;
+                    newPours.push({
+                        label: backStages === 1 ? '第 3 注 (後60%合併降溫順注)' : `第 ${i + 3} 注 (後60%濃度第 ${i + 1} 段)`,
+                        water: w,
+                        temp: t,
+                        pourSpeed: poState.pourSpeed || 5.5,
+                        stageSec: 24,
+                        valve: isSwitchLast ? 'closed' : 'open',
+                        releaseMode: 'open_after',
+                        steepSec: 40
+                    });
+                }
+            } else {
+                const bloomW = Math.round(poState.dose * 2.0);
+                const remainW = Math.max(40, targetWater - bloomW);
+                const mainStages = count - 1;
+                const perStageW = Math.round(remainW / mainStages);
+
+                const stageLabels = [
+                    '悶蒸 (Bloom 排氣潤濕)',
+                    '第 1 段注水 (前段酸香展開)',
+                    '第 2 段注水 (中段甜感銜接)',
+                    '第 3 段注水 (醇厚度調節)',
+                    '第 4 段注水 (尾段濃度收尾)'
+                ];
+
+                for (let i = 0; i < count; i++) {
+                    const w = i === 0 ? bloomW : (i === count - 1 ? targetWater - bloomW - perStageW * (mainStages - 1) : perStageW);
+                    const t = Math.max(80, poState.baseTemp - (i >= 2 ? (i - 1) : 0));
+                    const isSwitchLast = poState.dripper === 'switch' && i === count - 1;
+                    newPours.push({
+                        label: stageLabels[i] || `第 ${i} 段注水`,
+                        water: Math.max(20, w),
+                        temp: t,
+                        pourSpeed: poState.pourSpeed || 5.5,
+                        stageSec: i === 0 ? (poState.bloomTime || 30) : 24,
+                        valve: isSwitchLast ? 'closed' : 'open',
+                        releaseMode: 'open_after',
+                        steepSec: i === 0 ? poState.bloomTime : 40
+                    });
+                }
             }
             poState.pours = newPours;
-            renderPourStagesUI();
             onPouroverParamChange(false, false);
+            renderPourStagesUI();
         }
 
         function distributeWaterEvenly() {
             setPourCount(poState.pourCount);
         }
 
-        function syncAllPulseTemps() {
-            const baseT = parseFloat(document.getElementById('poBaseTempSlider').value);
+        function syncAllPulseTemps(targetTemp) {
+            const baseSlider = document.getElementById('poBaseTempSlider');
+            const baseT = targetTemp !== undefined ? targetTemp : (baseSlider ? parseFloat(baseSlider.value) : (poState.pours && poState.pours[0] ? poState.pours[0].temp : 91));
             poState.baseTemp = baseT;
-            document.getElementById('poBaseTempVal').textContent = `${baseT}°C`;
+            const baseValEl = document.getElementById('poBaseTempVal');
+            if (baseValEl) baseValEl.textContent = `${baseT}°C`;
             poState.pours.forEach((p, idx) => {
-                p.temp = Math.max(80, baseT - (idx >= 2 ? 1 : 0));
+                p.temp = Math.max(70, baseT - (idx >= 2 ? 1 : 0));
             });
-            renderPourStagesUI();
             onPouroverParamChange(false, false);
+            renderPourStagesUI();
         }
 
-        function selectDripper(type) {
+        function selectDripper(type, skipRefresh = false) {
+            const prevDripper = poState.dripper;
             poState.dripper = type;
             document.querySelectorAll('.dripper-btn').forEach(btn => {
-                btn.className = 'dripper-btn p-2 rounded-xl bg-espresso-850 border border-espresso-700 text-left transition';
+                const isSw = btn.id === 'dripper-switch';
+                btn.className = `dripper-btn px-2 py-1.5 rounded-lg bg-espresso-850 border border-espresso-700 text-left transition ${isSw ? 'col-span-2 sm:col-span-1' : ''}`;
             });
             const active = document.getElementById(`dripper-${type}`);
             if (active) {
-                active.className = 'dripper-btn active p-2 rounded-xl bg-espresso-850 border border-crema text-left transition shadow-md shadow-crema/10';
+                active.className = type === 'switch'
+                    ? 'dripper-btn active px-2 py-1.5 rounded-lg bg-emerald-950/50 border border-emerald-400 text-left transition shadow-sm shadow-emerald-500/15 col-span-2 sm:col-span-1'
+                    : 'dripper-btn active px-2 py-1.5 rounded-lg bg-espresso-850 border border-crema text-left transition shadow-sm shadow-crema/10';
             }
-            onPouroverParamChange();
+
+            // When user manually switches to 'switch' dripper and no stage has valve='closed' yet, default the final stage to closed immersion so they immediately experience Switch functionality
+            if (!skipRefresh && type === 'switch' && prevDripper !== 'switch') {
+                const anyClosed = poState.pours.some(p => p.valve === 'closed');
+                if (!anyClosed && poState.pours.length > 0) {
+                    const lastIdx = poState.pours.length - 1;
+                    poState.pours[lastIdx].valve = 'closed';
+                    poState.pours[lastIdx].releaseMode = 'open_after';
+                    poState.pours[lastIdx].steepSec = 40;
+                }
+            }
+
+            if (!skipRefresh) {
+                onPouroverParamChange();
+                renderPourStagesUI();
+            }
         }
 
-        function selectAgitation(mode) {
+        function selectAgitation(mode, skipRefresh = false) {
             poState.agitation = mode;
             document.querySelectorAll('.agit-btn').forEach(btn => {
-                btn.className = 'agit-btn px-2.5 py-1 rounded-lg text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition';
+                btn.className = 'agit-btn px-2 py-0.5 rounded text-[11px] bg-espresso-850 border border-espresso-700 text-cream/80 transition';
             });
             const active = document.getElementById(`agit-${mode}`);
             if (active) {
-                active.className = 'agit-btn active px-2.5 py-1 rounded-lg text-[11px] bg-crema/25 border border-crema text-crema-light font-semibold transition';
+                active.className = 'agit-btn active px-2 py-0.5 rounded text-[11px] bg-crema/25 border border-crema text-crema-light font-semibold transition';
             }
-            onPouroverParamChange();
-        }
-
-        function applyPouroverPreset(key) {
-            stopPouroverSimulation(false);
-            const p = POUROVER_PRESETS[key];
-            if (!p) return;
-
-            poState.activePreset = key;
-            poState.roast = p.roast;
-            poState.charIndex = p.charIndex;
-            poState.dripper = p.dripper;
-            poState.grind = p.grind;
-            poState.pourSpeed = p.pourSpeed;
-            poState.dose = p.dose;
-            poState.ratio = p.ratio;
-            poState.baseTemp = p.baseTemp;
-            poState.bloomTime = p.bloomTime;
-            poState.agitation = p.agitation;
-            poState.pourCount = p.pourCount;
-            poState.pours = p.pours.map(item => ({ ...item }));
-
-            // Sync DOM inputs
-            document.getElementById('poRoastSlider').value = p.roast;
-            document.getElementById('poCharSlider').value = p.charIndex;
-            document.getElementById('poGrindSlider').value = p.grind;
-            document.getElementById('poPourSpeedSlider').value = p.pourSpeed;
-            document.getElementById('poDoseSlider').value = p.dose;
-            document.getElementById('poRatioSlider').value = p.ratio;
-            document.getElementById('poBaseTempSlider').value = p.baseTemp;
-            document.getElementById('poBloomTimeSlider').value = p.bloomTime;
-
-            document.querySelectorAll('.po-preset-btn').forEach(btn => btn.classList.remove('active'));
-            const presetBtn = document.getElementById(`po-preset-${key}`);
-            if (presetBtn) presetBtn.classList.add('active');
-
-            selectDripper(p.dripper);
-            selectAgitation(p.agitation);
-            renderPourStagesUI();
-            onPouroverParamChange(true, false);
+            if (!skipRefresh) onPouroverParamChange();
         }
 
         /**
-         * Pour-Over Physics & Multi-Stage Extraction Engine
+         * Pour-Over Physics & Multi-Stage Extraction Engine (with Hario Switch / Clever Valve Immersion)
+         * Fully couples grind size, ratio, stage water distribution, variable-temp kinetics,
+         * dripper geometry, Switch closed-valve immersion & drawdown release, bloom wetting ratio, roast porosity, and agitation.
          */
         function calculatePouroverPhysics() {
             const { roast, charIndex, dripper, grind, pourSpeed, dose, bloomTime, agitation, pours } = poState;
@@ -5270,16 +6175,29 @@
             const totalWater = pours.reduce((sum, p) => sum + p.water, 0);
             const weightedTemp = pours.reduce((sum, p) => sum + p.water * p.temp, 0) / Math.max(1, totalWater);
 
-            // Coffee grounds retain ~2.0g of water per gram of dose
-            const retainedWater = dose * 2.0;
+            // Roast- & Grind-dependent Liquid Retention Ratio (g water retained per g dry coffee)
+            const retentionRatio = Number((1.88 + (roast / 100) * 0.24 + (5.2 - grind) * 0.02).toFixed(2));
+            const retainedWater = Math.round(dose * retentionRatio);
             const beverageWeight = Math.max(30, Math.round(totalWater - retainedWater));
 
-            // 3. Dripper Drainage Conductivity & Agitation Fines Migration
+            // 3. Dripper Drainage Conductivity, Bed Uniformity & Agitation Fines Migration
             const dripperConductivity = {
                 origami: 1.18,
                 v60: 1.08,
+                switch: 1.06,
                 kalita: 0.92,
                 kono: 0.78
+            }[dripper] || 1.0;
+
+            const isSwitchDripper = dripper === 'switch';
+            const closedStageCount = isSwitchDripper ? pours.filter(p => p.valve === 'closed').length : 0;
+
+            const dripperUniformity = {
+                origami: 0.985,
+                v60: 1.000,
+                switch: closedStageCount > 0 ? 1.038 : 1.000,
+                kalita: 1.028,
+                kono: 1.020
             }[dripper] || 1.0;
 
             const agitBoost = {
@@ -5289,46 +6207,136 @@
                 stir: 1.28
             }[agitation] || 1.0;
 
-            // Turbulence index (0.1 to 0.99)
+            // Turbulence index (0.15 to 0.98)
             const turbulence = Math.min(0.98, Math.max(0.15, ((pourSpeed - 3.0) / 9.0) * 0.55 + (agitBoost - 0.8) * 0.9));
 
             // Fines clogging penalty when grind is too fine + high agitation/Roast brittleness
             const finesClogFactor = grind < 4.2 ? Math.pow(4.2 - grind, 1.5) * 0.18 * agitBoost : 0;
 
-            // 4. Time-Series Simulation of Multi-Pour Slurry Level & Drip Rate
-            const dt = 1.0; // 1 second steps
+            // 4. Bloom Wetting & CO2 Degassing Efficiency
+            const bloomWater = pours[0] ? pours[0].water : dose * 2;
+            const bloomRatio = bloomWater / Math.max(1, dose);
+            const bloomWetFactor = bloomRatio < 1.6
+                ? 0.85 + (bloomRatio / 1.6) * 0.15
+                : (bloomRatio <= 2.8 ? 1.0 + (bloomRatio - 2.0) * 0.015 : Math.max(0.93, 1.012 - (bloomRatio - 2.8) * 0.032));
+            const bloomTimeFactor = 0.91 + 0.12 * (1 - Math.exp(-bloomTime / 18));
+            const bloomBoost = Math.min(1.07, bloomWetFactor * bloomTimeFactor);
+
+            // 5. Multi-Stage Pulse Distribution & Early/Late Profiling
+            const mainPours = pours.slice(1);
+            const mainWater = Math.max(1, mainPours.reduce((sum, p) => sum + p.water, 0));
+            let effMainPulses = 1;
+            if (mainPours.length > 0) {
+                const sumSq = mainPours.reduce((sum, p) => sum + Math.pow(p.water / mainWater, 2), 0);
+                effMainPulses = 1 / Math.max(0.1, sumSq);
+            }
+            const effectivePourCount = pours.length === 1 ? 1.0 : (1.0 + effMainPulses);
+
+            const earlyStageCount = Math.max(1, Math.ceil(pours.length / 2));
+            const earlyWaterShare = pours.slice(0, earlyStageCount).reduce((sum, p) => sum + p.water, 0) / Math.max(1, totalWater);
+            const stageSplitFactor = 1 - Math.max(0, earlyWaterShare - 0.58) * 0.08 - Math.max(0, 0.38 - earlyWaterShare) * 0.04;
+            const pourCountBoost = (1 + (effectivePourCount - 3.0) * 0.034) * stageSplitFactor;
+
+            // Early (first 45% water) vs Late (last 55% water) temperature profiling
+            let cumW = 0, earlyTempSum = 0, earlyW = 0, lateTempSum = 0, lateW = 0;
+            pours.forEach(p => {
+                const nextCum = cumW + p.water;
+                const cutoff = totalWater * 0.45;
+                const wEarly = Math.max(0, Math.min(nextCum, cutoff) - cumW);
+                const wLate = p.water - wEarly;
+                earlyTempSum += wEarly * p.temp;
+                earlyW += wEarly;
+                lateTempSum += wLate * p.temp;
+                lateW += wLate;
+                cumW = nextCum;
+            });
+            const earlyTemp = earlyW > 0 ? earlyTempSum / earlyW : weightedTemp;
+            const lateTemp = lateW > 0 ? lateTempSum / lateW : weightedTemp;
+            const tempDropDelta = earlyTemp - lateTemp;
+
+            const firstTwoWater = (pours[0] ? pours[0].water : 0) + (pours[1] ? pours[1].water : 0);
+            const bloomShareInFront = pours[0] ? pours[0].water / Math.max(1, firstTwoWater) : 0.4;
+
+            // 6. Time-Series Simulation with Switch Closed-Valve Immersion & Release Drawdown
+            const dt = 1.0;
             const timePoints = [];
             let t = 0;
             let slurry = 0;
             let poured = 0;
             let beverage = 0;
             let currentTemp = pours[0] ? pours[0].temp : 91;
+            let totalImmersionSec = 0;
 
-            // Build start times for each pour stage
+            const drainWaitScale = Math.pow(5.2 / grind, 0.28) * Math.pow(dose / 18, 0.22) * (1 / dripperConductivity);
+            const baseDrainFactor = (Math.pow(grind / 5.2, 1.15) * dripperConductivity) / (Math.pow(dose / 18, 0.45) * (1 + finesClogFactor));
+
             const stages = [];
             let cursorTime = 0;
+            let pendingHeldWater = 0;
+
             pours.forEach((p, idx) => {
-                const pourDuration = Math.max(4, Math.round(p.water / pourSpeed));
-                const waitAfter = idx === 0
-                    ? Math.max(8, bloomTime - pourDuration)
-                    : Math.round(14 + (p.water / 18) * (1 / dripperConductivity));
+                const isLast = idx === pours.length - 1;
+                const valve = isSwitchDripper ? (p.valve || 'open') : 'open';
+                const releaseMode = isLast ? 'open_after' : (p.releaseMode || 'open_after');
+                const stageSpeed = p.pourSpeed || poState.pourSpeed || 5.5;
+                const pourDuration = Math.max(3, Math.round(p.water / stageSpeed));
+                p.calculatedPourSec = pourDuration;
+
+                let releaseT = cursorTime;
+                let drainDuration = 0;
+
+                if (valve === 'closed') {
+                    pendingHeldWater += p.water;
+                    const steepSec = Math.max(15, p.steepSec || 40);
+                    if (releaseMode === 'keep_closed' && !isLast) {
+                        // Valve stays closed through the entire stage and carries slurry into next stage
+                        releaseT = cursorTime + steepSec;
+                        drainDuration = 0;
+                    } else {
+                        // Steep for steepSec (including pour time), then open Switch valve and drain accumulated slurry
+                        releaseT = cursorTime + Math.max(pourDuration + 4, steepSec);
+                        drainDuration = Math.max(14, Math.round((12 + 8.5 * Math.pow(pendingHeldWater / 95, 0.78)) * drainWaitScale));
+                        pendingHeldWater = 0;
+                    }
+                } else {
+                    const totalStageWater = p.water + pendingHeldWater;
+                    pendingHeldWater = 0;
+                    releaseT = cursorTime;
+                    if (idx === 0) {
+                        const targetBloomSec = p.stageSec || poState.bloomTime || 30;
+                        drainDuration = Math.max(pourDuration + 4, targetBloomSec);
+                    } else if (!isLast && p.stageSec) {
+                        drainDuration = Math.max(pourDuration + 4, p.stageSec);
+                    } else {
+                        const waitAfter = Math.round((10 + 6.5 * Math.pow(totalStageWater / 90, 0.75)) * drainWaitScale);
+                        drainDuration = pourDuration + waitAfter;
+                    }
+                }
+
+                const stageEndT = valve === 'closed'
+                    ? (releaseMode === 'keep_closed' && !isLast ? releaseT : releaseT + drainDuration)
+                    : cursorTime + drainDuration;
+
                 stages.push({
                     idx,
                     label: p.label,
                     startT: cursorTime,
                     pourEndT: cursorTime + pourDuration,
-                    stageEndT: cursorTime + pourDuration + waitAfter,
+                    releaseT,
+                    stageEndT,
                     water: p.water,
                     temp: p.temp,
-                    rate: p.water / pourDuration
+                    valve,
+                    releaseMode,
+                    steepSec: p.steepSec || 40,
+                    rate: p.water / pourDuration,
+                    pourDuration,
+                    endBev: 0
                 });
-                cursorTime += pourDuration + waitAfter;
+                cursorTime = stageEndT;
             });
 
-            const baseDrainFactor = (Math.pow(grind / 5.2, 1.15) * dripperConductivity) / (Math.pow(dose / 18, 0.45) * (1 + finesClogFactor));
-
-            while ((poured < totalWater - 0.5 || slurry > 2.5) && t < 300) {
-                // Find active stage
+            while ((poured < totalWater - 0.5 || slurry > 2.5) && t < 360) {
                 let activeStage = stages[stages.length - 1];
                 for (let s of stages) {
                     if (t >= s.startT && t < s.stageEndT) {
@@ -5346,13 +6354,24 @@
                 slurry += inFlow * dt;
                 poured = Math.min(totalWater, poured + inFlow * dt);
 
-                // During bloom, grounds absorb retained water first
+                // Determine whether Switch valve is currently closed at timestamp t
+                let valveClosedNow = false;
+                if (activeStage && activeStage.valve === 'closed') {
+                    if (activeStage.releaseMode === 'keep_closed' && activeStage.idx < stages.length - 1) {
+                        valveClosedNow = true;
+                    } else if (t < activeStage.releaseT) {
+                        valveClosedNow = true;
+                    }
+                }
+
                 const absorbedSoFar = Math.min(retainedWater, poured * 0.42);
                 const freeSlurry = Math.max(0, slurry - (t < bloomTime ? absorbedSoFar * 0.5 : 0));
 
-                // Hydrostatic head drives drainage rate
                 let dripRate = 0;
-                if (t < 4) {
+                if (valveClosedNow) {
+                    dripRate = 0;
+                    totalImmersionSec += dt;
+                } else if (t < 4) {
                     dripRate = 0.1;
                 } else {
                     const headFactor = Math.pow(Math.max(0, freeSlurry) / 45, 0.72);
@@ -5362,6 +6381,17 @@
                 slurry = Math.max(0, slurry - dripRate * dt);
                 beverage = Math.min(beverageWeight, beverage + dripRate * dt * 0.92);
 
+                if (activeStage && t <= activeStage.stageEndT) {
+                    activeStage.endBev = beverage;
+                }
+
+                let liveLabel = activeStage ? activeStage.label : '滴濾收尾 (Drawdown)';
+                if (isSwitchDripper && activeStage && activeStage.valve === 'closed') {
+                    liveLabel = valveClosedNow
+                        ? `🔒 止水浸泡中・${activeStage.label}`
+                        : `🔓 開閥落水・${activeStage.label}`;
+                }
+
                 timePoints.push({
                     t,
                     slurry: Number(slurry.toFixed(1)),
@@ -5370,72 +6400,129 @@
                     dripRate: Number(dripRate.toFixed(2)),
                     inFlow: Number(inFlow.toFixed(2)),
                     temp: currentTemp,
-                    stageName: activeStage ? activeStage.label : '滴濾收尾 (Drawdown)'
+                    valveState: valveClosedNow ? 'closed' : 'open',
+                    stageIdx: activeStage ? activeStage.idx : stages.length - 1,
+                    stageName: liveLabel
                 });
 
                 t += dt;
-                if (t > stages[stages.length - 1].pourEndT + 5 && slurry < 3.0) break;
+                if (t > stages[stages.length - 1].stageEndT - 2 && poured >= totalWater - 0.5 && slurry < 3.0 && !valveClosedNow) break;
+            }
+
+            // Finalize stage endBev for the last stage
+            if (stages.length > 0) {
+                stages[stages.length - 1].endT = timePoints.length > 0 ? timePoints[timePoints.length - 1].t : stages[stages.length - 1].stageEndT;
+                stages[stages.length - 1].endBev = beverageWeight;
+                for (let i = 0; i < stages.length - 1; i++) {
+                    stages[i].endT = stages[i].stageEndT;
+                }
             }
 
             const totalTimeSec = timePoints.length > 0 ? timePoints[timePoints.length - 1].t : 135;
 
-            // 5. Extraction Yield (EY %) Calculation for Pour-Over
-            const grindSurf = Math.pow(5.4 / grind, 0.46);
-            const ratioBoost = Math.pow((totalWater / dose) / 15.5, 0.38);
-            const tempBoost = 1 + (weightedTemp - 90.5) * 0.019;
-            const roastPorosity = 1 + (roast - 30) * 0.0022; // Darker roasts are more porous & soluble
-            const pourCountBoost = 1 + (pours.length - 3) * 0.032; // More pulses increase concentration gradient
-            const bloomBoost = Math.min(1.06, 0.92 + (bloomTime / 35) * 0.08);
+            // 7. Coupled Extraction Yield (EY %) Calculation
+            // Closed-valve immersion provides full-slurry solid-liquid contact, though static concentration gradient is slightly gentler than fresh percolation
+            const activeDrawdownSec = Math.max(30, totalTimeSec - bloomTime - totalImmersionSec * 0.25);
+            const immersionSynergy = isSwitchDripper && totalImmersionSec > 0
+                ? 1 + Math.min(0.045, (totalImmersionSec / 100) * 0.032)
+                : 1.0;
+            const contactTimeBoost = Math.pow(activeDrawdownSec / 102, 0.14) * dripperUniformity * immersionSynergy;
+            const grindSurf = Math.pow(5.4 / grind, 0.44);
+            const ratioBoost = Math.pow((totalWater / dose) / 15.5, 0.36);
+            const tempBoost = 1 + (weightedTemp - 90.5) * 0.017 - tempDropDelta * 0.0025;
+            const roastPorosity = 1 + (roast - 25) * 0.0036 + (roast > 60 ? (roast - 60) * 0.0032 : 0);
             const agitEfficiency = 0.93 + turbulence * 0.16;
 
-            let ey = 19.7 * grindSurf * ratioBoost * tempBoost * roastPorosity * pourCountBoost * bloomBoost * agitEfficiency;
-            ey = Math.max(13.2, Math.min(25.2, ey));
+            const baseEY = 19.55;
+            const rawEY = baseEY * grindSurf * ratioBoost * tempBoost * roastPorosity * pourCountBoost * bloomBoost * agitEfficiency * contactTimeBoost;
+            const ey = Math.max(13.2, Math.min(25.2, rawEY));
 
-            // 6. TDS (%) for Filter Coffee
-            // Filter TDS typically 1.15% - 1.45%
-            const tds = (ey * dose) / Math.max(50, beverageWeight);
+            // 8. Percolation Mass-Balance TDS (%) (Gagné / SCA Percolation Refractometer Model)
+            const effectiveLiquidMass = beverageWeight + 0.55 * retainedWater;
+            const tds = (ey * dose) / Math.max(50, effectiveLiquidMass);
+            const totalExtractedSolidsG = (dose * ey) / 100;
+            const cupSolidsG = (beverageWeight * tds) / 100;
+            const retainedSolidsG = Math.max(0, totalExtractedSolidsG - cupSolidsG);
 
-            // 7. Six-Dimension Sensory Scores
-            // Acidity: driven by light roast, fruity character, moderate EY, high clarity dripper (V60/Origami)
-            let acidity = 78 - roast * 0.45 - charIndex * 0.25 + (20.2 - ey) * 3.2 + (dripper === 'v60' || dripper === 'origami' ? 6 : -3);
+            // 9. Six-Dimension Sensory Scores (incorporating Switch immersion roundness & temperature drop)
+            const switchSweetBoost = isSwitchDripper && totalImmersionSec > 0 ? Math.min(6, Math.round(totalImmersionSec / 12)) : 0;
+            const switchBodyBoost = isSwitchDripper && totalImmersionSec > 0 ? Math.min(8, Math.round(totalImmersionSec / 9)) : 0;
+
+            let acidity = 78 - roast * 0.45 - charIndex * 0.25 + (20.2 - ey) * 3.0
+                + (dripper === 'v60' || dripper === 'origami' ? 6 : (dripper === 'switch' ? 3 : -3))
+                + (earlyWaterShare - 0.50) * 14 + (bloomShareInFront - 0.32) * 10 + (earlyTemp - 90.5) * 1.2;
             acidity = Math.round(Math.max(15, Math.min(98, acidity)));
 
-            // Sweetness: peaks at EY 19.2 - 21.0%, boosted by proper bloom, Kalita/multi-pour, honey/medium roast
             const eySweetDist = Math.abs(ey - 20.0);
-            let sweetness = 90 - Math.pow(eySweetDist, 1.5) * 5.2 + (pours.length >= 3 ? 4 : -2) - Math.max(0, weightedTemp - 93) * 2.5;
+            let sweetness = 90 - Math.pow(eySweetDist, 1.5) * 5.2
+                + (effectivePourCount >= 2.8 ? 4 : -2)
+                + (dripper === 'kalita' ? 3 : 0)
+                + switchSweetBoost
+                + (0.45 - bloomShareInFront) * 12
+                + tempDropDelta * 1.4
+                - Math.max(0, lateTemp - 92.5) * 3.0;
             sweetness = Math.round(Math.max(25, Math.min(96, sweetness)));
 
-            // Bitterness: increases with dark roast, high water temp, over-extraction (>21.5%), and heavy stirring
-            let bitterness = 20 + roast * 0.42 + charIndex * 0.18 + Math.max(0, ey - 20.2) * 8.5 + Math.max(0, weightedTemp - 90) * (roast > 60 ? 3.5 : 1.2);
+            let bitterness = 20 + roast * 0.42 + charIndex * 0.18
+                + Math.max(0, ey - 20.2) * 8.5
+                + Math.max(0, lateTemp - 89.5) * (roast > 60 ? 3.6 : 1.5)
+                - tempDropDelta * 2.2;
             bitterness = Math.round(Math.max(10, Math.min(96, bitterness)));
 
-            // AromaIntensity (Floral/Fruity vs Nutty/Cocoa richness)
-            let aroma = 88 - Math.abs(weightedTemp - (93 - roast * 0.08)) * 2.4 + (bloomTime >= 30 && bloomTime <= 45 ? 5 : -4);
+            let aroma = 88 - Math.abs(earlyTemp - (93 - roast * 0.08)) * 2.2
+                + (bloomTime >= 30 && bloomTime <= 45 && bloomRatio >= 1.7 ? 5 : -4);
             aroma = Math.round(Math.max(35, Math.min(98, aroma)));
 
-            // Body / Mouthfeel: driven by TDS %, Kono/Kalita dripper, darker/nutty profile, agitation
-            let body = 45 + (tds - 1.0) * 65 + roast * 0.15 + (dripper === 'kono' ? 10 : (dripper === 'kalita' ? 5 : 0));
+            let body = 45 + (tds - 1.0) * 68 + roast * 0.15
+                + (dripper === 'kono' ? 10 : (dripper === 'kalita' ? 5 : switchBodyBoost))
+                + (0.55 - earlyWaterShare) * 10;
             body = Math.round(Math.max(20, Math.min(96, body)));
 
-            // Clarity / Cleanliness: high with V60/Origami, gentle pour, center/circle agitation, penalized by over-extraction
-            let clarity = 92 - turbulence * 22 - Math.max(0, ey - 21.2) * 6 + (dripper === 'origami' || dripper === 'v60' ? 6 : -4);
+            let clarity = 92 - turbulence * 22 - Math.max(0, ey - 21.2) * 6
+                + (dripper === 'origami' || dripper === 'v60' ? 6 : (dripper === 'switch' && totalImmersionSec > 0 ? 1 : -4))
+                + tempDropDelta * 1.2;
             clarity = Math.round(Math.max(25, Math.min(98, clarity)));
 
             let diagnosis = 'balanced';
             if (ey < 18.0) diagnosis = 'under';
-            else if (ey > 22.0 || (roast > 65 && weightedTemp > 90)) diagnosis = 'over';
-            else if (tds < 1.12) diagnosis = 'weak';
+            else if (ey > 22.0 || (roast > 65 && lateTemp > 90)) diagnosis = 'over';
+            else if (tds < 1.15) diagnosis = 'weak';
             else if (tds > 1.52) diagnosis = 'strong';
 
             poComputed = {
                 microns,
                 totalWater,
+                retainedWater,
+                retentionRatio,
                 beverageWeight,
                 totalTimeSec,
+                activeDrawdownSec,
+                totalImmersionSec,
                 weightedTemp,
+                earlyTemp,
+                lateTemp,
+                tempDropDelta,
+                bloomRatio,
+                effectivePourCount,
+                earlyWaterShare,
                 turbulence,
                 ey,
                 tds,
+                totalExtractedSolidsG,
+                cupSolidsG,
+                retainedSolidsG,
+                stageTimings: stages,
+                factors: {
+                    baseEY,
+                    grindSurf,
+                    ratioBoost,
+                    tempBoost,
+                    contactTimeBoost,
+                    pourCountBoost,
+                    bloomBoost,
+                    agitEfficiency,
+                    roastPorosity
+                },
                 acidity,
                 sweetness,
                 bitterness,
@@ -5450,17 +6537,22 @@
         function onPouroverParamChange(fromPreset = false, rescaleWater = false) {
             if (!fromPreset) {
                 poState.activePreset = null;
-                document.querySelectorAll('.po-preset-btn').forEach(b => b.classList.remove('active'));
             }
 
             poState.roast = parseFloat(document.getElementById('poRoastSlider').value);
             poState.charIndex = parseFloat(document.getElementById('poCharSlider').value);
             poState.grind = parseFloat(document.getElementById('poGrindSlider').value);
-            poState.pourSpeed = parseFloat(document.getElementById('poPourSpeedSlider').value);
+            const speedSlider = document.getElementById('poPourSpeedSlider');
+            if (speedSlider) poState.pourSpeed = parseFloat(speedSlider.value);
             poState.dose = parseFloat(document.getElementById('poDoseSlider').value);
             poState.ratio = parseFloat(document.getElementById('poRatioSlider').value);
-            poState.baseTemp = parseFloat(document.getElementById('poBaseTempSlider').value);
-            poState.bloomTime = parseFloat(document.getElementById('poBloomTimeSlider').value);
+            const baseTempEl = document.getElementById('poBaseTempSlider');
+            if (baseTempEl) poState.baseTemp = parseFloat(baseTempEl.value);
+            else if (poState.pours && poState.pours[0]) poState.baseTemp = poState.pours[0].temp;
+
+            const bloomTimeEl = document.getElementById('poBloomTimeSlider');
+            if (bloomTimeEl) poState.bloomTime = parseFloat(bloomTimeEl.value);
+            else if (poState.pours && poState.pours[0]) poState.bloomTime = poState.pours[0].steepSec;
 
             if (rescaleWater) {
                 const targetWater = Math.round(poState.dose * poState.ratio);
@@ -5470,11 +6562,11 @@
                     poState.pours.forEach(p => {
                         p.water = Math.max(20, Math.round((p.water * factor) / 5) * 5);
                     });
-                    renderPourStagesUI();
                 }
             }
 
             calculatePouroverPhysics();
+            renderPourStagesUI();
             updatePouroverUI();
             if (!poState.isSimulating) {
                 const lastPt = poComputed.timePoints[poComputed.timePoints.length - 1];
@@ -5494,43 +6586,34 @@
         }
 
         function updatePouroverUI() {
-            // Roast Badge (Agtron scale mapping)
-            const agtron = Math.round(85 - poState.roast * 0.5);
-            const roastBadge = document.getElementById('poRoastBadge');
-            if (poState.roast < 28) {
-                roastBadge.textContent = `淺焙 Light~City- (Agtron ${agtron})`;
-                roastBadge.className = 'text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono';
-            } else if (poState.roast < 55) {
-                roastBadge.textContent = `淺中~中焙 City+ (Agtron ${agtron})`;
-                roastBadge.className = 'text-[11px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono';
-            } else if (poState.roast < 78) {
-                roastBadge.textContent = `中深焙 Full City (Agtron ${agtron})`;
-                roastBadge.className = 'text-[11px] px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 font-mono';
-            } else {
-                roastBadge.textContent = `深焙 Vienna/French (Agtron ${agtron})`;
-                roastBadge.className = 'text-[11px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 font-mono';
-            }
+            // Update Top Functional Bar (Zone 1 Bean, Zone 2 Dynamic Method Evolution, Zone 3 Breadcrumb)
+            updateDynamicHeaderAndCardBadges();
 
-            // Flavor Spectrum Badge
+            // Roast Badge (Unified Agtron scale mapping matching top Bean Picker)
+            const agtron = Math.round(85 - poState.roast * 0.5);
+            const roastDesc = getUnifiedRoastDescriptor(poState.roast);
+            const roastBadge = document.getElementById('poRoastBadge');
+            roastBadge.textContent = roastDesc.label;
+            roastBadge.className = roastDesc.badgeClass;
+
+            // Flavor Spectrum Badge (Unified with selected bean or manual override)
+            const flavorDesc = getUnifiedFlavorDescriptor();
             const charBadge = document.getElementById('poCharBadge');
-            if (poState.charIndex < 30) {
-                charBadge.textContent = '🌸 藝伎白花・佛手柑・熱帶水果調';
-                charBadge.className = 'text-[11px] px-2 py-0.5 rounded bg-pink-500/20 text-pink-300 font-mono';
-            } else if (poState.charIndex < 68) {
-                charBadge.textContent = '🍯 蜜處理熟果・蜂蜜紅茶・甜橙調';
-                charBadge.className = 'text-[11px] px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono';
-            } else {
-                charBadge.textContent = '🥜 烤榛果・黑巧克力・奶油焦糖調';
-                charBadge.className = 'text-[11px] px-2 py-0.5 rounded bg-crema/20 text-crema-light font-mono';
-            }
+            charBadge.textContent = flavorDesc.label;
+            charBadge.className = flavorDesc.badgeClass;
 
             document.getElementById('poGrindVal').textContent = `${poState.grind.toFixed(1)} (${poComputed.microns}μm)`;
-            const speedDesc = poState.pourSpeed < 4.8 ? '柔和小水流' : (poState.pourSpeed <= 7.5 ? '穩定中水流' : '強勁翻攪水柱');
-            document.getElementById('poPourSpeedVal').textContent = `${poState.pourSpeed.toFixed(1)} ml/s (${speedDesc})`;
+            const speedValEl = document.getElementById('poPourSpeedVal');
+            if (speedValEl) {
+                const speedDesc = poState.pourSpeed < 4.8 ? '柔和小水流' : (poState.pourSpeed <= 7.5 ? '穩定中水流' : '強勁翻攪水柱');
+                speedValEl.textContent = `${poState.pourSpeed.toFixed(1)} ml/s (${speedDesc})`;
+            }
             document.getElementById('poDoseVal').textContent = `${poState.dose}g`;
             document.getElementById('poRatioVal').textContent = `1:${(poComputed.totalWater / poState.dose).toFixed(1)}`;
-            document.getElementById('poBaseTempVal').textContent = `${poState.baseTemp}°C`;
-            document.getElementById('poBloomTimeVal').textContent = `${poState.bloomTime}s`;
+            const baseTempValEl = document.getElementById('poBaseTempVal');
+            if (baseTempValEl) baseTempValEl.textContent = `${poState.baseTemp}°C`;
+            const bloomTimeValEl = document.getElementById('poBloomTimeVal');
+            if (bloomTimeValEl) bloomTimeValEl.textContent = `${poState.bloomTime}s`;
 
             document.getElementById('poTotalWaterDisplay').textContent = `${poComputed.totalWater} ml`;
             document.getElementById('poBeverageWeightDisplay').textContent = `${poComputed.beverageWeight} g`;
@@ -5538,7 +6621,10 @@
             // Top KPIs
             document.getElementById('poKpiTime').textContent = formatMinSec(poComputed.totalTimeSec);
             const timeSub = document.getElementById('poKpiTimeSub');
-            if (poComputed.totalTimeSec >= 115 && poComputed.totalTimeSec <= 165) {
+            if (poState.dripper === 'switch' && poComputed.totalImmersionSec > 0) {
+                timeSub.textContent = `含 Switch 止水浸泡 ${poComputed.totalImmersionSec}s`;
+                timeSub.className = 'mt-1 text-[11px] text-emerald-400 font-medium';
+            } else if (poComputed.totalTimeSec >= 115 && poComputed.totalTimeSec <= 165) {
                 timeSub.textContent = '滴濾時間理想 (1:55~2:45)';
                 timeSub.className = 'mt-1 text-[11px] text-emerald-400 font-medium';
             } else if (poComputed.totalTimeSec < 115) {
@@ -5570,6 +6656,48 @@
             const turbPct = Math.round(poComputed.turbulence * 100);
             document.getElementById('poKpiTurbSub').textContent = `粉層擾流強度：${turbPct < 40 ? '低擾流柔和' : (turbPct < 70 ? '適中翻滾' : '高翻攪強萃')} (${turbPct}%)`;
 
+            // Live Physics Verification & Factor Breakdown Panel
+            const massSumEl = document.getElementById('poVerifyMassSummary');
+            const eqTextEl = document.getElementById('poVerifyEquationText');
+            const gridEl = document.getElementById('poFactorBreakdownGrid');
+            if (massSumEl && eqTextEl && gridEl && poComputed.factors) {
+                const f = poComputed.factors;
+                const effLiq = Math.round(poComputed.beverageWeight + 0.55 * poComputed.retainedWater);
+                massSumEl.textContent = `總溶出固體 ${poComputed.totalExtractedSolidsG.toFixed(2)}g (下壺 ${poComputed.cupSolidsG.toFixed(2)}g + 粉渣殘留 ${poComputed.retainedSolidsG.toFixed(2)}g)`;
+                eqTextEl.textContent = `EY (${poComputed.ey.toFixed(2)}%) = 基準 ${f.baseEY}% × Π(8項物理倍率) ｜ 下壺液重 ${poComputed.beverageWeight}g = 總水 ${poComputed.totalWater}ml − 吸水 ${poComputed.retainedWater}g (${poComputed.retentionRatio}g/g) ｜ TDS (${poComputed.tds.toFixed(2)}%) = ${poComputed.totalExtractedSolidsG.toFixed(2)}g ÷ 有效滲濾液重 ${effLiq}g`;
+
+                const dripperNameMap = { v60: 'V60 錐形', kalita: 'Kalita 平底', origami: 'Origami 摺紙', kono: 'Kono 半浸泡', switch: 'Switch 聰明杯' };
+                const fmtMult = (m) => {
+                    const pct = (m - 1) * 100;
+                    const sign = pct >= 0 ? '+' : '';
+                    return `×${m.toFixed(3)} (${sign}${pct.toFixed(1)}%)`;
+                };
+                const colorForMult = (m) => Math.abs(m - 1) < 0.008 ? 'text-cream/80' : (m > 1 ? 'text-emerald-300' : 'text-amber-300');
+
+                const switchTimeSub = poState.dripper === 'switch' && poComputed.totalImmersionSec > 0
+                    ? `Switch 浸泡${poComputed.totalImmersionSec}s / 總${poComputed.totalTimeSec}s`
+                    : `${dripperNameMap[poState.dripper]} · 滴濾 ${poComputed.activeDrawdownSec}s`;
+
+                const items = [
+                    { title: '⚙️ 研磨比表面積', mult: f.grindSurf, sub: `刻度 ${poState.grind.toFixed(1)} (${poComputed.microns}μm)` },
+                    { title: '💧 粉水比溶劑梯度', mult: f.ratioBoost, sub: `1:${(poComputed.totalWater / poState.dose).toFixed(1)} (${poState.dose}g/${poComputed.totalWater}ml)` },
+                    { title: '🌡️ 變溫熱力動力學', mult: f.tempBoost, sub: `前${poComputed.earlyTemp.toFixed(1)}°C / 後${poComputed.lateTemp.toFixed(1)}°C` },
+                    { title: '▽ 濾杯與接觸時間', mult: f.contactTimeBoost, sub: switchTimeSub },
+                    { title: '🌊 分段脈衝與配水', mult: f.pourCountBoost, sub: `有效 ${poComputed.effectivePourCount.toFixed(2)} 段 · 前水 ${Math.round(poComputed.earlyWaterShare * 100)}%` },
+                    { title: '⏳ 悶蒸潤濕排氣', mult: f.bloomBoost, sub: `悶蒸 ${poComputed.bloomRatio.toFixed(1)}x 粉重 · ${poState.bloomTime}s` },
+                    { title: '🥄 水流與攪拌擾流', mult: f.agitEfficiency, sub: `${poState.pourSpeed.toFixed(1)}ml/s · 擾流 ${turbPct}%` },
+                    { title: '🔥 烘焙孔隙與吸水', mult: f.roastPorosity, sub: `Agtron ${agtron} · 吸水 ${poComputed.retentionRatio}g/g` }
+                ];
+
+                gridEl.innerHTML = items.map(item => `
+                    <div class="bg-espresso-950/75 border border-crema/10 rounded-lg p-2">
+                        <div class="text-[10px] text-cream/60 truncate">${item.title}</div>
+                        <div class="font-bold text-xs mt-0.5 ${colorForMult(item.mult)}">${fmtMult(item.mult)}</div>
+                        <div class="text-[10px] text-cream/50 truncate mt-0.5">${item.sub}</div>
+                    </div>
+                `).join('');
+            }
+
             // Sensory Bars
             const setBar = (id, val) => {
                 document.getElementById(`poVal${id}`).textContent = `${val}%`;
@@ -5588,16 +6716,14 @@
             const balLabel = document.getElementById('poBalanceLabel');
             const domBadge = document.getElementById('poDominantNoteBadge');
 
+            balLabel.textContent = `風味光譜：${flavorDesc.label}`;
             if (poState.charIndex < 35 && poState.roast < 45) {
-                balLabel.textContent = '風味光譜：明亮花果香與蜜桃伯爵茶感';
                 domBadge.textContent = '🌸 花果茶感主導';
                 domBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-pink-500/20 text-pink-300';
             } else if (poState.charIndex < 70 && poState.roast < 68) {
-                balLabel.textContent = '風味光譜：圓潤蜂蜜熟果與焦糖甜感';
                 domBadge.textContent = '🍯 蜜糖熟果主導';
                 domBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300';
             } else {
-                balLabel.textContent = '風味光譜：厚實烤堅果與黑巧克力甘韻';
                 domBadge.textContent = '🍫 堅果可可主導';
                 domBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-crema/20 text-crema-light';
             }
@@ -5618,35 +6744,46 @@
                 goldCupBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/30';
                 coachHeadline.textContent = `目前萃取率僅 ${poComputed.ey.toFixed(1)}%，果酸尖銳但中後段甜感與厚度尚未釋放。`;
                 tastingNotes.textContent = '入口帶有明顯檸檬青澀酸感，中段缺乏蜂蜜或焦糖甜感銜接，水感偏明顯，尾韻較短促。';
-                physicsNotes.textContent = `研磨粒徑 (${poComputed.microns}μm) 偏粗或水溫 (${poComputed.weightedTemp.toFixed(1)}°C) 偏低，水流快速通過濾杯，可溶糖類尚未完全擴散。`;
-                actions.push(`建議將研磨度調細（由 ${poState.grind.toFixed(1)} 調至 4.6 ~ 5.0）或增加注水段數至 3~4 段。`);
-                actions.push('可將悶蒸時間延長至 35~40 秒，並搭配「穩定同心圓繞圈」增加粉水接觸效率。');
+                physicsNotes.textContent = `研磨粒徑 (${poComputed.microns}μm) 偏粗、水溫 (${poComputed.weightedTemp.toFixed(1)}°C) 偏低或悶蒸潤濕不足 (${poComputed.bloomRatio.toFixed(1)}x)，可溶糖類尚未完全擴散。`;
+                actions.push(`建議將研磨度調細（由 ${poState.grind.toFixed(1)} 調至 4.6 ~ 5.2）或增加注水段數至 3~4 段。`);
+                actions.push('若使用 Switch 聰明濾杯，可將最後一段設為「關閥止水浸泡 40~50 秒」再打開落水，能無痛提升甜感與萃取率！');
             } else if (poComputed.diagnosis === 'over') {
                 coachBadge.textContent = '過度萃取 / 尾段雜澀';
                 coachBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-400/30';
                 goldCupBadge.textContent = 'Over 過度萃取區';
                 goldCupBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-400/30';
-                coachHeadline.textContent = `萃取率達 ${poComputed.ey.toFixed(1)}%（或深焙水溫過高），尾段溶出木質纖維與苦澀物質。`;
+                coachHeadline.textContent = `萃取率達 ${poComputed.ey.toFixed(1)}%（或深焙尾段水溫過高），尾段溶出木質纖維與苦澀物質。`;
                 tastingNotes.textContent = '前段香氣雖濃，但中後段苦味壓過花果甜香，舌面有茶澀與收斂感，冷卻後苦韻更明顯。';
-                physicsNotes.textContent = `總沖煮時間 (${formatMinSec(poComputed.totalTimeSec)}) 偏長或擾流過強，細粉堵塞濾紙毛細孔導致尾段浸泡過久。`;
-                actions.push(`建議將研磨度調粗（往 5.5 ~ 6.5 調整），或將最後一段注水水溫調降 2~3°C（變溫沖煮法）。`);
-                actions.push('改用「中心定點注水」或柔和繞圈，避免過度攪拌將細粉刷入濾紙底部。');
+                physicsNotes.textContent = `總沖煮時間 (${formatMinSec(poComputed.totalTimeSec)}) 偏長、尾段水溫 (${poComputed.lateTemp.toFixed(1)}°C) 偏高或擾流過強，細粉堵塞濾紙毛細孔導致浸泡過久。`;
+                actions.push(`建議將研磨度調粗（往 5.5 ~ 6.8 調整），或將後段注水水溫調降 3~8°C（如惡魔食譜後段降溫浸泡）。`);
+                actions.push('改用「中心定點注水」或減少注水段數（例如由 5 段改為 3 段），避免過度攪拌將細粉刷入濾紙底部。');
+            } else if (poComputed.diagnosis === 'weak') {
+                coachBadge.textContent = '濃度偏淡 (Weak / Tea-like)';
+                coachBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/30';
+                goldCupBadge.textContent = 'Weak 萃取適中・偏淡區';
+                goldCupBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/30';
+                coachHeadline.textContent = `萃取率 ${poComputed.ey.toFixed(1)}% 落於黃金區間，但濃度 TDS ${poComputed.tds.toFixed(2)}% 偏低，風味乾淨但水感較重。`;
+                tastingNotes.textContent = '花果香氣清晰無苦澀，但中段茶感偏薄、醇厚度較弱。';
+                physicsNotes.textContent = `目前粉水比 1:${(poComputed.totalWater / poState.dose).toFixed(1)} 注水量偏多，溶出固體 (${poComputed.totalExtractedSolidsG.toFixed(2)}g) 被較多水量稀釋。`;
+                actions.push('建議將粉水比由目前設定略微調濃至 1:15.0 ~ 1:15.5，並將研磨略微調細以維持 20% 萃取率。');
+            } else if (poComputed.diagnosis === 'strong') {
+                coachBadge.textContent = '濃厚高強度 (Strong / Rich)';
+                coachBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-crema/25 text-crema-light border border-crema/40';
+                goldCupBadge.textContent = 'Strong 萃取適中・濃厚區';
+                goldCupBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-crema/25 text-crema-light border border-crema/40';
+                coachHeadline.textContent = `萃取率 ${poComputed.ey.toFixed(1)}% 適中，濃度 TDS ${poComputed.tds.toFixed(2)}% 較高，屬於日式濃厚或高醇厚度手沖風格！`;
+                tastingNotes.textContent = '入口油脂感與包覆感極強，焦糖、黑巧或熟果甜香濃郁厚實，適合喜愛重醇厚度或加冰飲用。';
+                physicsNotes.textContent = `粉水比 1:${(poComputed.totalWater / poState.dose).toFixed(1)} 配合 ${poState.dripper.toUpperCase()} 濾杯，以較低水量濃縮了 ${poComputed.totalExtractedSolidsG.toFixed(2)}g 可溶芳香物質。`;
+                actions.push('若喜歡濃厚口感可維持現狀；若想回到 SCA 標準濃度 (1.15~1.45%)，可於沖煮後 Bypass 補熱水 15~25ml 或將粉水比調至 1:15。');
             } else {
                 coachBadge.textContent = 'SCA 金杯完美平衡';
                 coachBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30';
                 goldCupBadge.textContent = 'Ideal 金杯理想區';
                 goldCupBadge.className = 'text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30';
                 coachHeadline.textContent = `完美落入手沖金杯區間（EY ${poComputed.ey.toFixed(1)}%, TDS ${poComputed.tds.toFixed(2)}%），層次分明且甜感飽滿！`;
-
-                if (poState.charIndex < 35) {
-                    tastingNotes.textContent = '高溫散發佛手柑、白花與百香果香氣；中溫浮現水蜜桃果汁與甜橙感；低溫轉為蜂蜜紅茶與悠長花香尾韻。';
-                } else if (poState.charIndex < 70) {
-                    tastingNotes.textContent = '前段帶有柔和柑橘與薰衣草香，中段龍眼蜜、葡萄乾與太妃糖甜感厚實，口感圓潤滑順。';
-                } else {
-                    tastingNotes.textContent = '香氣飽滿帶有烤杏仁與焦糖香，入口奶油般絲滑醇厚，苦甜平衡如 75% 黑巧克力，回甘持久無雜澀。';
-                }
-                physicsNotes.textContent = `加權水溫 ${poComputed.weightedTemp.toFixed(1)}°C 配合 ${poState.pours.length} 段式注水，前段釋放芳香酸質、後段降溫萃取甜感並避開雜澀。`;
-                actions.push('當前手沖參數極佳！若想提升果汁厚度可改用 Kalita 蛋糕濾杯；若想強化花香高音可選 Origami 摺紙濾杯。');
+                tastingNotes.textContent = flavorDesc.tastingDetail;
+                physicsNotes.textContent = `前段 ${poComputed.earlyTemp.toFixed(1)}°C / 後段 ${poComputed.lateTemp.toFixed(1)}°C 配合 ${poState.pours.length} 段注水（有效脈衝 ${poComputed.effectivePourCount.toFixed(2)} 段），共溶出 ${poComputed.totalExtractedSolidsG.toFixed(2)}g 芳香物質。`;
+                actions.push('當前手沖參數極佳！可嘗試切換上方「沖煮法流派」或「Switch 聰明濾杯止水浸泡」，觀察金杯落點與風味曲線的即時變化。');
             }
 
             actionList.innerHTML = actions.map(a => `<li>${a}</li>`).join('');
@@ -5659,6 +6796,42 @@
             document.getElementById('poLivePoured').textContent = `${Math.round(pt.poured)} ml`;
             document.getElementById('poLiveServerWeight').textContent = `${Math.round(pt.beverage)} g`;
             document.getElementById('poLiveDripRate').textContent = `${pt.dripRate.toFixed(1)} g/s`;
+
+            // Update Switch Valve Live Telemetry & SVG Stopper Ball
+            const valveStatusEl = document.getElementById('poLiveValveStatus');
+            const switchGroup = document.getElementById('poSwitchValveGroup');
+            const switchBall = document.getElementById('poSwitchBall');
+            const switchLever = document.getElementById('poSwitchLever');
+            const switchSvgText = document.getElementById('poSwitchSvgText');
+
+            if (poState.dripper === 'switch') {
+                const isClosed = pt.valveState === 'closed';
+                if (valveStatusEl) {
+                    valveStatusEl.textContent = isClosed ? '🔒 關閥止水浸泡' : '🔓 開閥落水順暢';
+                    valveStatusEl.className = isClosed
+                        ? 'font-mono text-xs font-bold text-amber-300'
+                        : 'font-mono text-xs font-bold text-emerald-300';
+                }
+                if (switchGroup) switchGroup.setAttribute('opacity', '1');
+                if (switchBall) {
+                    switchBall.setAttribute('fill', isClosed ? '#f59e0b' : '#34d399');
+                    switchBall.setAttribute('cy', isClosed ? '119' : '123');
+                }
+                if (switchLever) {
+                    switchLever.setAttribute('y2', isClosed ? '115' : '125');
+                    switchLever.setAttribute('stroke', isClosed ? '#fbbf24' : '#34d399');
+                }
+                if (switchSvgText) {
+                    switchSvgText.textContent = isClosed ? '🔒止水浸泡' : '🔓開閥落水';
+                    switchSvgText.setAttribute('fill', isClosed ? '#fbbf24' : '#34d399');
+                }
+            } else {
+                if (valveStatusEl) {
+                    valveStatusEl.textContent = '🟢 直通滴濾 (無閥門)';
+                    valveStatusEl.className = 'font-mono text-xs font-bold text-sky-300';
+                }
+                if (switchGroup) switchGroup.setAttribute('opacity', '0');
+            }
 
             // Slurry height inside dripper cone (y=115 bottom to y=46 top)
             const slurryRatio = Math.min(1, pt.slurry / 140);
@@ -5690,7 +6863,8 @@
             kettleStream.setAttribute('opacity', isFlowing && pt.inFlow > 0.1 ? '0.9' : '0');
 
             const dripStream = document.getElementById('poDripStream');
-            dripStream.setAttribute('opacity', (isFlowing && pt.dripRate > 0.15) || !poState.isSimulating ? '0.85' : '0');
+            const showDrip = pt.valveState !== 'closed' && ((isFlowing && pt.dripRate > 0.15) || !poState.isSimulating);
+            dripStream.setAttribute('opacity', showDrip ? '0.85' : '0');
             dripStream.setAttribute('stroke-width', Math.max(1.5, Math.min(4.5, pt.dripRate * 1.3)));
         }
 
@@ -5722,6 +6896,63 @@
             const yForFlow = f => pad.top + plotH - (Math.min(maxFlow, f) / maxFlow) * plotH;
             const yForVol = v => pad.top + plotH - (Math.min(maxVol, v) / maxVol) * plotH;
 
+            // Highlight Switch Closed-Valve Immersion Zones & Valve Open Release Markers
+            if (poState.dripper === 'switch' && Array.isArray(poComputed.stageTimings)) {
+                poComputed.stageTimings.forEach(st => {
+                    if (st.valve === 'closed') {
+                        const x1 = xForT(st.startT);
+                        const x2 = xForT(st.releaseT);
+
+                        // 1. Shaded Immersion Zone
+                        ctx.fillStyle = 'rgba(245, 158, 11, 0.16)';
+                        ctx.fillRect(x1, pad.top, Math.max(2, x2 - x1), plotH);
+
+                        // 2. Start of Immersion Boundary Marker (Amber dashed line at startT, e.g. 00:54)
+                        ctx.strokeStyle = '#fbbf24';
+                        ctx.lineWidth = 1.5;
+                        ctx.setLineDash([3, 3]);
+                        ctx.beginPath();
+                        ctx.moveTo(x1, pad.top);
+                        ctx.lineTo(x1, pad.top + plotH);
+                        ctx.stroke();
+
+                        // 3. End of Immersion / Open Valve Marker (Emerald dashed line at releaseT, e.g. 01:39)
+                        ctx.strokeStyle = '#34d399';
+                        ctx.beginPath();
+                        ctx.moveTo(x2, pad.top);
+                        ctx.lineTo(x2, pad.top + plotH);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+
+                        // 4. Start Label at x1 (00:54 關閥浸泡 - Anchored inside immersion zone)
+                        ctx.font = 'bold 9px "JetBrains Mono", "Noto Sans TC", monospace';
+                        const startText = `🔒${formatMinSec(st.startT)}關閥浸泡`;
+                        const startW = ctx.measureText(startText).width;
+                        ctx.fillStyle = 'rgba(20, 16, 12, 0.85)';
+                        ctx.fillRect(x1 + 2, pad.top + 2, startW + 6, 13);
+                        ctx.fillStyle = '#fbbf24';
+                        ctx.textAlign = 'left';
+                        ctx.fillText(startText, x1 + 5, pad.top + 12);
+
+                        // 5. Open Valve Label at x2 (01:34 開閥落水 - Anchored to the right of x2 at the start of drainage)
+                        if (st.releaseMode !== 'keep_closed' || st.idx === poComputed.stageTimings.length - 1) {
+                            const openText = `🔓${formatMinSec(st.releaseT)}開閥落水`;
+                            const openW = ctx.measureText(openText).width;
+                            ctx.fillStyle = 'rgba(20, 16, 12, 0.85)';
+                            ctx.fillRect(x2 + 2, pad.top + 2, openW + 6, 13);
+                            ctx.fillStyle = '#34d399';
+                            ctx.textAlign = 'left';
+                            ctx.fillText(openText, x2 + 5, pad.top + 12);
+                        }
+
+                        // 6. Center Immersion Duration Badge
+                        ctx.fillStyle = '#fde68a';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(`⏱️浸泡${st.steepSec}s`, (x1 + x2) / 2, pad.top + 24);
+                    }
+                });
+            }
+
             // Grid lines
             ctx.strokeStyle = 'rgba(245, 235, 225, 0.08)';
             ctx.font = '10px "JetBrains Mono", monospace';
@@ -5732,11 +6963,13 @@
                 ctx.lineTo(pad.left + plotW, gy);
                 ctx.stroke();
 
-                ctx.fillStyle = '#38bdf8';
+                // Left Y-Axis: Flow Rate in Emerald Green (#34d399)
+                ctx.fillStyle = '#34d399';
                 ctx.textAlign = 'right';
                 ctx.fillText(`${((4 - i) / 4 * maxFlow).toFixed(1)}`, pad.left - 6, gy + 3);
 
-                ctx.fillStyle = '#ecc38e';
+                // Right Y-Axis: Cumulative Volume in Sky Blue (#38bdf8)
+                ctx.fillStyle = '#38bdf8';
                 ctx.textAlign = 'left';
                 ctx.fillText(`${Math.round((4 - i) / 4 * maxVol)}ml`, pad.left + plotW + 6, gy + 3);
             }
@@ -5753,7 +6986,7 @@
                 : poComputed.timePoints;
 
             if (pts.length > 1) {
-                // 1. Cumulative Poured Water Line (Crema)
+                // 1. Cumulative Poured Water Line (Sky Blue #38bdf8 matching water / legend)
                 ctx.beginPath();
                 pts.forEach((p, idx) => {
                     const px = xForT(p.t);
@@ -5761,11 +6994,11 @@
                     if (idx === 0) ctx.moveTo(px, py);
                     else ctx.lineTo(px, py);
                 });
-                ctx.strokeStyle = '#d49a59';
-                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 2.2;
                 ctx.stroke();
 
-                // 2. Slurry Water Level inside Dripper (Amber)
+                // 2. Slurry Water Level inside Dripper (Amber Gold #fbbf24 matching legend)
                 ctx.beginPath();
                 pts.forEach((p, idx) => {
                     const px = xForT(p.t);
@@ -5774,10 +7007,10 @@
                     else ctx.lineTo(px, py);
                 });
                 ctx.strokeStyle = '#fbbf24';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 2.0;
                 ctx.stroke();
 
-                // 3. Drip Flow Rate (Sky Blue)
+                // 3. Drip Flow Rate (Emerald Green #34d399 matching server extraction / legend)
                 ctx.beginPath();
                 pts.forEach((p, idx) => {
                     const px = xForT(p.t);
@@ -5785,7 +7018,7 @@
                     if (idx === 0) ctx.moveTo(px, py);
                     else ctx.lineTo(px, py);
                 });
-                ctx.strokeStyle = '#38bdf8';
+                ctx.strokeStyle = '#34d399';
                 ctx.lineWidth = 2.4;
                 ctx.stroke();
             }
@@ -5961,12 +7194,35 @@
 
         function autoCalibratePourover() {
             stopPouroverSimulation(false);
-            // Adjust grind & baseTemp towards optimal EY (20.0%) based on current roast
+            // 1. Set optimal base temperature & ratio based on current roast level
             const idealTemp = Math.round(93 - poState.roast * 0.08);
-            document.getElementById('poGrindSlider').value = (5.2 + (poState.roast - 30) * 0.018).toFixed(1);
-            document.getElementById('poBaseTempSlider').value = idealTemp;
-            document.getElementById('poBloomTimeSlider').value = 35;
-            syncAllPulseTemps();
+            const idealRatio = poState.roast > 70 ? 14.5 : 15.5;
+            const baseSlider = document.getElementById('poBaseTempSlider');
+            if (baseSlider) baseSlider.value = idealTemp;
+            document.getElementById('poRatioSlider').value = idealRatio;
+            const bloomSlider = document.getElementById('poBloomTimeSlider');
+            if (bloomSlider) bloomSlider.value = 35;
+            poState.baseTemp = idealTemp;
+            poState.ratio = idealRatio;
+            poState.bloomTime = 35;
+
+            // 2. Rebalance stage water volumes & step-down temperatures
+            setPourCount(Math.max(3, poState.pourCount));
+
+            // 3. Solve for the exact grind setting (step 0.2) that brings EY closest to 20.0%
+            let bestGrind = 5.2;
+            let bestDiff = 999;
+            for (let g = 3.6; g <= 8.4; g += 0.2) {
+                poState.grind = Number(g.toFixed(1));
+                calculatePouroverPhysics();
+                const diff = Math.abs(poComputed.ey - 20.0);
+                if (diff < bestDiff) {
+                    bestDiff = diff;
+                    bestGrind = poState.grind;
+                }
+            }
+            document.getElementById('poGrindSlider').value = bestGrind.toFixed(1);
+            onPouroverParamChange(false, false);
         }
 
         function togglePouroverSimulation() {
@@ -6051,6 +7307,7 @@
 
         function initDualLabApp() {
             enhanceAllRangeSlidersWithTouchSteppers();
+            renderPoPickerMenus();
             applyPreset('golden');
             applyPouroverPreset('peru_geisha');
             applyRoastPreset('m10_peru_geisha');
