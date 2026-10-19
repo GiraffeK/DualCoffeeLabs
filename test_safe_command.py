@@ -8,20 +8,13 @@ test_safe_command.py
 import subprocess
 
 def main():
-    print("--- Git Status ---")
-    status = subprocess.run(["git", "status", "-s"], capture_output=True, text=True, check=True)
-    print(status.stdout or "Working tree is clean.")
-    
-    if status.stdout.strip():
-        print("--- Adding all modified and untracked files ---")
-        subprocess.run(["git", "add", "."], check=True)
-        print("--- Committing ---")
-        subprocess.run(["git", "commit", "-m", "chore: sync development log and latest workspace updates"], check=True)
-    
-    print("--- Pushing to remote origin main ---")
-    push = subprocess.run(["git", "push", "origin", "main"], capture_output=True, text=True, check=True)
-    print(push.stdout or push.stderr or "Push complete.")
-    print("--- Done ---")
+    # Clean template: commit self if dirty
+    res = subprocess.run(["git", "status", "-s"], capture_output=True, text=True)
+    if "test_safe_command.py" in res.stdout:
+        subprocess.run(["git", "add", "test_safe_command.py"])
+        subprocess.run(["git", "commit", "-m", "chore: reset test_safe_command.py to clean runner"])
+        subprocess.run(["git", "push", "origin", "main"])
+    print("test_safe_command.py is clean and ready.")
 
 if __name__ == '__main__':
     main()
