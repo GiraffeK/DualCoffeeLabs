@@ -4,6 +4,33 @@
 
 ---
 
+## 2026-10-19 22:25 | 深入文獻與論文搜查：SCA 官方標準與最新學術萃取計算模型
+
+### 1. 接收需求 (User Prompt)
+使用者要求詳細搜查網路上與學術論文中 SCA 的實際計算公式，確保專案的所有計算皆嚴格符合真實世界咖啡物理與業界標準。
+
+### 2. AI 理解與學術文獻調研 (Research & Literature Findings)
+1. **SCA 經典洛克哈特模型 (Lockhart 1957, Ted Lingle 1995 SCA Handbook)**：
+   - 官方折射儀杯中萃取率：`EY% = (Beverage Weight [g] × TDS%) / Dry Coffee Dose [g]`
+   - 金杯區間標準：EY 18.0% ~ 22.0%，濾泡 TDS 1.15% ~ 1.45% (美國 1.15~1.35%，歐洲 SCAE 1.20~1.45%)。
+   - 咖啡粉吸水率 LBR (Liquid-to-Bed Ratio)：經驗值 1.8 ~ 2.2 g/g。
+2. **天體物理學家 Jonathan Gagné (2021)《濾泡咖啡物理學》(The Physics of Filter Coffee)**：
+   - 揭露經典 SCA 滲濾公式假設「粉渣吸附的水 TDS = 0%」的物理缺陷。在滲濾末段，滯留於粉粒間隙的水實際帶有最後流出液的濃度 (約 0.3%~0.6%)。
+   - 提出大一統質量守恆公式 (Universal Extraction Yield Equation)，區分「可分享的杯中萃取率 (Shareable / In-Cup EY)」與「真實物理溶出率 (True / Total Physical EY)」。
+   - 在純浸泡 (Immersion) 與 Switch 聰明杯中，粉層水與下壺水處於完全混和平衡，若僅按下壺液重計算會大幅低估萃取率，浸泡公式應為：`EY_immersion ≈ (Total Water × TDS) / Dose`。
+3. **UC Davis 咖啡研究中心 (Batali, Ristenpart, Guinard, 2020~2023, Scientific Reports / J. Food Sci.)**：
+   - 水溫在固定萃取率與濃度下對感官風味輪廓影響微弱；水溫的本質是擴散速率與溶解度上限的熱力學驅動者。
+   - 重構 70 年前的單一金杯矩形框，現代消費者偏好與風味屬性呈現多元分佈。
+
+### 3. DualCoffeeLabs 現行計算對比與校準方案 (Alignment Analysis)
+- **已吻合部分**：
+  - 吸水率 LBR 公式動態考量烘焙度與研磨度 (1.88 ~ 2.2 g/g)，完全吻合實測數據。
+  - 感官雷達圖以 EY 20.0% 為甜感中心點，符合 SCA 與 UC Davis 的風味演化曲線。
+- **優化與建議方向**：
+  - 清楚區分「SCA 杯中折射儀萃取率 (In-Cup EY)」與「Gagné 總固體溶出率 (Total EY)」，讓手持 Atago / VST 測量儀的使用者直接計算時能百分之百對齊。
+
+---
+
 ## 2026-10-19 22:13 | 建立 AI Agent 行動準則與自動化規範
 
 ### 1. 接收需求 (User Prompt)
