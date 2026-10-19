@@ -6438,7 +6438,7 @@
             // Closed-valve immersion provides full-slurry solid-liquid contact, though static concentration gradient is slightly gentler than fresh percolation
             const activeDrawdownSec = Math.max(30, totalTimeSec - bloomTime - totalImmersionSec * 0.25);
             const immersionSynergy = isSwitchDripper && totalImmersionSec > 0
-                ? 1 + Math.min(0.045, (totalImmersionSec / 100) * 0.032)
+                ? 1 + Math.min(0.08, Math.pow(totalImmersionSec / 60, 0.6) * 0.055)
                 : 1.0;
             const contactTimeBoost = Math.pow(activeDrawdownSec / 102, 0.14) * dripperUniformity * immersionSynergy;
             const grindSurf = Math.pow(5.4 / grind, 0.44);
@@ -6449,7 +6449,7 @@
 
             const baseEY = 19.55;
             const rawEY = baseEY * grindSurf * ratioBoost * tempBoost * roastPorosity * pourCountBoost * bloomBoost * agitEfficiency * contactTimeBoost;
-            const ey = Math.max(13.2, Math.min(25.2, rawEY));
+            const ey = Math.max(8.0, Math.min(28.0, rawEY));
 
             // 8. Percolation Mass-Balance TDS (%) (Gagné / SCA Percolation Refractometer Model)
             const effectiveLiquidMass = beverageWeight + 0.55 * retainedWater;
@@ -7058,7 +7058,7 @@
 
             ctx.clearRect(0, 0, w, h);
 
-            const minEY = 14, maxEY = 25;
+            const minEY = 11, maxEY = 25;
             const minTDS = 0.85, maxTDS = 1.75;
 
             const xForEY = ey => pad.left + ((ey - minEY) / (maxEY - minEY)) * plotW;
@@ -7082,7 +7082,7 @@
             ctx.strokeStyle = 'rgba(245, 235, 225, 0.08)';
             ctx.fillStyle = 'rgba(245, 235, 225, 0.6)';
             ctx.font = '10px "JetBrains Mono", monospace';
-            for (let ey = 16; ey <= 24; ey += 2) {
+            for (let ey = 12; ey <= 24; ey += 2) {
                 const x = xForEY(ey);
                 ctx.beginPath();
                 ctx.moveTo(x, pad.top);
