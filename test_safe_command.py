@@ -8,12 +8,20 @@ test_safe_command.py
 import subprocess
 
 def main():
-    print("Executing git status...")
-    subprocess.run(["git", "status", "-s"], check=True)
-    subprocess.run(["git", "add", "AI-Agent-must-read-at-beginning.txt", "test_safe_command.py"], check=True)
-    subprocess.run(["git", "commit", "-m", "chore: clean AI-Agent-must-read-at-beginning.txt and update runner"], check=True)
-    subprocess.run(["git", "push", "origin", "main"], check=True)
-    print("Git sync complete.")
+    print("--- Git Status ---")
+    status = subprocess.run(["git", "status", "-s"], capture_output=True, text=True, check=True)
+    print(status.stdout or "Working tree is clean.")
+    
+    if status.stdout.strip():
+        print("--- Adding all modified and untracked files ---")
+        subprocess.run(["git", "add", "."], check=True)
+        print("--- Committing ---")
+        subprocess.run(["git", "commit", "-m", "chore: sync development log and latest workspace updates"], check=True)
+    
+    print("--- Pushing to remote origin main ---")
+    push = subprocess.run(["git", "push", "origin", "main"], capture_output=True, text=True, check=True)
+    print(push.stdout or push.stderr or "Push complete.")
+    print("--- Done ---")
 
 if __name__ == '__main__':
     main()

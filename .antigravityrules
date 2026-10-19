@@ -1,42 +1,21 @@
-# AI Agent 行動準則 (AI Agent Operating Rules)
+# Antigravity Rules for M10RoasterSimulator_for_Artisan
+# Source: AI-Agent-must-read-at-beginning.txt
 
-本專案中所有 AI Agent 在執行任務時，必須嚴格遵守以下準則：
+1. 行動準則覆述提醒：
+   在接受使用者 initial prompt 之後，必須一併閱讀此規範；每次結束任務回覆時，必須明確告知使用者已遵守並使用此準則。
 
-## 1. 準則確認與任務結尾回報
-- 在接收使用者的 Initial Prompt 後，必須確實閱讀並依循本規範。
-- 在每次結束任務並回覆使用者時，必須明確告知使用者「已遵循並使用本 AI Agent 行動準則」，讓使用者確認準則持續生效。
+2. 完整開發日誌記錄 (development-log.md)：
+   必須從頭到尾記錄程式開發的每一個過程，包含接收到 user prompt、AI 的理解、想法和解法過程，皆完整更新至 development-log.md。
 
-## 2. 全程開發歷程記錄 (development-log.md)
-- AI Agent 必須從頭到尾記錄程式開發的每一個過程至 `development-log.md`。
-- 記錄內容包含：
-  - 接收到的 User Prompt（原始需求）
-  - AI 的理解分析（Problem Statement & Root Cause）
-  - 思考與方案規劃（Thought Process & Solution Architecture）
-  - 實作修改過程與檢驗結果（Changes & Verification）
-  - 後續部署或維護備註（Deployment & Notes）
+3. 支援需求公告看板 (Bulletin.json)：
+   遇有自身處理不了、需要其他 Agent/Skills/Tools/API/MCP 支援時，以 JSON 格式疊加至 Bulletin.json，並附帶精確 timestamp。
 
-## 3. 跨資源支援看板 (Bulletin.json)
-- 專案根目錄維護 `Bulletin.json` 看板檔案。
-- 當 AI Agent 遇到自身能力無法單獨處理、需要其他 Agent / Skills / Tools / API / MCP 支援時，以 JSON 格式持續往後累加公告內容。
-- 每個項目必須包含：
-  - `id`
-  - `timestamp` (ISO 8601 或本地時間)
-  - `requestor` (發起者/角色)
-  - `needed_resource_type` (Agent / Skill / Tool / API / MCP)
-  - `description` (詳細需要支援的內容與原因)
-  - `status` (open / in_progress / resolved)
+4. 工作區檔案自主管理：
+   在當前 workspace / work-folder 之下允許 AI Agent 的檔案管理與編輯操作，不需反覆詢問許可。
 
-## 4. 檔案管理授權
-- 在此專案 Workspace / 工作目錄下，允許 AI Agent 進行檔案的新增、修改、刪除與管理操作，無須重複詢問授權。
+5. 終端機防中斷與安全執行守則：
+   a. 禁止使用終端機進行檔案與字串搜尋：遇到類似 Select-String、Get-ChildItem、git grep 等唯讀搜尋需求，優先使用內建原生工具（如 view_file、read_file 工具），禁止在終端機跑 PowerShell 或 Git 搜尋指令。
+   b. 所有單行測試與查詢統一寫入 test_safe_command.py：任何需要透過終端機執行的唯讀查詢、環境檢查或 python -c "..." 測試邏輯，禁止直接在終端機跑單行指令。一律寫入專案目錄下的 test_safe_command.py，並僅執行固定的 `python test_safe_command.py`。
 
-## 5. 終端機指令防中斷保護規範
-為了避免終端機指令不斷跳出確認視窗打斷工作流，嚴格遵守以下兩點：
-1. **禁止使用終端機進行檔案與字串搜尋**：
-   - 遇到搜尋需求（如查找代碼、關鍵字、列出檔案目錄等），絕對禁止透過終端機執行 `Select-String`、`Get-ChildItem`、`dir`、`git grep`、`grep`、`find` 等搜尋指令。
-   - 請優先使用系統內建的原生工具（如 `view_file` 或原生讀檔工具）。
-2. **所有單行測試與查詢統一寫入 `test_safe_command.py`**：
-   - 遇到任何需要透過終端機執行的唯讀查詢、環境檢查、動態計算或 `python -c "..."` 測試邏輯，絕對禁止直接在終端機跑單行指令。
-   - 一律將邏輯（若為 Shell 指令可用 Python `subprocess` 包裝）覆寫進專案目錄下的 `test_safe_command.py`，然後只執行固定單一指令：`python test_safe_command.py`。
-
-## 6. 持續對話與動態修訂
-- AI Agent 可主動與使用者對話討論本準則內容，並依據實際協作反饋持續修改與完善此文件。
+6. 規範文件雙向維護：
+   允許並主動與使用者對話討論修改與優化此規範，使之更加健全完整。
